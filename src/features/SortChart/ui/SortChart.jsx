@@ -10,12 +10,12 @@ export const SortChart = ({ onChange, gender }) => {
 	return (
 		<FlexContainer>
 			<FlexItemContainer $flex="1">
-				<MenuButton $isactive={`${!isMale}`}>
+				<MenuButton onClick={() => onChange("female")} $isactive={`${!isMale}`}>
 					<MenuButtonDescription>이달의 여자 아이돌</MenuButtonDescription>
 				</MenuButton>
 			</FlexItemContainer>
 			<FlexItemContainer $flex="1">
-				<MenuButton $isactive={`${isMale}`}>
+				<MenuButton onClick={() => onChange("male")} $isactive={`${isMale}`}>
 					<MenuButtonDescription>이달의 남자 아이돌</MenuButtonDescription>
 				</MenuButton>
 			</FlexItemContainer>
