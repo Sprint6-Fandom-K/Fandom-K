@@ -19,7 +19,8 @@ export const MenuButton = styled.button`
 	padding: 12px;
 	width: 100%;
 	border: 0;
-	border-bottom: 1px solid white;
+	border-bottom: ${({ $isactive }) =>
+		$isactive == "true" ? "1px solid white" : null};
 	&:hover {
 		cursor: pointer;
 	}
