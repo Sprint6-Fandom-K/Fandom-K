@@ -20,4 +20,7 @@ export const MenuButton = styled.button`
 	width: 100%;
 	border: 0;
 	border-bottom: 1px solid white;
+	&:hover {
+		cursor: pointer;
+	}
 `;
