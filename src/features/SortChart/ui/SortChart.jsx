@@ -5,6 +5,17 @@ import { getCharts } from "@/shared/api/api";
 import { useGetData } from "@/shared/hooks/hooks";
 import { MenuButtonDescription } from "@/shared/typo/typo";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+
+const ChartList = styled.ul`
+	width: 100%;
+	height: 418px;
+	display: grid;
+	grid-template: repeat(5, 1fr) / 1fr 1fr;
+	@media (width<=1199px) {
+		grid-template: repeat(5, 1fr) / 1fr;
+	}
+`;
 
 export const SortChart = ({ onChange, gender }) => {
 	const isMale = gender == "male";
@@ -12,6 +23,7 @@ export const SortChart = ({ onChange, gender }) => {
 	const [items, setItems] = useState([]);
 
 	const handleClick = (e) => {
+		if (gender === e.currentTarget.name) return;
 		onChange(e.currentTarget.name);
 	};
 
@@ -42,19 +54,15 @@ export const SortChart = ({ onChange, gender }) => {
 					</MenuButton>
 				</FlexItemContainer>
 			</FlexContainer>
-			{
-				status.isLoading ? (
-					<div>로딩</div>
+			<ChartList>
+				{status.isLoading ? (
+					<div>로딩중인 무언가</div>
 				) : (
-					<div>
-						{console.log(items)}
-						{items &&
-							items?.map((v) => (
-								<IdolChartCard key={v.id}>{v.name} 안녕!!</IdolChartCard>
-							))}
-					</div>
-				) /*리스트 */
-			}
+					items?.map((item, index) => (
+						<IdolChartCard key={item.id} item={item} index={index} />
+					))
+				)}
+			</ChartList>
 		</>
 	);
 };
