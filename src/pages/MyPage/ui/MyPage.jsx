@@ -3,6 +3,10 @@ import './mypage.css';
 import Frame1 from '../../../shared/assets/images/Frame 33648.png';
 import IdolCard from '@/shared/ui/IdolCard/IdolCard';
 
+
+
+
+
 const MyPage = () => {
 	return (
 		<div className='container'>
