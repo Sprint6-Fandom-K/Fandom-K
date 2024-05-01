@@ -23,9 +23,6 @@ const MainFlexContainer = styled(FlexContainer)`
 export const MonthChart = () => {
 	const [gender, setGender] = useState("female");
 
-	// const item = gender에 맞춰서 api받아옴;
-	// const orderedItem = 표에 맞춰서 정렬
-
 	return (
 		<FlexContainer $fd="column" $gap="24px">
 			<FlexContainer $jc="space-between">

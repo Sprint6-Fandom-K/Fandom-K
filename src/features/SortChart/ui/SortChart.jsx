@@ -39,14 +39,22 @@ const MoreItemsContainer = styled(FlexItemContainer)`
 
 export const SortChart = ({ onChange, gender }) => {
 	const [status, wrappedFunction] = useGetData(getCharts);
+	const { isNotDesktop } = useCustomMediaQuery();
+
 	const [items, setItems] = useState([]);
 	const [moreItems, setMoreItems] = useState(0);
-	const { isNotDesktop } = useCustomMediaQuery();
-	const isMale = gender == "male";
 	const numberOfItem = useMemo(
 		() => (isNotDesktop ? 5 + moreItems : 10 + moreItems * 2),
 		[moreItems, isNotDesktop],
 	);
+
+	const sortedItems = useMemo(() => {
+		const sortedData = items.sort((a, b) => a.totalVotes > b.totalVotes);
+		const SlicedData = sortedData.slice(0, numberOfItem);
+		return SlicedData;
+	}, [numberOfItem, items]);
+
+	const isMale = gender == "male";
 
 	const handleMenuClick = (e) => {
 		if (gender === e.currentTarget.name) return;
@@ -59,16 +67,17 @@ export const SortChart = ({ onChange, gender }) => {
 
 	useEffect(() => {
 		let fetchData = async () => {
-			let data = await wrappedFunction({ gender });
+			const data = await wrappedFunction({ gender });
 			if (!data) return;
-			data = data.sort((a, b) => a.totalVotes > b.totalVotes);
-			data = data.slice(0, numberOfItem);
 			setItems((prevItem) => data);
-			console.log(numberOfItem);
 		};
 		fetchData();
 		return () => (fetchData = null);
-	}, [gender, moreItems]);
+	}, [gender]);
+
+	useEffect(() => {
+		setMoreItems((prevItem) => 0);
+	}, [isNotDesktop, gender]);
 
 	return (
 		<>
@@ -96,7 +105,7 @@ export const SortChart = ({ onChange, gender }) => {
 				{status.isLoading ? (
 					<div>로딩화면</div>
 				) : (
-					items?.map((item, index) => (
+					sortedItems?.map((item, index) => (
 						<IdolChartCard key={item.id} item={item} index={index} />
 					))
 				)}
