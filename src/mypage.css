@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+	background-color: #02000E;
+  }
+  a {
+    text-decoration: none;
+  }
+  ul {
+    list-style: none;
+  }
+
+  #logo {
+	width: 167.92px;
+	height: 32px;
+	margin-top: 24px;
+	margin-left: 876px;
+	gap: 484px;
+  }
+  #logo-container{
+	width: 1920px;
+	height: 80px;
+  }
+  #frame{
+	width: 32px;
+	height: 32px;
+	margin-top: -35px;
+	margin-left: 1528px;
+	border-radius: 125px;
+  }
+
+.add-button{
+	width: 255px;
+	height: 48px;
+	margin-top: 951px;
+	margin-left: 833px;
+	border-radius: 24px;
+	border:none;
+	color: white;
+	background: linear-gradient(to right, #F77063, #FE5790);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 26px;
+	gap: 8px;
+}
+.idol-container{
+	width: 210px;
+	height: 26px;
+	margin-top: 156px;
+	margin-left: 360px;
+}
+.idol-add-container{
+	width: 350px;
+	height: 26px;
+	margin-top: 60px;
+	margin-left: 360px;
+}
+.left-button{
+	width: 29px;
+	height: 135px;
+	margin-top: 300px;
+	margin-left: -50px;
+	border-radius: 4px;
+	rotate: 180°;
+	background-color: #1B1B1BCC;
+	opacity: 0.8;
+
+	border: 2px ;
+	color: #FFFFFF;
+}
+.right-button{
+	width: 29px;
+	height: 135px;
+	margin-top: 295px;
+	margin-left: 1200px;
+	border-radius: 4px;
+	rotate: 180°;
+	background-color: #1B1B1BCC;
+	opacity: 0.8;
+	position: absolute;
+	border: 2px ;
+	color: #FFFFFF;
+}
+
+
+
+h1{
+	color: #F6F6F8;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 26px;
+}
+#line{
+	width: 1200px;
+	height: 1px;
+	margin-top: 406px;
+	margin-left: 360px;
+}
