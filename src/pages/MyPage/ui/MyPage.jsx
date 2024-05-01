@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./mypage.css";
+import "./eunbin.css";
 import Frame1 from "../../../shared/assets/images/Frame 33648.png";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
 import { getIdols } from "@/shared/api/idols";

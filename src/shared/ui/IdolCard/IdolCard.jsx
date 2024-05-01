@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import TestImg from "../../assets/images/test_img.png";
-
 const IdolCard = (props) => {
 	const { info } = props;
 	const { profilePicture, name, group } = info;
@@ -34,6 +32,7 @@ const ImgArea = styled.div`
 	padding: ${({ padding }) => padding ?? 5}px;
 	overflow: hidden;
 	cursor: pointer;
+	aspect-ratio: 1 / 1;
 `;
 
 const Img = styled.img`
