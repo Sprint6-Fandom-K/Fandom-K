@@ -1,4 +1,10 @@
-import { styled } from "styled-components";
+import { css, styled } from "styled-components";
+
+const buttonStyle = css`
+	&:hover {
+		cursor: pointer;
+	}
+`;
 
 export const PinkButton = styled.button.attrs({ type: "button" })`
 	background: linear-gradient(90deg, #f86f65 0%, #fe5493 100%);
@@ -7,9 +13,7 @@ export const PinkButton = styled.button.attrs({ type: "button" })`
 	padding: 3.5px 14px 4.5px;
 	border: 0;
 	border-radius: 3px;
-	&:hover {
-		cursor: pointer;
-	}
+	${buttonStyle};
 `;
 
 export const MenuButton = styled.button`
@@ -21,7 +25,15 @@ export const MenuButton = styled.button`
 	border: 0;
 	border-bottom: ${({ $isactive }) =>
 		$isactive == "true" ? "1px solid white" : null};
-	&:hover {
-		cursor: pointer;
-	}
+	${buttonStyle};
+`;
+
+export const MoreItemsButton = styled.button`
+	width: 326px;
+	height: 42px;
+	padding: 8px 143px;
+	border-radius: 3px;
+	border: 1px solid #f1eef9cc;
+	background-color: #ffffff1a;
+	${buttonStyle};
 `;
