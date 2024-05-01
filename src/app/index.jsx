@@ -1,4 +1,8 @@
+import ListPage from "@/pages/ListPage";
+
 export default function App()
 {
-	return <>WIP</>;
+	return (
+		<ListPage></ListPage>
+	);
 }

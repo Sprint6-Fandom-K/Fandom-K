@@ -1,4 +1,4 @@
-import "./index.css";
+import "./main.scss";
 
 import App from "@/app";
 
