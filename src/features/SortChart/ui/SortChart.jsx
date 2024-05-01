@@ -61,6 +61,7 @@ export const SortChart = ({ onChange, gender }) => {
 		let fetchData = async () => {
 			let data = await wrappedFunction({ gender });
 			if (!data) return;
+			data = data.sort((a, b) => a.totalVotes > b.totalVotes);
 			data = data.slice(0, numberOfItem);
 			setItems((prevItem) => data);
 			console.log(numberOfItem);
