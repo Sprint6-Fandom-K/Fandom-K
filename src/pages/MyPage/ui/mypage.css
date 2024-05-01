@@ -4,6 +4,11 @@
     box-sizing: border-box;
 	background-color: #02000E;
   }
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
   a {
     text-decoration: none;
   }

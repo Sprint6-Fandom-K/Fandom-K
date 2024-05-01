@@ -1,10 +1,10 @@
-import IdolCard from "@/shared/ui/IdolCard/IdolCard";
+import MyPage from "@/pages/MyPage/ui/MyPage";
 
 export default function App()
 {
 	return (
 		<>
-			<IdolCard />
+			<MyPage />
 		</>
 	);
 }
