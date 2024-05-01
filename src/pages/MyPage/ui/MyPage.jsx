@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./mypage.css";
 import "./eunbin.css";
-import Frame1 from "../../../shared/assets/images/Frame 33648.png";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
 import { getIdols } from "@/shared/api/idols";
-
-
-
-
+import Frame1 from "../../../shared/assets/images/Frame 33648.png";
+import Frame2 from "../../../shared/assets/images/Frame 27.png";
+import Frame3 from "../../../shared/assets/images/Frame 33588.png";
+import Frame4 from "../../../shared/assets/images/Vector 668.png";
+import Frame5 from "../../../shared/assets/images/Vector 6688.png";
 
 const MyPage = () => {
 	const [idols, setIdols] = useState([]);
@@ -31,8 +31,9 @@ const MyPage = () => {
 						<img src={Frame1} alt="framelogo" />
 						<a href="/"></a>
 					</div>
+
 					<div id="frame">
-						<img src="image/Frame 27.png" alt="frame" />
+						<img src={Frame2} alt="frame" />
 						<a href="/"></a>
 					</div>
 				</header>
@@ -44,14 +45,15 @@ const MyPage = () => {
 			</div>
 
 			<div id="line">
-				<img src="image/Frame 33588.png" alt="line" />
+				<img src={Frame3} alt="line" />
 			</div>
 
 			<div className="idol-add-container">
 				<h1>관심 있는 아이돌을 추가해보세요.</h1>
+
 				<div className="idol-carousel-container">
-					<button className="left-button">
-						<img src="image/Vector 668.png" alt="line" />
+					<button class="left-button">
+						<img src={Frame4} alt="line" />
 					</button>
 					<ul className="idol-profile-box">
 						{idols?.map((idol) => {
@@ -62,8 +64,8 @@ const MyPage = () => {
 							);
 						})}
 					</ul>
-					<button className="right-button">
-						<img src="image/Vector 6688.png" alt="line" />
+					<button class="right-button">
+						<img src={Frame5} alt="line" />
 					</button>
 				</div>
 			</div>

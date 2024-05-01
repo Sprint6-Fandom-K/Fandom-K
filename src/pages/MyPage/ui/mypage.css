@@ -12,29 +12,31 @@ body {
 	max-width: 1200px;
 	margin: 0 auto;
 }
+
 a {
 	text-decoration: none;
 }
+
 ul {
 	list-style: none;
 }
 
 #logo {
 	width: 167.92px;
-	height: 32px;
+	margin-left: 510px;
 	margin-top: 24px;
-	margin-left: 876px;
 	gap: 484px;
 }
+
 #logo-container {
-	width: 1920px;
-	height: 80px;
+	width: 1000px;
 }
+
 #frame {
 	width: 32px;
 	height: 32px;
-	margin-top: -35px;
-	margin-left: 1528px;
+	margin-top: -24px;
+	margin-left: 1200px;
 	border-radius: 125px;
 }
 
@@ -42,7 +44,7 @@ ul {
 	width: 255px;
 	height: 48px;
 	margin-top: 951px;
-	margin-left: 833px;
+	margin-left: 500px;
 	border-radius: 24px;
 	border: none;
 	color: white;
@@ -52,18 +54,19 @@ ul {
 	line-height: 26px;
 	gap: 8px;
 }
+
 .idol-container {
 	width: 210px;
 	height: 26px;
 	margin-top: 156px;
-	margin-left: 360px;
 }
+
 .idol-add-container {
 	width: 350px;
 	height: 26px;
 	margin-top: 60px;
-	margin-left: 360px;
 }
+
 .left-button {
 	width: 29px;
 	height: 135px;
@@ -73,10 +76,10 @@ ul {
 	rotate: 180°;
 	background-color: #1b1b1bcc;
 	opacity: 0.8;
-
 	border: 2px;
 	color: #ffffff;
 }
+
 .right-button {
 	width: 29px;
 	height: 135px;
@@ -97,9 +100,9 @@ h1 {
 	font-size: 24px;
 	line-height: 26px;
 }
+
 #line {
 	width: 1200px;
 	height: 1px;
 	margin-top: 406px;
-	margin-left: 360px;
 }
