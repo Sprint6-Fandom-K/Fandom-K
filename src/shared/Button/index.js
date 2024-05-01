@@ -27,13 +27,3 @@ export const MenuButton = styled.button`
 		$isactive == "true" ? "1px solid white" : null};
 	${buttonStyle};
 `;
-
-export const MoreItemsButton = styled.button`
-	width: 326px;
-	height: 42px;
-	padding: 8px 143px;
-	border-radius: 3px;
-	border: 1px solid #f1eef9cc;
-	background-color: #ffffff1a;
-	${buttonStyle};
-`;

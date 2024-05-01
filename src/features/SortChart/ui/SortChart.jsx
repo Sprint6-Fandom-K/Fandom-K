@@ -1,17 +1,16 @@
 import { IdolChartCard } from "@/entities/IdolChartCard";
-import { MenuButton, MoreItemsButton } from "@/shared/Button";
+import { MenuButton } from "@/shared/Button";
 import { FlexContainer, FlexItemContainer } from "@/shared/Container/Container";
 import { getCharts } from "@/shared/api/api";
 import { useCustomMediaQuery } from "@/shared/hooks/useCustomMediaQuery";
 import { useGetData } from "@/shared/hooks/useGetData";
-import {
-	MenuButtonDescription,
-	moreButtonDescription,
-} from "@/shared/typo/typo";
-import { useEffect, useMemo, useState } from "react";
+import { MenuButtonDescription } from "@/shared/typo/typo";
+import { useEffect, useMemo, useState, useRef } from "react";
 import styled from "styled-components";
 
 import refresh from "@/shared/asset/icons8-refresh-30.png";
+import { rotate } from "@/shared/keyframes/keyframes";
+import { useInView } from "react-intersection-observer";
 
 const ChartList = styled.ul`
 	width: 100%;
@@ -25,23 +24,7 @@ const ChartList = styled.ul`
 	}
 `;
 
-const NewMoreItemsButton = styled(MoreItemsButton)`
-	margin-top: 24px;
-	${moreButtonDescription};
-	@media (width<=1199px) {
-		margin-top: 3px;
-	}
-	@media (width<=767px) {
-		margin-top: 9px;
-	}
-`;
-
-const MoreItemsContainer = styled(FlexItemContainer)`
-	display: flex;
-	justify-content: center;
-`;
-
-const ReloadSection = styled.div`
+const RefreshSection = styled.div`
 	grid-column: 1/-1;
 	color: white;
 	display: flex;
@@ -49,18 +32,26 @@ const ReloadSection = styled.div`
 	align-items: center;
 `;
 
-export const SortChart = ({ onChange, gender }) => {
-	const [status, wrappedFunction] = useGetData(getCharts);
-	const { isNotDesktop } = useCustomMediaQuery();
+const RefreshImg = styled.img`
+	animation: ${rotate} 1s linear infinite;
+`;
 
+export const SortChart = ({ onChange, gender }) => {
+	const rootRef = useRef(null);
 	const [items, setItems] = useState([]);
 	const [moreItems, setMoreItems] = useState(0);
+
+	const [status, wrappedFunction] = useGetData(getCharts);
+	const { isNotDesktop } = useCustomMediaQuery();
+	const { ref, inView, entry } = useInView({
+		threshold: 1,
+		root: rootRef.current,
+	});
+
 	const numberOfItem = useMemo(
 		() => (isNotDesktop ? 5 + moreItems : 10 + moreItems * 2),
 		[moreItems, isNotDesktop],
 	);
-	const noMoreItem = numberOfItem < items.length;
-
 	const sortedItems = useMemo(() => {
 		const sortedData = items.sort((a, b) => a.totalVotes > b.totalVotes);
 		const SlicedData = sortedData.slice(0, numberOfItem);
@@ -68,14 +59,11 @@ export const SortChart = ({ onChange, gender }) => {
 	}, [numberOfItem, items]);
 
 	const isMale = gender == "male";
+	const noMoreItem = numberOfItem < items.length;
 
 	const handleMenuClick = (e) => {
 		if (gender === e.currentTarget.name) return;
 		onChange(e.currentTarget.name);
-	};
-
-	const handleButtonClick = (_) => {
-		setMoreItems((prevMoreItems) => prevMoreItems + 5);
 	};
 
 	useEffect(() => {
@@ -91,6 +79,10 @@ export const SortChart = ({ onChange, gender }) => {
 	useEffect(() => {
 		setMoreItems((prevItem) => 0);
 	}, [isNotDesktop, gender]);
+
+	useEffect(() => {
+		if (inView) setMoreItems((prevMoreItems) => prevMoreItems + 5);
+	}, [inView]);
 
 	return (
 		<>
@@ -114,7 +106,7 @@ export const SortChart = ({ onChange, gender }) => {
 					</MenuButton>
 				</FlexItemContainer>
 			</FlexContainer>
-			<ChartList $numbers={numberOfItem}>
+			<ChartList $numbers={numberOfItem} ref={rootRef}>
 				{status.isLoading ? (
 					<div>로딩화면</div>
 				) : (
@@ -123,20 +115,14 @@ export const SortChart = ({ onChange, gender }) => {
 							<IdolChartCard key={item.id} item={item} index={index} />
 						))}
 						{noMoreItem && (
-							<ReloadSection>
-								<img src={refresh} />
-							</ReloadSection>
+							<RefreshSection ref={ref}>
+								<div>{inView}</div>
+								<RefreshImg src={refresh} />
+							</RefreshSection>
 						)}
 					</>
 				)}
 			</ChartList>
-			{status.isLoading || (
-				<MoreItemsContainer $flex="1">
-					<NewMoreItemsButton onClick={handleButtonClick}>
-						더 보기
-					</NewMoreItemsButton>
-				</MoreItemsContainer>
-			)}
 		</>
 	);
 };

@@ -1,0 +1,10 @@
+@import url("https://cdn.jsdelivr.net/npm/reset-css/reset.min.css");
+
+::-webkit-scrollbar {
+	width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: red;
+	border-radius: 40px;
+}
