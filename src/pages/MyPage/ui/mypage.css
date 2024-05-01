@@ -1,16 +1,96 @@
+/* 공통 */
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
-body {
-	background-color: #02000e;
-}
-
-.container {
-	max-width: 1200px;
-	margin: 0 auto;
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+body,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+main,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+	font-family: "Pretendard Variable", Pretendard, -apple-system,
+		BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+		"Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+		"Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }
 
 a {
@@ -21,88 +101,121 @@ ul {
 	list-style: none;
 }
 
-#logo {
-	width: 167.92px;
-	margin-left: 510px;
-	margin-top: 24px;
-	gap: 484px;
+button {
+	cursor: pointer;
 }
 
-#logo-container {
-	width: 1000px;
+/* 레이아웃 */
+.container {
+	background-color: #02000e;
+	min-height: 100vh;
 }
 
-#frame {
-	width: 32px;
-	height: 32px;
-	margin-top: -24px;
-	margin-left: 1200px;
-	border-radius: 125px;
+.inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 24px;
+	box-sizing: content-box;
 }
 
-.add-button {
-	width: 255px;
-	height: 48px;
-	margin-top: 951px;
-	margin-left: 500px;
-	border-radius: 24px;
-	border: none;
-	color: white;
-	background: linear-gradient(to right, #f77063, #fe5790);
-	font-size: 16px;
-	font-weight: 700;
-	line-height: 26px;
-	gap: 8px;
+/* 헤더 */
+header {
+	padding: 23px 0;
+	display: flex;
+	align-items: center;
 }
 
-.idol-container {
-	width: 210px;
-	height: 26px;
-	margin-top: 156px;
+.logo-box {
+	flex: 1;
+	/* 오른쪽 아이콘 크기만큼 왼쪽에 여백 주기 */
+	margin-left: 32px;
+	text-align: center;
 }
 
-.idol-add-container {
-	width: 350px;
-	height: 26px;
-	margin-top: 60px;
-}
-
-.left-button {
-	width: 29px;
-	height: 135px;
-	margin-top: 300px;
-	margin-left: -50px;
-	border-radius: 4px;
-	rotate: 180°;
-	background-color: #1b1b1bcc;
-	opacity: 0.8;
-	border: 2px;
-	color: #ffffff;
-}
-
-.right-button {
-	width: 29px;
-	height: 135px;
-	margin-top: 295px;
-	margin-left: 1200px;
-	border-radius: 4px;
-	rotate: 180°;
-	background-color: #1b1b1bcc;
-	opacity: 0.8;
-	position: absolute;
-	border: 2px;
-	color: #ffffff;
+/* 마이페이지 공통 */
+.my-page {
+	padding: 75px 0 80px;
+	display: grid;
+	gap: 40px;
 }
 
 h1 {
 	color: #f6f6f8;
 	font-weight: 700;
 	font-size: 24px;
-	line-height: 26px;
+	line-height: 1.08;
 }
 
-#line {
-	width: 1200px;
-	height: 1px;
-	margin-top: 406px;
+hr {
+	border: 1px solid var(255, 255, 255, 0.1);
+}
+
+.idol-section {
+	display: grid;
+	gap: 32px;
+}
+
+/* 아이돌 목록 슬라이드 영역 */
+.carousel-container {
+	display: flex;
+	align-items: center;
+	width: calc(100% + 108px);
+	margin-left: -54px;
+	max-width: calc(100vw - 48px);
+}
+
+.idol-list {
+	display: grid;
+	grid-template-rows: repeat(2, 1fr);
+	grid-template-columns: repeat(8, 1fr);
+	padding: 0 32px;
+	gap: 31px 22px;
+}
+
+.arrow {
+	min-width: 29px;
+	height: 135px;
+	border-radius: 4px;
+	background-color: #1b1b1b;
+	opacity: 0.8;
+	border: 0;
+	/* position: absolute;
+	top: 50%;
+	transform: translate(0, -50%); */
+}
+
+.empty-box {
+	flex-grow: 1;
+}
+
+/* .left-arrow {
+	left: -53px;
+}
+
+.right-arrow {
+	right: -53px;
+} */
+
+.add-button {
+	padding: 11px 83px;
+	margin: 0 auto;
+	border-radius: 24px;
+	border: none;
+	color: white;
+	background: linear-gradient(to right, #f77063, #fe5790);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.6;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.add-button .icon {
+	width: 24px;
+	height: 24px;
+}
+
+.add-button span {
+	font-weight: 700;
 }

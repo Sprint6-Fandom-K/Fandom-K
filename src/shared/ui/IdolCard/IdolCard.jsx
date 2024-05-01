@@ -22,8 +22,6 @@ const Card = styled.div`
 	display: grid;
 	gap: 8px;
 	background-color: #02000e;
-	/* 카드 너비 수정 필요 (현재 고정해둠) */
-	width: 128px;
 `;
 
 const ImgArea = styled.div`
