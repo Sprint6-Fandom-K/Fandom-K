@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const SubTitle = styled.span`
 	font-size: 24px;
@@ -35,4 +35,11 @@ export const MenuButtonDescription = styled.span`
 	line-height: 18px;
 	text-align: center;
 	letter-spacing: -0.16500002145767212px;
+`;
+
+export const MoreButtonDescription = css`
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 26px;
+	color: #ffffff;
 `;
