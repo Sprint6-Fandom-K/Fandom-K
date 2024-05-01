@@ -2,7 +2,7 @@ import {
 	MainContainer,
 	MainContentContainer,
 } from "@/shared/Container/Container";
-import { MonthChart } from "@/widget/MonthChart";
+import { MonthChart } from "@/widgets/MonthChart";
 
 export function ListPage() {
 	return (
