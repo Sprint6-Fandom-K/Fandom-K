@@ -32,3 +32,25 @@ export const MainContentContainer = styled.div`
 export const FlexItemContainer = styled.div`
 	flex: ${({ $flex }) => $flex};
 `;
+
+const RoundedImage = styled.img`
+	width: 60px;
+	height: 60px;
+	border-radius: 40px;
+`;
+
+const RoundedDiv = styled.div`
+	width: 70px;
+	height: 70px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 40px;
+	border: 1px solid #f96d69;
+`;
+
+export const ImageContainer = ({ src, alt }) => (
+	<RoundedDiv>
+		<RoundedImage src={src} alt={alt} />
+	</RoundedDiv>
+);

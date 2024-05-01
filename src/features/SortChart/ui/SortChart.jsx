@@ -6,15 +6,15 @@ import { useCustomMediaQuery } from "@/shared/hooks/useCustomMediaQuery";
 import { useGetData } from "@/shared/hooks/useGetData";
 import {
 	MenuButtonDescription,
-	MoreButtonDescription,
+	moreButtonDescription,
 } from "@/shared/typo/typo";
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 const ChartList = styled.ul`
 	width: 100%;
-	height: 418px;
 	display: grid;
+	column-gap: 24px;
 	grid-template: repeat(${({ $numbers }) => Math.floor($numbers / 2)}, 1fr) / 1fr 1fr;
 	@media (width<=1199px) {
 		grid-template: repeat(${({ $numbers }) => Math.floor($numbers)}, 1fr) / 1fr;
@@ -23,7 +23,7 @@ const ChartList = styled.ul`
 
 const NewMoreItemsButton = styled(MoreItemsButton)`
 	margin-top: 24px;
-	${MoreButtonDescription};
+	${moreButtonDescription};
 	@media (width<=1199px) {
 		margin-top: 3px;
 	}

@@ -37,9 +37,28 @@ export const MenuButtonDescription = styled.span`
 	letter-spacing: -0.16500002145767212px;
 `;
 
-export const MoreButtonDescription = css`
+export const moreButtonDescription = css`
 	font-size: 11px;
 	font-weight: 700;
 	line-height: 26px;
 	color: #ffffff;
+`;
+
+export const chartItemDescription = css`
+	font-family: Pretendard;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 16.71px;
+	color: #ffffff99;
+`;
+
+export const chartItemName = css`
+	${chartItemDescription}
+	font-weight: 500;
+	color: #ffffffde;
+`;
+
+export const chartItemIndex = css`
+	${chartItemDescription};
+	color: #f96d69;
 `;
