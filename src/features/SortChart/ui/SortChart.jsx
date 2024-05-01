@@ -11,6 +11,8 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
+import refresh from "@/shared/asset/icons8-refresh-30.png";
+
 const ChartList = styled.ul`
 	width: 100%;
 	height: 418px;
@@ -39,6 +41,14 @@ const MoreItemsContainer = styled(FlexItemContainer)`
 	justify-content: center;
 `;
 
+const ReloadSection = styled.div`
+	grid-column: 1/-1;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
 export const SortChart = ({ onChange, gender }) => {
 	const [status, wrappedFunction] = useGetData(getCharts);
 	const { isNotDesktop } = useCustomMediaQuery();
@@ -49,6 +59,7 @@ export const SortChart = ({ onChange, gender }) => {
 		() => (isNotDesktop ? 5 + moreItems : 10 + moreItems * 2),
 		[moreItems, isNotDesktop],
 	);
+	const noMoreItem = numberOfItem < items.length;
 
 	const sortedItems = useMemo(() => {
 		const sortedData = items.sort((a, b) => a.totalVotes > b.totalVotes);
@@ -107,11 +118,17 @@ export const SortChart = ({ onChange, gender }) => {
 				{status.isLoading ? (
 					<div>로딩화면</div>
 				) : (
-					sortedItems?.map((item, index) => (
-						<IdolChartCard key={item.id} item={item} index={index} />
-					))
+					<>
+						{sortedItems?.map((item, index) => (
+							<IdolChartCard key={item.id} item={item} index={index} />
+						))}
+						{noMoreItem && (
+							<ReloadSection>
+								<img src={refresh} />
+							</ReloadSection>
+						)}
+					</>
 				)}
-				<div style={{ color: "white" }}>새로고침</div>
 			</ChartList>
 			{status.isLoading || (
 				<MoreItemsContainer $flex="1">
