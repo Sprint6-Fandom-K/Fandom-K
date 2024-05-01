@@ -1,17 +1,18 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import TestImg from '../../assets/images/test_img.png';
+const IdolCard = (props) => {
+	const { info } = props;
+	const { profilePicture, name, group } = info;
 
-const IdolCard = () => {
 	return (
 		<Card>
 			<ImgArea>
-				<Img src={TestImg} />
+				<Img src={profilePicture} />
 			</ImgArea>
 			<TextArea>
-				<Name>민지</Name>
-				<Group>뉴진스</Group>
+				<Name>{name}</Name>
+				<Group>{group}</Group>
 			</TextArea>
 		</Card>
 	);
@@ -28,9 +29,10 @@ const Card = styled.div`
 const ImgArea = styled.div`
 	border-radius: 50%;
 	border: 1.3px solid #f77063;
-	padding: ${({padding}) => padding ?? 5}px;
+	padding: ${({ padding }) => padding ?? 5}px;
 	overflow: hidden;
 	cursor: pointer;
+	aspect-ratio: 1 / 1;
 `;
 
 const Img = styled.img`
