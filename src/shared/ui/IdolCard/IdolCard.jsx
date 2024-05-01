@@ -20,7 +20,7 @@ const IdolCard = () => {
 const Card = styled.div`
 	display: grid;
 	gap: 8px;
-	background-color: var(--black-02000e);
+	background-color: #02000e;
 	/* 카드 너비 수정 필요 (현재 고정해둠) */
 	width: 128px;
 `;
@@ -34,6 +34,8 @@ const ImgArea = styled.div`
 `;
 
 const Img = styled.img`
+	width: 100%;
+	height: 100%;
 	border-radius: 50%;
 	object-fit: cover;
 `;
