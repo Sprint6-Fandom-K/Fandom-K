@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 const NewFlexContainer = styled(FlexContainer)`
 	border-bottom: 1px solid #ffffff1a;
-	height: 86px;
+	height: 85px;
 `;
 
 const ChartItemDescription = styled.span`

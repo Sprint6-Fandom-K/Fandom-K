@@ -13,6 +13,8 @@ import styled from "styled-components";
 
 const ChartList = styled.ul`
 	width: 100%;
+	height: 418px;
+	overflow: auto;
 	display: grid;
 	column-gap: 24px;
 	grid-template: repeat(${({ $numbers }) => Math.floor($numbers / 2)}, 1fr) / 1fr 1fr;
@@ -61,7 +63,7 @@ export const SortChart = ({ onChange, gender }) => {
 		onChange(e.currentTarget.name);
 	};
 
-	const handleButtonClick = () => {
+	const handleButtonClick = (_) => {
 		setMoreItems((prevMoreItems) => prevMoreItems + 5);
 	};
 
@@ -109,6 +111,7 @@ export const SortChart = ({ onChange, gender }) => {
 						<IdolChartCard key={item.id} item={item} index={index} />
 					))
 				)}
+				<div style={{ color: "white" }}>새로고침</div>
 			</ChartList>
 			{status.isLoading || (
 				<MoreItemsContainer $flex="1">
