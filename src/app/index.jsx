@@ -1,12 +1,10 @@
-import IdolCard from "@/shared/ui/IdolCard/IdolCard";
-import { GlobalStyle } from "./styles/GlobalStyle";
+import MyPage from "@/pages/MyPage/ui/MyPage";
 
 export default function App()
 {
 	return (
 		<>
-			<GlobalStyle />
-			<IdolCard />
+			<MyPage />
 		</>
 	);
 }
