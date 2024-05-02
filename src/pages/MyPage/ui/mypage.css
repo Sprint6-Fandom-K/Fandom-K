@@ -159,8 +159,8 @@ hr {
 .carousel-container {
 	display: flex;
 	align-items: center;
-	width: calc(100% + 108px);
-	margin-left: -54px;
+	width: calc(100% + 126px);
+	margin-left: -63px;
 	max-width: calc(100vw - 48px);
 }
 
@@ -168,7 +168,7 @@ hr {
 	display: grid;
 	grid-template-rows: repeat(2, 1fr);
 	grid-template-columns: repeat(8, 1fr);
-	padding: 0 32px;
+	padding: 0 34px;
 	gap: 31px 22px;
 }
 
@@ -203,4 +203,17 @@ hr {
 
 .add-button span {
 	font-weight: 700;
+}
+
+@media (max-width: 1374px) {
+	.carousel-container {
+		width: 100%;
+		margin-left: 0;
+	}
+
+	.idol-list {
+		padding: 0 27px;
+		gap: 24px;
+		grid-template-columns: repeat(6, 1fr);
+	}
 }
