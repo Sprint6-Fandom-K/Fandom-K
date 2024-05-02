@@ -14,6 +14,11 @@ import plusIcon from "../../../shared/assets/icons/Ic_plus_24px.svg";
 const MyPage = () => {
 	const [idols, setIdols] = useState([]);
 
+	// 아이돌 목록 클릭 이벤트
+	const handleIdolClick = (event) => {
+		console.log(event.target);
+	};
+
 	// 아이돌 목록 불러오기
 	const getIdolList = async () => {
 		const lists = await getIdols();
@@ -61,9 +66,12 @@ const MyPage = () => {
 							<ul className="idol-list">
 								{idols?.map((idol) => {
 									return (
-										<li key={idol.id}>
-											<IdolCard info={idol} />
-										</li>
+										<IdolCard
+											key={idol.id}
+											info={idol}
+											padding="6.48"
+											onClick={handleIdolClick}
+										/>
 									);
 								})}
 							</ul>

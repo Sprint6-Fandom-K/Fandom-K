@@ -1,14 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 
+import checkIcon from "../../assets/icons/Checkmark.svg";
+
 const IdolCard = (props) => {
-	const { info } = props;
+	const { info, padding, onClick } = props;
 	const { profilePicture, name, group } = info;
 
 	return (
 		<Card>
-			<ImgArea>
+			<ImgArea padding={padding} onClick={onClick}>
 				<Img src={profilePicture} />
+				<Check padding={padding}>
+					<CheckIconBox>
+						<img src={checkIcon} />
+					</CheckIconBox>
+				</Check>
 			</ImgArea>
 			<TextArea>
 				<Name>{name}</Name>
@@ -18,7 +25,7 @@ const IdolCard = (props) => {
 	);
 };
 
-const Card = styled.div`
+const Card = styled.li`
 	display: grid;
 	gap: 8px;
 	background-color: #02000e;
@@ -31,7 +38,27 @@ const ImgArea = styled.div`
 	overflow: hidden;
 	cursor: pointer;
 	aspect-ratio: 1 / 1;
+	position: relative;
 `;
+
+const Check = styled.div`
+	background: linear-gradient(
+		271.36deg,
+		rgba(249, 110, 104, 0.5) -9.84%,
+		rgba(254, 87, 143, 0.5) 107.18%
+	);
+	width: calc(100% - ${({ padding }) => padding ?? 5}px * 2);
+	height: calc(100% - ${({ padding }) => padding ?? 5}px * 2);
+	position: absolute;
+	top: ${({ padding }) => padding ?? 5}px;
+	left: ${({ padding }) => padding ?? 5}px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+`;
+
+const CheckIconBox = styled.div``;
 
 const Img = styled.img`
 	width: 100%;
