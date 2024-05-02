@@ -104,7 +104,7 @@ ul {
 button {
 	cursor: pointer;
 }
-
+/*여기서부터작업*/
 /* 레이아웃 */
 .container {
 	background-color: #02000e;
@@ -181,6 +181,7 @@ hr {
 	border: 0;
 }
 
+/*
 .add-button {
 	padding: 11px 83px;
 	margin: 0 auto;
@@ -195,15 +196,13 @@ hr {
 	align-items: center;
 	gap: 8px;
 }
-
 .add-button .icon {
 	width: 24px;
 	height: 24px;
 }
-
 .add-button span {
 	font-weight: 700;
-}
+}*/
 
 @media (max-width: 1374px) {
 	.carousel-container {
