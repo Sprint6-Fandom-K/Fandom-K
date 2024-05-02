@@ -181,10 +181,6 @@ hr {
 	border: 0;
 }
 
-.empty-box {
-	flex-grow: 1;
-}
-
 .add-button {
 	padding: 11px 83px;
 	margin: 0 auto;

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "./mypage.css";
-import IdolCard from "@/shared/ui/IdolCard/IdolCard";
+
 import { getIdols } from "@/shared/api/idols";
-import Frame1 from "../../../shared/assets/images/Frame 33648.png";
-import Frame2 from "../../../shared/assets/images/Frame 27.png";
-import Frame3 from "../../../shared/assets/images/Frame 33588.png";
-import Frame4 from "../../../shared/assets/images/Vector 668.png";
-import Frame5 from "../../../shared/assets/images/Vector 6688.png";
+import IdolCard from "@/shared/ui/IdolCard/IdolCard";
+
+import "./mypage.css";
+// 이미지
+import logoImg from "../../../shared/assets/icons/logo.svg";
+import myLogo from "../../../shared/assets/icons/my_logo.svg";
+import leftArrow from "../../../shared/assets/icons/left_arrow.svg";
+import rightArrow from "../../../shared/assets/icons/right_arrow.svg";
 import plusIcon from "../../../shared/assets/icons/Ic_plus_24px.svg";
 
 const MyPage = () => {
@@ -30,12 +32,12 @@ const MyPage = () => {
 					<div className="logo-box">
 						<a href="#none" className="logo">
 							{/* alt 속성은 이미지 엑박뜰 때 보이는 텍스트라서 알아보기 쉬운 문구로 하는 게 좋아요! */}
-							<img src={Frame1} alt="FANDOM-K" />
+							<img src={logoImg} alt="FANDOM-K" />
 						</a>
 					</div>
 
 					<a href="#none">
-						<img src={Frame2} alt="마이페이지" />
+						<img src={myLogo} alt="마이페이지" />
 					</a>
 				</header>
 
@@ -54,7 +56,7 @@ const MyPage = () => {
 
 						<div className="idol-box carousel-container">
 							<button className="arrow left-arrow">
-								<img src={Frame4} alt="line" />
+								<img src={leftArrow} alt="line" />
 							</button>
 							<ul className="idol-list">
 								{idols?.map((idol) => {
@@ -66,7 +68,7 @@ const MyPage = () => {
 								})}
 							</ul>
 							<button className="arrow right-arrow">
-								<img src={Frame5} alt="line" />
+								<img src={rightArrow} alt="line" />
 							</button>
 						</div>
 					</section>
@@ -77,8 +79,6 @@ const MyPage = () => {
 						</div>
 						<span>추가하기</span>
 					</button>
-
-					<div className="empty-box"></div>
 				</div>
 			</div>
 		</div>
