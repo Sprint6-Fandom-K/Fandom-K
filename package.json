@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"scripts": {
 		"lint": "eslint .",
-		"dev": "vite",
+		"serve": "vite serve",
 		"build": "vite build",
 		"preview": "vite preview"
 	},
