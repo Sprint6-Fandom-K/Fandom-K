@@ -147,7 +147,7 @@ h1 {
 }
 
 hr {
-	border: 1px solid var(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .idol-section {
@@ -179,22 +179,11 @@ hr {
 	background-color: #1b1b1b;
 	opacity: 0.8;
 	border: 0;
-	/* position: absolute;
-	top: 50%;
-	transform: translate(0, -50%); */
 }
 
 .empty-box {
 	flex-grow: 1;
 }
-
-/* .left-arrow {
-	left: -53px;
-}
-
-.right-arrow {
-	right: -53px;
-} */
 
 .add-button {
 	padding: 11px 83px;
