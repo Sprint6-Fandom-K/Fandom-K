@@ -116,7 +116,6 @@ export default function SortChart({ onChange, gender }) {
 						))}
 						{noMoreItem && (
 							<RefreshSection ref={ref}>
-								<div>{inView}</div>
 								<RefreshImg src={refresh} />
 							</RefreshSection>
 						)}

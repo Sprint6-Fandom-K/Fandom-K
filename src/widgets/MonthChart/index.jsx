@@ -14,12 +14,6 @@ const NewPinkButton = styled(PinkButton)`
 	gap: 4px;
 `;
 
-const MainFlexContainer = styled(FlexContainer)`
-	@media (width<=767px) {
-		gap: "16px";
-	}
-`;
-
 export default function MonthChart() {
 	const [gender, setGender] = useState("female");
 
@@ -33,7 +27,6 @@ export default function MonthChart() {
 				</NewPinkButton>
 			</FlexContainer>
 			<SortChart onChange={setGender} gender={gender} />
-			{/* 더보기 : 누르면 수를 늘림 (근데 이거 무한 스크롤 하고 싶긴 함) */}
 		</FlexContainer>
 	);
 }
