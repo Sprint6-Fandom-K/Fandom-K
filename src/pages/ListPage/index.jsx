@@ -15,7 +15,7 @@ export default function ListPage()
 
 	useEffect(() =>
 	{
-		API["{team_name}/idols"].GET(undefined, { page_size: 4 * 100 }).then((response) =>
+		API["{team_name}/idols"].GET(undefined, { page_size: 4 * 10 }).then((response) =>
 		{
 			set_idols(response.list);
 		});
@@ -36,7 +36,7 @@ export default function ListPage()
 						</Carousel.Button>
 						<Carousel.Wrapper gap={25}>
 						{
-							idols.map((idol, index) =>
+							(idols ? idols : new Array(4 * 10).fill(null)).map((idol, index) =>
 							{
 								return (
 									<Carousel.Item key={index}>

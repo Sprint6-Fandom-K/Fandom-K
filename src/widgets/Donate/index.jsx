@@ -16,30 +16,33 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 
 	useEffect(() =>
 	{
-		const observer = new IntersectionObserver((entries, observer) =>
+		if (props.idol)
 		{
-			for (const entry of entries)
+			const observer = new IntersectionObserver((entries, observer) =>
 			{
-				if (entry.isIntersecting)
+				for (const entry of entries)
 				{
-					API["{team_name}/donations"].GET(undefined, { page_size: 1, priority_idol_ids: [props.idol.id] }).then((response) =>
+					if (entry.isIntersecting)
 					{
-						setTimeout(() =>
+						API["{team_name}/donations"].GET(undefined, { page_size: 1, priority_idol_ids: [props.idol.id] }).then((response) =>
 						{
-							set_donation(response.list[0]);
-						},
-						1000);
-					});
-					// big brother is gone...
-					observer.disconnect();
+							setTimeout(() =>
+							{
+								set_donation(response.list[0]);
+							},
+							1000);
+						});
+						// big brother is gone...
+						observer.disconnect();
+					}
 				}
-			}
-		},
-		{
-			threshold: 1.0 // if fully visible
-		});
-		// big brother..!
-		observer.observe(ref.current);
+			},
+			{
+				threshold: 1.0 // if fully visible
+			});
+			// big brother..!
+			observer.observe(ref.current);
+		}
 	},
 	[ref.current]);
 
@@ -57,7 +60,7 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 
 	return (
 		<section ref={ref} { ...widget("Donate", props) } data-is-loading={donation === null}>
-			<div class="portrait" style={{ "background-image": ["linear-gradient(180deg, rgba(0, 0, 0, 0) 58.9%, #000000 100%)", `url("${props.idol["profilePicture"]}")`].join(",") }}>
+			<div class="portrait" style={{ "background-image": ["linear-gradient(180deg, rgba(0, 0, 0, 0) 58.9%, #000000 100%)", `url("${props.idol?.["profilePicture"]}")`].join(",") }}>
 				<div class="button skeleton">
 					후원하기
 				</div>
