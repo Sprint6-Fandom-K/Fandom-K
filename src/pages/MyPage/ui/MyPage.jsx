@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+//StyledComponents
+import styled from "styled-components";
 import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
-import "./MyPage.css";
+import "./mypage.css";
 
 // 이미지
 import logoImg from "../../../shared/assets/icons/logo.svg";
@@ -56,7 +58,7 @@ const MyPage = () => {
 
 					{/* 아이돌 목록 */}
 					<IdolSection>
-						<Title1>관심 있는 아이돌을 추가해보세요.</Title1>
+						<Title>관심 있는 아이돌을 추가해보세요.</Title>
 
 						<CarouselContainer>
 							<Arrow>
@@ -92,17 +94,14 @@ const MyPage = () => {
 	);
 };
 
-//StyledComponents
-import styled from "styled-components";
-
 //레이아웃
-const Container = styled.container`
+const Container = styled.div`
 	background-color: #02000e;
 	min-height: 100vh;
 `;
 
 //inner
-const Inner = styled.inner`
+const Inner = styled.div`
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: 0 24px;
@@ -117,7 +116,7 @@ const Header = styled.header`
 `;
 
 //아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
-const CarouselContainer = styled.carousel`
+const CarouselContainer = styled.div`
 	display: flex;
 	align-items: center;
 	width: calc(100% + 126px);
@@ -130,14 +129,14 @@ const CarouselContainer = styled.carousel`
 `;
 
 //마이페이지
-const Page = styled.MyPage`
+const Page = styled.div`
 	padding: 75px 0 80px;
 	display: grid;
 	gap: 40px;
 `;
 
 //arrow
-const Arrow = styled.Arrow`
+const Arrow = styled.button`
 	min-width: 29px;
 	height: 135px;
 	border-radius: 4px;
@@ -147,13 +146,12 @@ const Arrow = styled.Arrow`
 `;
 
 //추가하기 버튼
-const Button = styled.add`
+const Button = styled.button`
 	padding: 11px 83px;
 	margin: 0 auto;
 	border-radius: 24px;
 	border: none;
 	color: white;
-	background: ${({ theme }) => theme.colors.brand[0]};
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 1.6;
@@ -162,17 +160,17 @@ const Button = styled.add`
 	gap: 8px;
 `;
 //추가하기 버튼의 +아이콘
-const Icon = styled.icon`
+const Icon = styled.div`
 	width: 24px;
 	height: 24px;
 `;
 //추가하기 버튼의 span
-const Span = styled.spans`
+const Span = styled.span`
 	font-weight: 700;
 `;
 
 //logo-box
-const Box = styled.idol`
+const Box = styled.div`
 	flex: 1;
 	margin-left: 32px;
 	text-align: center;
@@ -192,23 +190,23 @@ const Hr = styled.hr`
 `;
 
 //idol-section
-const IdolSection = styled.idol`
+const IdolSection = styled.section`
 	display: grid;
 	gap: 32px;
 `;
 
 //idol-list ,미디어쿼리 idol-list
-const IdolList = styled.idol`
+const IdolList = styled.ul`
 	display: grid;
 	grid-template-rows: repeat(2, 1fr);
 	grid-template-columns: repeat(8, 1fr);
 	padding: 0 34px;
 	gap: 31px 22px;
-	@media {
+	/* @media {
 		padding: 0 27px;
 		gap: 24px;
 		grid-template-columns: repeat(6, 1fr);
-	}
+	} */
 `;
 
 export default MyPage;
