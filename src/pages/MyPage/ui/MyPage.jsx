@@ -16,7 +16,7 @@ const LOCAL_STORAGE_KEY = "interest";
 // 관심있는 아이돌 state 초기값 세팅
 const getLocalStorage = () => {
 	const list = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY));
-	return list && list.length > 1 ? list : [];
+	return list && list.length > 0 ? list : [];
 };
 
 const MyPage = () => {
@@ -31,8 +31,9 @@ const MyPage = () => {
 
 	// 아이돌 목록에서 체크하면 관심있는 아이돌 state 업데이트
 	const handleClickIdolList = (target) => {
+		console.log("mypage click");
 		setInterestIdols((prev) => {
-			if (!prev.includes(target)) {
+			if (!prev.some((item) => item.id === target.id)) {
 				return [...prev, target];
 			} else {
 				return prev;
@@ -48,7 +49,6 @@ const MyPage = () => {
 	};
 
 	useEffect(() => {
-		console.log(interestIdols, "클릭");
 		// idols를 업데이트 해줘야함
 	}, [interestIdols]);
 
