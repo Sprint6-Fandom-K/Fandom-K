@@ -40,6 +40,7 @@ export default function SortChart({ onChange, gender }) {
 	const rootRef = useRef(null);
 	const [items, setItems] = useState([]);
 	const [moreItems, setMoreItems] = useState(0);
+	const [cursor, setCursor] = useState(null);
 
 	const [status, wrappedFunction] = useGetData(getCharts);
 	const { isNotDesktop } = useCustomMediaQuery();
@@ -48,40 +49,59 @@ export default function SortChart({ onChange, gender }) {
 		root: rootRef.current,
 	});
 
-	const numberOfItem = useMemo(
+	const pageLimit = useMemo(
 		() => (isNotDesktop ? 5 + moreItems : 10 + moreItems * 2),
 		[moreItems, isNotDesktop],
 	);
 	const sortedItems = useMemo(() => {
 		const sortedData = items.sort((a, b) => a.totalVotes > b.totalVotes);
-		const SlicedData = sortedData.slice(0, numberOfItem);
+		const SlicedData = sortedData.slice(0, pageLimit);
 		return SlicedData;
-	}, [numberOfItem, items]);
+	}, [pageLimit, items]);
 
-	const isMale = gender == "male";
-	const noMoreItem = numberOfItem < items.length;
+	const isMale = useMemo(() => gender == "male", [gender]);
+	const isNoMoreItems = cursor === null && pageLimit >= items.length;
 
+	const fetchData = async ({ gender, cursor }) => {
+		const { idols, nextCursor } = await wrappedFunction({
+			gender,
+			cursor,
+		});
+		if (!idols) return;
+		setCursor(() => nextCursor);
+		return idols;
+	};
+	console.log("rerendering");
 	const handleMenuClick = (e) => {
 		if (gender === e.currentTarget.name) return;
 		onChange(e.currentTarget.name);
 	};
 
 	useEffect(() => {
-		let fetchData = async () => {
-			const data = await wrappedFunction({ gender });
-			if (!data) return;
-			setItems((prevItem) => data);
+		let refreshLogic = async () => {
+			const data = await fetchData({ gender, cursor: 0 });
+			setMoreItems((prevItem) => 0);
+			setItems((prevItem) => [...data]);
 		};
-		fetchData();
-		return () => (fetchData = null);
-	}, [gender]);
-
-	useEffect(() => {
-		setMoreItems((prevItem) => 0);
+		refreshLogic();
 	}, [isNotDesktop, gender]);
 
 	useEffect(() => {
-		if (inView) setMoreItems((prevMoreItems) => prevMoreItems + 5);
+		let inViewLogic = async () => {
+			if (inView) {
+				if (pageLimit < items.length) {
+					setMoreItems((prevMoreItems) => prevMoreItems + 5);
+				} else if (cursor !== null) {
+					const data = await fetchData({ gender, cursor });
+					setMoreItems((prevMoreItems) => prevMoreItems + 5);
+					setItems((prevItem) => [...prevItem, ...data]);
+				}
+			}
+		};
+		inViewLogic();
+		return () => {
+			inViewLogic = null;
+		};
 	}, [inView]);
 
 	return (
@@ -106,20 +126,14 @@ export default function SortChart({ onChange, gender }) {
 					</MenuButton>
 				</FlexItemContainer>
 			</FlexContainer>
-			<ChartList $numbers={numberOfItem} ref={rootRef}>
-				{status.isLoading ? (
-					<div>로딩화면</div>
-				) : (
-					<>
-						{sortedItems?.map((item, index) => (
-							<IdolChartCard key={item.id} item={item} index={index} />
-						))}
-						{noMoreItem && (
-							<RefreshSection ref={ref}>
-								<RefreshImg src={refresh} />
-							</RefreshSection>
-						)}
-					</>
+			<ChartList $numbers={pageLimit} ref={rootRef}>
+				{sortedItems?.map((item, index) => (
+					<IdolChartCard key={item.id} item={item} index={index} />
+				))}
+				{!isNoMoreItems && (
+					<RefreshSection ref={ref}>
+						<RefreshImg src={refresh} />
+					</RefreshSection>
 				)}
 			</ChartList>
 		</>
