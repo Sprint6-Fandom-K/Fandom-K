@@ -8,3 +8,9 @@ export const rotate = keyframes`
 		transform: rotate(360deg);;
 	}
 `;
+
+export const skeleton = keyframes`
+	100% {
+		transform: translateX(100%);
+	}
+`;

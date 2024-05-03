@@ -1,4 +1,4 @@
-import IdolChartCard from "@/entities/IdolChartCard";
+import IdolChartCard, { IdolChartCardSkeleton } from "@/entities/IdolChartCard";
 import { getCharts } from "@/shared/api/api";
 import { useGetData } from "@/shared/hooks/useGetData";
 import { useEffect, useMemo, useState, useRef } from "react";
@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 import refresh from "@/shared/asset/icons8-refresh-30.png";
 
-import { rotate } from "@/shared/keyframes/keyframes";
 import { useInView } from "react-intersection-observer";
 
 const ChartList = styled.ul`
@@ -29,13 +28,8 @@ const RefreshSection = styled.div`
 	align-items: center;
 `;
 
-const RotateImg = styled.img`
-	animation: ${rotate} 1s linear infinite;
-`;
-
 export default function SortChart({ gender, isfemale }) {
 	const rootRef = useRef(null);
-	const isMount = useRef(false);
 	const [items, setItems] = useState([]);
 	const [pageLimit, setPageLimit] = useState(10);
 	const [cursor, setCursor] = useState(null);
@@ -77,11 +71,10 @@ export default function SortChart({ gender, isfemale }) {
 					<img src={refresh} />
 				</RefreshSection>
 			)}
-			{status.isLoading && (
-				<RefreshSection>
-					<RotateImg src={refresh} />
-				</RefreshSection>
-			)}
+			{status.isLoading &&
+				Array.from(Array(10)).map((v, index) => (
+					<IdolChartCardSkeleton key={index} />
+				))}
 		</ChartList>
 	);
 }
