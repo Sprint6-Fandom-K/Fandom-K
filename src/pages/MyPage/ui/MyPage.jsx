@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
-import { getIdols } from "@/shared/api/idols";
+import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
 import "./mypage.css";
 
