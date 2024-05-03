@@ -10,7 +10,7 @@ const LOCALE = { year: "년", month: "달", day: "일", hour: "시간", minute: 
 export default function Donate(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ idol: {} })
 {
 	const [donation, set_donation] = useState(null);
-	const [tick, set_tick] = useState(0);
+	const [tick, set_tick] = useState(null);
 
 	const ref = useRef(null);
 
@@ -38,7 +38,7 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 				}
 			},
 			{
-				threshold: 1.0 // if fully visible
+				threshold: 0.95
 			});
 			// big brother..!
 			observer.observe(ref.current);
@@ -48,13 +48,33 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 
 	useEffect(() =>
 	{
-		const interval = setInterval(() =>
-		{
-			set_tick((tick) => tick + 1);
-		},
-		1000);
+		let interval = null;
 
-		return () => clearInterval(interval);
+		const observer = new IntersectionObserver((entries, observer) =>
+		{
+			for (const entry of entries)
+			{
+				if (entry.isIntersecting)
+				{
+					interval ??= setInterval(() =>
+					{
+						set_tick(new Date());
+					},
+					1000);
+				}
+				else
+				{
+					interval = clearInterval(interval);
+				}
+			}
+		},
+		{
+			threshold: 0.25
+		});
+		// big brother..!
+		observer.observe(ref.current);
+
+		return () => { interval = clearInterval(interval); /* big brother is gone... */ observer.disconnect(); };
 	},
 	[]);
 
@@ -78,7 +98,7 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 							{donation ? seperate(donation.targetDonation) : "..."}
 						</div>
 						<div class="deadline skeleton">
-							{donation ? countdown(new Date(), new Date(Date.parse(donation.deadline)), LOCALE) + "\u0020" + "남음" : "..."}
+							{donation ? countdown(tick, new Date(Date.parse(donation.deadline)), LOCALE) + "\u0020" + "남음" : "..."}
 						</div>
 					</div>
 					<div class="progress" style={{ "background-image": `linear-gradient(to right, #F96D69 ${donation ? (donation.receivedDonations / donation.targetDonation) * 100 : 0}%, #FFFFFF ${donation ? (donation.receivedDonations / donation.targetDonation) * 100 : 0}%)` }}></div>

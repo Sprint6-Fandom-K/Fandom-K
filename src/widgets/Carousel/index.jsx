@@ -1,10 +1,10 @@
-import { createContext, useContext, useRef, useState, useEffect, Children, cloneElement } from "react"; import "./index.scss"; import widget from "@/shared/utilities/widget";
+import { createContext, useContext, useRef, useState, useEffect, Children, cloneElement, forwardRef } from "react"; import "./index.scss"; import widget from "@/shared/utilities/widget";
 
 import Capsule from "@/shared/models/Capsule";
 
 const Context = createContext();
 
-export default function Carousel(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ columns: 1, sensitivity: 100 })
+const Carousel = forwardRef(function Carousel(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ columns: 1, threshold: 100 }, ref)
 {
 	const [count, set_count] = useState(0);
 	const [index, set_index] = useState(0);
@@ -15,7 +15,7 @@ export default function Carousel(props = { /* html */ id: null, class: [], style
 			props:
 			{
 				columns: props.columns,
-				sensitivity: props.sensitivity,
+				threshold: props.threshold,
 			},
 			state:
 			{
@@ -43,27 +43,27 @@ export default function Carousel(props = { /* html */ id: null, class: [], style
 				}),
 			},
 		}}>
-			<section { ...widget("Carousel", props) }>
+			<section ref={ref} { ...widget("Carousel", props) }>
 			{
 				props.children
 			}
 			</section>
 		</Context.Provider>
 	);
-}
+});
 
-Carousel.Item = function Item(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ })
+Carousel.Item = forwardRef(function Item(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ }, ref)
 {
 	return (
-		<section { ...widget("Carousel.Item", props) }>
+		<section ref={ref} { ...widget("Carousel.Item", props) }>
 		{
 			props.children
 		}
 		</section>
 	);
-};
+});
 
-Carousel.Button = function Button(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ to: null })
+Carousel.Button = forwardRef(function Button(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ to: null }, ref)
 {
 	const ctx = useContext(Context);
 
@@ -100,7 +100,7 @@ Carousel.Button = function Button(props = { /* html */ id: null, class: [], styl
 	}
 
 	return (
-		<section { ...widget("Carousel.Button", props) }
+		<section ref={ref} { ...widget("Carousel.Button", props) }
 			//
 			// events
 			//
@@ -111,13 +111,13 @@ Carousel.Button = function Button(props = { /* html */ id: null, class: [], styl
 		}
 		</section>
 	);
-};
+});
 
-Carousel.Wrapper = function Wrapper(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ gap: 0 })
+Carousel.Wrapper = forwardRef(function Wrapper(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ gap: 0 }, ref)
 {
 	const ctx = useContext(Context);
 
-	const ref = useRef(null);
+	const cage = useRef(null);
 
 	useEffect(() =>
 	{
@@ -154,13 +154,13 @@ Carousel.Wrapper = function Wrapper(props = { /* html */ id: null, class: [], st
 		{
 			const delta = down_x - move_x;
 
-			if (Math.abs(delta) < ctx.props.sensitivity)
+			if (Math.abs(delta) < ctx.props.threshold)
 			{
-				ref.current.style.setProperty("transform", CSS.transform(delta));
+				cage.current.style.setProperty("transform", CSS.transform(delta));
 			}
 			else
 			{
-				ref.current.style.setProperty("transform", CSS.transform((down_x > move_x) ? (+ctx.props.sensitivity) : (-ctx.props.sensitivity)));
+				cage.current.style.setProperty("transform", CSS.transform((down_x > move_x) ? (+ctx.props.threshold) : (-ctx.props.threshold)));
 			}
 		}
 	}
@@ -170,9 +170,9 @@ Carousel.Wrapper = function Wrapper(props = { /* html */ id: null, class: [], st
 
 		up_x = value;
 
-		if (Math.abs(down_x - up_x) <= ctx.props.sensitivity)
+		if (Math.abs(down_x - up_x) <= ctx.props.threshold)
 		{
-			ref.current.style.setProperty("transform", CSS.transform(0));
+			cage.current.style.setProperty("transform", CSS.transform(0));
 		}
 		else if (down_x >= up_x) // move right
 		{
@@ -221,14 +221,14 @@ Carousel.Wrapper = function Wrapper(props = { /* html */ id: null, class: [], st
 	}
 
 	return (
-		<section { ...widget("Carousel.Wrapper", props) }
+		<section ref={ref} { ...widget("Carousel.Wrapper", props) }
 			//
 			// events
 			//
 			onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp}
 			onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
 		>
-			<div ref={ref} class="cage" style={{ "gap": props.gap, "transform": CSS.transform(0) }}>
+			<div ref={cage} class="cage" style={{ "gap": props.gap, "transform": CSS.transform(0) }}>
 			{
 				Children.toArray(props.children).filter((child) => child.type === Carousel.Item).map((child) =>
 				{
@@ -238,4 +238,6 @@ Carousel.Wrapper = function Wrapper(props = { /* html */ id: null, class: [], st
 			</div>
 		</section>
 	);
-};
+});
+
+export default Carousel;
