@@ -50,12 +50,15 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 	{
 		let interval = null;
 
+		// eslint-disable-next-line no-unused-vars
 		const observer = new IntersectionObserver((entries, observer) =>
 		{
 			for (const entry of entries)
 			{
 				if (entry.isIntersecting)
 				{
+					set_tick(new Date());
+
 					interval ??= setInterval(() =>
 					{
 						set_tick(new Date());
@@ -80,7 +83,7 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 
 	return (
 		<section ref={ref} { ...widget("Donate", props) } data-is-loading={donation === null}>
-			<div class="portrait" style={{ "background-image": ["linear-gradient(180deg, rgba(0, 0, 0, 0) 58.9%, #000000 100%)", `url("${props.idol?.["profilePicture"]}")`].join(",") }}>
+			<div class="portrait" style={{ "background-image": ["linear-gradient(180deg, rgba(0, 0, 0, 0) 58.9%, #000000 100%)", `url("${props.idol?.profilePicture}")`].join(",") }}>
 				<div class="button skeleton">
 					후원하기
 				</div>

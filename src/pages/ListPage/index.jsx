@@ -20,7 +20,7 @@ export default function ListPage()
 
 	useEffect(() =>
 	{
-		API["{team_name}/idols"].GET(undefined, { page_size: COLUMNS * 2 }).then((response) =>
+		API["{team_name}/idols"].GET(undefined, { page_size: COLUMNS }).then((response) =>
 		{
 			set_idols(response.list);
 			set_cursor(response.nextCursor);
