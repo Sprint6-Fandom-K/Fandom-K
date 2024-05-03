@@ -4,12 +4,12 @@ import styled from "styled-components";
 import checkIcon from "../../assets/icons/Checkmark.svg";
 
 const IdolCard = (props) => {
-	const { info, padding, onClick } = props;
+	const { info, padding, onClick, select } = props;
 	const { profilePicture, name, group } = info;
-	const [isSelect, setIsSelect] = useState(false);
+	const [isSelect, setIsSelect] = useState(select);
 
 	const handleCardClick = () => {
-		setIsSelect(!isSelect ? true : false);
+		setIsSelect(!isSelect);
 		onClick();
 	};
 

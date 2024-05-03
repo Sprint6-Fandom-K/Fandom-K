@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { getIdols } from "@/shared/api/idols";
+import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
 
 import "./mypage.css";
@@ -22,21 +22,32 @@ const getLocalStorage = () => {
 const MyPage = () => {
 	const [idolList, setIdolList] = useState([]); // 아이돌 목록 state
 	const [interestIdols, setInterestIdols] = useState(() => getLocalStorage()); // 관심있는 아이돌 목록 state
+	const [isSelect, setIsSelect] = useState(null);
 
 	// 관심있는 아이돌 localStorage 업데이트
 	const setLocalStorage = () => {
 		const string = JSON.stringify(interestIdols);
 		window.localStorage.setItem(LOCAL_STORAGE_KEY, string);
+		console.log(interestIdols, "추가완료");
+		setIsSelect(false);
 	};
 
 	// 아이돌 목록에서 체크하면 관심있는 아이돌 state 업데이트
 	const handleClickIdolList = (target) => {
-		console.log("mypage click");
+		// localStorage에 저장된 데이터
+		const localStorageData = getLocalStorage();
+
 		setInterestIdols((prev) => {
 			if (!prev.some((item) => item.id === target.id)) {
+				// target 추가
 				return [...prev, target];
-			} else {
+			} else if (localStorageData.some((data) => data.id === target.id)) {
+				// localStorage에 등록되어있는 target 선택한 경우
 				return prev;
+			} else {
+				// target을 선택했다가 선택해제한 경우
+				const deleteList = prev.filter((item) => item.id !== target.id);
+				return deleteList;
 			}
 		});
 	};
@@ -96,6 +107,7 @@ const MyPage = () => {
 											key={idol.id}
 											info={idol}
 											padding="6.48"
+											select={isSelect}
 											onClick={() => handleClickIdolList(idol)}
 										/>
 									);
