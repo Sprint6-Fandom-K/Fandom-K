@@ -30,19 +30,4 @@
 			flex-shrink: 0;
 		}
 	}
-	// desktop
-	@media screen and (1200px <= width)
-	{
-		// TODO: none
-	}
-	// tablet
-	@media screen and (768px <= width < 1200px)
-	{
-		// TODO: none
-	}
-	// mobile
-	@media screen and (375px <= width < 768px)
-	{
-		// TODO: none
-	}
 }

@@ -1,4 +1,4 @@
-@import url("https://cdn.jsdelivr.net/npm/reset-css/reset.min.css"); @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css");
+@import url("https://cdn.jsdelivr.net/npm/reset-css/reset.min.css");
 
 *
 {
@@ -8,5 +8,37 @@
 
 :root
 {
+	font-family: Pretendard;
+}
 
+html, body, #root, #root > *
+{
+	width: 100%;
+	height: 100%;
+	user-select: none;
+}
+
+/* desktop */
+@media screen and (1200px <= width)
+{
+	.hide-on-pc
+	{
+		display: none !important;
+	}
+}
+/* tablet */
+@media screen and (768px <= width < 1200px)
+{
+	.hide-on-tablet
+	{
+		display: none !important;
+	}
+}
+/* mobile */
+@media screen and (375px <= width < 768px)
+{
+	.hide-on-mobile
+	{
+		display: none !important;
+	}
 }
