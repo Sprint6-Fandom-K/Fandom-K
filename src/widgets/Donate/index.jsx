@@ -57,13 +57,19 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 			{
 				if (entry.isIntersecting)
 				{
-					set_tick(new Date());
+					const time = new Date();
 
-					interval ??= setInterval(() =>
+					setTimeout(() =>
 					{
-						set_tick(new Date());
+						interval = setInterval(() =>
+						{
+							set_tick(new Date());
+						},
+						1000);
 					},
-					1000);
+					1000 - time.getMilliseconds());
+
+					set_tick(time);
 				}
 				else
 				{
