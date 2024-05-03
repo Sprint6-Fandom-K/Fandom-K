@@ -11,20 +11,46 @@ import leftArrow from "../../../shared/assets/icons/left_arrow.svg";
 import rightArrow from "../../../shared/assets/icons/right_arrow.svg";
 import plusIcon from "../../../shared/assets/icons/Ic_plus_24px.svg";
 
-const MyPage = () => {
-	const [idols, setIdols] = useState([]);
+const LOCAL_STORAGE_KEY = "interest";
 
-	// 아이돌 목록 클릭 이벤트
-	const handleIdolClick = (event) => {
-		console.log(event.target);
+// 관심있는 아이돌 state 초기값 세팅
+const getLocalStorage = () => {
+	const list = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY));
+	return list && list.length > 1 ? list : [];
+};
+
+const MyPage = () => {
+	const [idolList, setIdolList] = useState([]); // 아이돌 목록 state
+	const [interestIdols, setInterestIdols] = useState(() => getLocalStorage()); // 관심있는 아이돌 목록 state
+
+	// 관심있는 아이돌 localStorage 업데이트
+	const setLocalStorage = () => {
+		const string = JSON.stringify(interestIdols);
+		window.localStorage.setItem(LOCAL_STORAGE_KEY, string);
+	};
+
+	// 아이돌 목록에서 체크하면 관심있는 아이돌 state 업데이트
+	const handleClickIdolList = (target) => {
+		setInterestIdols((prev) => {
+			if (!prev.includes(target)) {
+				return [...prev, target];
+			} else {
+				return prev;
+			}
+		});
 	};
 
 	// 아이돌 목록 불러오기
 	const getIdolList = async () => {
 		const lists = await getIdols();
 		const { list } = lists;
-		setIdols(list);
+		setIdolList(list);
 	};
+
+	useEffect(() => {
+		console.log(interestIdols, "클릭");
+		// idols를 업데이트 해줘야함
+	}, [interestIdols]);
 
 	useEffect(() => {
 		getIdolList();
@@ -64,13 +90,13 @@ const MyPage = () => {
 								<img src={leftArrow} alt="line" />
 							</button>
 							<ul className="idol-list">
-								{idols?.map((idol) => {
+								{idolList?.map((idol) => {
 									return (
 										<IdolCard
 											key={idol.id}
 											info={idol}
 											padding="6.48"
-											onClick={handleIdolClick}
+											onClick={() => handleClickIdolList(idol)}
 										/>
 									);
 								})}
@@ -81,7 +107,7 @@ const MyPage = () => {
 						</div>
 					</section>
 
-					<button className="add-button">
+					<button className="add-button" onClick={setLocalStorage}>
 						<div className="icon">
 							<img src={plusIcon} alt="+" />
 						</div>

@@ -2,7 +2,9 @@
 
 export const getIdols = async () => {
 	try {
-		const response = await fetch("https://fandom-k-api.vercel.app/6-11/idols");
+		const response = await fetch(
+			"https://fandom-k-api.vercel.app/6-11/idols?pageSize=16&cursor=130",
+		);
 		const body = await response.json();
 		return body;
 	} catch (error) {

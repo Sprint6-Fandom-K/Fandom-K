@@ -7,15 +7,22 @@ const IdolCard = (props) => {
 	const { info, padding, onClick } = props;
 	const { profilePicture, name, group } = info;
 
+	let isSelect = true;
+	const handleCardClick = () => {
+		isSelect = isSelect ? false : true;
+	};
+
 	return (
 		<Card>
 			<ImgArea padding={padding} onClick={onClick}>
 				<Img src={profilePicture} />
-				<Check padding={padding}>
-					<CheckIconBox>
-						<img src={checkIcon} />
-					</CheckIconBox>
-				</Check>
+				{isSelect && (
+					<Check padding={padding}>
+						<CheckIconBox>
+							<img src={checkIcon} />
+						</CheckIconBox>
+					</Check>
+				)}
 			</ImgArea>
 			<TextArea>
 				<Name>{name}</Name>
@@ -42,7 +49,7 @@ const ImgArea = styled.div`
 `;
 
 const Check = styled.div`
-	background: linear-gradient(
+	/* background: linear-gradient(
 		271.36deg,
 		rgba(249, 110, 104, 0.5) -9.84%,
 		rgba(254, 87, 143, 0.5) 107.18%
@@ -55,7 +62,7 @@ const Check = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border-radius: 50%;
+	border-radius: 50%; */
 `;
 
 const CheckIconBox = styled.div``;
