@@ -3,7 +3,7 @@
 const getIdols = async () => {
 	try {
 		const response = await fetch(
-			"https://fandom-k-api.vercel.app/6-11/idols?pageSize=16&cursor=130",
+			"https://fandom-k-api.vercel.app/6-11/idols?pageSize=16",
 		);
 		const body = await response.json();
 		return body;

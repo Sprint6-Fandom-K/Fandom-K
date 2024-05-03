@@ -28,13 +28,13 @@ const MyPage = () => {
 	const setLocalStorage = () => {
 		const string = JSON.stringify(interestIdols);
 		window.localStorage.setItem(LOCAL_STORAGE_KEY, string);
-		console.log(interestIdols, "추가완료");
-		setIsSelect(false);
+		setIsSelect(true);
 	};
 
 	// 아이돌 목록에서 체크하면 관심있는 아이돌 state 업데이트
 	const handleClickIdolList = (target) => {
 		// localStorage에 저장된 데이터
+		setIsSelect(false);
 		const localStorageData = getLocalStorage();
 
 		setInterestIdols((prev) => {

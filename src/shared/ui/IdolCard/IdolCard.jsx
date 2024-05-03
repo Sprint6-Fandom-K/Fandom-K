@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import checkIcon from "../../assets/icons/Checkmark.svg";
@@ -7,6 +7,10 @@ const IdolCard = (props) => {
 	const { info, padding, onClick, select } = props;
 	const { profilePicture, name, group } = info;
 	const [isSelect, setIsSelect] = useState(select);
+
+	useEffect(() => {
+		console.log(select, "effect");
+	}, [isSelect]);
 
 	const handleCardClick = () => {
 		setIsSelect(!isSelect);
