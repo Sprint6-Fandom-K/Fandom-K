@@ -11,6 +11,8 @@ const VoteTitle = styled.h2`
 `;
 
 const VoteHeaderContainer = styled.div`
+	display: flex;
+	justify-content: space-between;
 	@media (width<=767px) {
 		background-color: #02000ecc;
 		position: fixed;
@@ -20,8 +22,6 @@ const VoteHeaderContainer = styled.div`
 		height: 67px;
 		z-index: 3;
 	}
-	display: flex;
-	justify-content: space-between;
 `;
 
 const CancelButton = styled.button`

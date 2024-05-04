@@ -46,19 +46,19 @@ export default function SortChart({ gender, isfemale }) {
 
 	const isNoMoreItems = cursor === null && pageLimit >= items.length;
 
-	async function executeRefresh() {
-		const { idols, nextCursor } = await wrappedFunction({
-			gender,
-			cursor,
-		});
-		if (!idols) return;
-		setCursor(nextCursor);
-		setItems([...items, ...idols]);
-		setPageLimit(pageLimit + 10);
-	}
-
 	useEffect(() => {
-		executeRefresh();
+		async function executeRefresh() {
+			const { idols, nextCursor } = await wrappedFunction({
+				gender,
+				cursor,
+			});
+			if (!idols) return;
+			setCursor(nextCursor);
+			setItems([...items, ...idols]);
+			setPageLimit(pageLimit + 10);
+		}
+		if (inView) executeRefresh();
+		return () => (executeRefresh = null);
 	}, [inView]);
 
 	return (
@@ -66,7 +66,7 @@ export default function SortChart({ gender, isfemale }) {
 			{sortedItems?.map((item, index) => (
 				<IdolChartCard key={item.id} item={item} index={index} />
 			))}
-			{!isNoMoreItems && !status.isLoading && (
+			{((!status.isLoading && !isNoMoreItems) || items.length === 0) && (
 				<RefreshSection ref={ref}>
 					<img src={refresh} />
 				</RefreshSection>
