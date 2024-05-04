@@ -1,11 +1,18 @@
 import { FlexContainer } from "@/shared/Container/Container";
-import { NewFlexContainer } from ".";
 import skeletonStyle from "@/shared/skeleton/skeletonStyle";
 import styled from "styled-components";
+import { IdolVoteCardContainer } from ".";
 
 const SkeletonImageContainer = styled.div`
 	width: 70px;
 	height: 70px;
+	border-radius: 40px;
+	${skeletonStyle};
+`;
+
+const SkeletonIndex = styled.div`
+	width: 30px;
+	height: 15px;
 	border-radius: 40px;
 	${skeletonStyle};
 `;
@@ -18,7 +25,7 @@ const SkeletonNameBlock = styled.div`
 `;
 
 const SkeletonVoteBlock = styled.div`
-	width: 60px;
+	width: 16px;
 	height: 15px;
 	border-radius: 10px;
 	${skeletonStyle};
@@ -26,12 +33,16 @@ const SkeletonVoteBlock = styled.div`
 
 export default function IdolVoteCardSkeleton() {
 	return (
-		<NewFlexContainer $jc="space-between" $ai="center">
+		<IdolVoteCardContainer $jc="space-between" $ai="center">
 			<FlexContainer $gap="12px" $ai="center">
 				<SkeletonImageContainer />
-				<SkeletonNameBlock />
+				<SkeletonIndex />
+				<FlexContainer $fd="column" $gap="4px">
+					<SkeletonNameBlock />
+					<SkeletonNameBlock />
+				</FlexContainer>
 			</FlexContainer>
 			<SkeletonVoteBlock />
-		</NewFlexContainer>
+		</IdolVoteCardContainer>
 	);
 }

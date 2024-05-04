@@ -7,9 +7,9 @@ import {
 } from "@/shared/typo/typo";
 import styled from "styled-components";
 
-export const NewFlexContainer = styled(FlexContainer)`
+export const IdolVoteCardContainer = styled(FlexContainer)`
 	border-bottom: 1px solid #ffffff1a;
-	height: 85px;
+	height: 86px;
 `;
 
 const ChartItemDescription = styled.span`
@@ -27,7 +27,7 @@ const ChartItemIndex = styled.span`
 export default function IdolVoteCard({ item, index }) {
 	const { group, name, profilePicture, totalVotes } = item;
 	return (
-		<NewFlexContainer $jc="space-between" $ai="center">
+		<IdolVoteCardContainer $jc="space-between" $ai="center">
 			<FlexContainer $gap="12px" $ai="center">
 				<ImageContainer src={profilePicture} alt={`${name} 사진`} />
 				<ChartItemIndex>{index + 1}</ChartItemIndex>
@@ -35,6 +35,6 @@ export default function IdolVoteCard({ item, index }) {
 				<ChartItemName>{name}</ChartItemName>
 			</FlexContainer>
 			<ChartItemDescription>{totalVotes + "표"}</ChartItemDescription>
-		</NewFlexContainer>
+		</IdolVoteCardContainer>
 	);
 }

@@ -5,7 +5,7 @@ import IdolChartCardSkeleton from "@/entities/IdolChartCard/IdolChartCardSkeleto
 import { useEffect, useMemo, useState, useRef } from "react";
 import styled from "styled-components";
 
-import refresh from "@/shared/asset/icons8-refresh-30.png";
+import refresh from "@/shared/assets/icons/icons8-refresh-30.png";
 
 import { useInView } from "react-intersection-observer";
 
@@ -40,7 +40,6 @@ export default function SortChart({ gender, isfemale }) {
 		threshold: 1,
 		root: rootRef.current,
 	});
-
 	const sortedItems = useMemo(() => {
 		return items.sort((a, b) => a.totalVotes > b.totalVotes);
 	}, [items]);
