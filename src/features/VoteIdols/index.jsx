@@ -28,7 +28,7 @@ const BackDrop = styled.div`
 	}
 `;
 
-const Modal = styled.dialog`
+const Modal = styled.form`
 	background-color: #181d26;
 	color: white;
 	width: 525px;
@@ -47,7 +47,7 @@ const Modal = styled.dialog`
 	}
 `;
 
-const VoteButton = styled(PinkButton)`
+const VoteButton = styled(PinkButton).attrs({ type: "submit" })`
 	@media (width<=767px) {
 		position: relative;
 		left: 0;
@@ -104,6 +104,7 @@ export default function ({ onCancel, gender }) {
 	const [cursor, setCursor] = useState(0);
 	const [items, setItems] = useState([]);
 	const [pageLimit, setPageLimit] = useState(10);
+	const [select, setSelect] = useState(false);
 	const lastCardRef = useRef(null);
 
 	const isNoMoreItems = cursor === null && pageLimit >= items.length;
@@ -113,13 +114,16 @@ export default function ({ onCancel, gender }) {
 		root: lastCardRef.current,
 	});
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
+	};
+
 	useEffect(() => {
 		async function executeRefresh() {
 			const { idols, nextCursor } = await wrappedFunction({
 				gender,
 				cursor,
 			});
-			console.log(cursor);
 			if (!idols) return;
 			setCursor(nextCursor);
 			setItems([...items, ...idols]);
@@ -132,12 +136,22 @@ export default function ({ onCancel, gender }) {
 	return (
 		<>
 			<BackDrop>
-				<Modal open aria-modal="true" aria-labelledby="voteModal">
+				<Modal
+					open
+					aria-modal="true"
+					aria-labelledby="voteModal"
+					onSubmit={handleSubmit}
+				>
 					<FlexContainer $fd="column" $gap="20px">
 						<ModalHeader gender={gender} onCancel={onCancel} />
 						<ModalContentContainer $fd="column" $gap="8px">
 							{items.map((v, index) => (
-								<IdolVoteCard key={v.id} item={v} index={index} />
+								<IdolVoteCard
+									key={v.id}
+									item={v}
+									index={index}
+									onSelect={setSelect}
+								/>
 							))}
 							{((!status.isLoading && !isNoMoreItems) ||
 								items.length === 0) && (
@@ -151,7 +165,7 @@ export default function ({ onCancel, gender }) {
 								))}
 						</ModalContentContainer>
 						<VoteBottom>
-							<VoteButton width="auto" height="42px">
+							<VoteButton width="auto" height="42px" disabled={!select}>
 								투표하기
 							</VoteButton>
 							<VoteBottomDescription>

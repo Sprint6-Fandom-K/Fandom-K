@@ -24,11 +24,20 @@ const VoteIndex = styled.span`
 	${chartItemIndex}
 `;
 
-export default function IdolVoteCard({ item, index }) {
+export default function IdolVoteCard({ item, index, onSelect }) {
 	const { group, name, profilePicture, totalVotes } = item;
 
+	const handleChange = (e) => {
+		onSelect(e.target.id);
+	};
+
 	return (
-		<IdolVoteCardContainer $jc="space-between" $ai="center">
+		<IdolVoteCardContainer
+			as="label"
+			htmlFor={item.id}
+			$jc="space-between"
+			$ai="center"
+		>
 			<FlexContainer $gap="12px" $ai="center">
 				<ImageContainer src={profilePicture} />
 				<VoteIndex>{index + 1}</VoteIndex>
@@ -37,6 +46,7 @@ export default function IdolVoteCard({ item, index }) {
 					<VoteDescription>{`${totalVotes}표`}</VoteDescription>
 				</FlexContainer>
 			</FlexContainer>
+			<input type="radio" id={item.id} name="vote" onChange={handleChange} />
 		</IdolVoteCardContainer>
 	);
 }
