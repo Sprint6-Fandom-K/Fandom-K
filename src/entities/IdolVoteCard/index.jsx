@@ -24,7 +24,7 @@ const ChartItemIndex = styled.span`
 	${chartItemIndex}
 `;
 
-export default function IdolChartCard({ item, index }) {
+export default function IdolVoteCard({ item, index }) {
 	const { group, name, profilePicture, totalVotes } = item;
 	return (
 		<NewFlexContainer $jc="space-between" $ai="center">
