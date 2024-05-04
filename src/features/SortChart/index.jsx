@@ -1,6 +1,7 @@
-import IdolChartCard, { IdolChartCardSkeleton } from "@/entities/IdolChartCard";
+import IdolChartCard from "@/entities/IdolChartCard";
 import { getCharts } from "@/shared/api/api";
 import { useGetData } from "@/shared/hooks/useGetData";
+import IdolChartCardSkeleton from "@/entities/IdolChartCard/IdolChartCardSkeleton";
 import { useEffect, useMemo, useState, useRef } from "react";
 import styled from "styled-components";
 
