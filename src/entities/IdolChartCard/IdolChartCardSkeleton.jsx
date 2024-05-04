@@ -1,7 +1,7 @@
 import { FlexContainer } from "@/shared/Container/Container";
-import { NewFlexContainer } from ".";
 import skeletonStyle from "@/shared/skeleton/skeletonStyle";
 import styled from "styled-components";
+import { IdolChartCardContainer } from ".";
 
 const SkeletonImageContainer = styled.div`
 	width: 70px;
@@ -26,12 +26,12 @@ const SkeletonVoteBlock = styled.div`
 
 export default function IdolChartCardSkeleton() {
 	return (
-		<NewFlexContainer $jc="space-between" $ai="center">
+		<IdolChartCardContainer $jc="space-between" $ai="center">
 			<FlexContainer $gap="12px" $ai="center">
 				<SkeletonImageContainer />
 				<SkeletonNameBlock />
 			</FlexContainer>
 			<SkeletonVoteBlock />
-		</NewFlexContainer>
+		</IdolChartCardContainer>
 	);
 }

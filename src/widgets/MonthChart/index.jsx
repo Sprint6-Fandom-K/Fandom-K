@@ -5,7 +5,7 @@ import { PinkButton } from "@/shared/Button";
 import { FlexContainer } from "@/shared/Container/Container";
 import { ButtonDescription, SubTitle } from "@/shared/typo/typo";
 
-import ChartButton from "@/shared/asset/ChartButton.svg";
+import ChartButton from "@/shared/assets/icons/ChartButton.svg";
 import SortChart from "@/features/SortChart";
 import SelectGender from "@/features/SelectGender";
 import { createPortal } from "react-dom";
@@ -47,7 +47,6 @@ export default function MonthChart() {
 			<SelectGender onChange={setGender} gender={gender} isfemale={isFemale} />
 			<SortChart gender="male" isfemale={!isFemale} />
 			<SortChart gender="female" isfemale={isFemale} />
-			{/* display: none으로 아예 두개를 만들어라. */}
 		</FlexContainer>
 	);
 }

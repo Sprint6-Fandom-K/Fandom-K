@@ -62,3 +62,21 @@ export const chartItemIndex = css`
 	${chartItemDescription};
 	color: #f96d69;
 `;
+
+export const ModalTitleTypo = css`
+	font-family: Pretendard;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 21.48px;
+	color: #f7f7f8;
+	@media (width<=767px) {
+		${chartItemName};
+	}
+`;
+
+export const modalDescription = css`
+	font-family: Pretendard;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 26px;
+`;

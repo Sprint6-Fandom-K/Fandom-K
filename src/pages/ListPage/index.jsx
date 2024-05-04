@@ -6,8 +6,6 @@ import MonthChart from "@/widgets/MonthChart";
 
 export default function ListPage() {
 	return (
-		// 이미지도 하나 넣어야 함 img_top design
-		// header
 		<MainContainer>
 			<MainContentContainer>
 				{/* 크레딧 widget */}
