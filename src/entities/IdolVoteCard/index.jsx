@@ -10,6 +10,9 @@ import styled from "styled-components";
 export const IdolVoteCardContainer = styled(FlexContainer)`
 	border-bottom: 1px solid #ffffff1a;
 	height: 86px;
+	&:has(input:checked) {
+		background-color: #ffffff1a;
+	}
 `;
 
 const VoteDescription = styled.span`
@@ -22,6 +25,10 @@ const VoteName = styled.span`
 
 const VoteIndex = styled.span`
 	${chartItemIndex}
+`;
+
+const Input = styled.input`
+	appearance: none;
 `;
 
 export default function IdolVoteCard({ item, index, onSelect }) {
@@ -46,7 +53,7 @@ export default function IdolVoteCard({ item, index, onSelect }) {
 					<VoteDescription>{`${totalVotes}표`}</VoteDescription>
 				</FlexContainer>
 			</FlexContainer>
-			<input type="radio" id={item.id} name="vote" onChange={handleChange} />
+			<Input type="radio" id={item.id} name="vote" onChange={handleChange} />
 		</IdolVoteCardContainer>
 	);
 }
