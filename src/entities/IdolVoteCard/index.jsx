@@ -1,10 +1,10 @@
 import { FlexContainer, ImageContainer } from "@/shared/Container/Container";
-
 import {
 	chartItemDescription,
 	chartItemIndex,
 	chartItemName,
 } from "@/shared/typo/typo";
+
 import styled from "styled-components";
 
 export const IdolVoteCardContainer = styled(FlexContainer)`
@@ -12,29 +12,31 @@ export const IdolVoteCardContainer = styled(FlexContainer)`
 	height: 86px;
 `;
 
-const ChartItemDescription = styled.span`
+const VoteDescription = styled.span`
 	${chartItemDescription}
 `;
 
-const ChartItemName = styled.span`
+const VoteName = styled.span`
 	${chartItemName}
 `;
 
-const ChartItemIndex = styled.span`
+const VoteIndex = styled.span`
 	${chartItemIndex}
 `;
 
 export default function IdolVoteCard({ item, index }) {
 	const { group, name, profilePicture, totalVotes } = item;
+
 	return (
 		<IdolVoteCardContainer $jc="space-between" $ai="center">
 			<FlexContainer $gap="12px" $ai="center">
-				<ImageContainer src={profilePicture} alt={`${name} 사진`} />
-				<ChartItemIndex>{index + 1}</ChartItemIndex>
-				<ChartItemName>{group}</ChartItemName>
-				<ChartItemName>{name}</ChartItemName>
+				<ImageContainer src={profilePicture} />
+				<VoteIndex>{index + 1}</VoteIndex>
+				<FlexContainer $fd="column" $gap="4px">
+					<VoteName>{`${group} ${name}`}</VoteName>
+					<VoteDescription>{`${totalVotes}표`}</VoteDescription>
+				</FlexContainer>
 			</FlexContainer>
-			<ChartItemDescription>{totalVotes + "표"}</ChartItemDescription>
 		</IdolVoteCardContainer>
 	);
 }
