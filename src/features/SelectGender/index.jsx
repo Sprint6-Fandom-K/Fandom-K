@@ -1,6 +1,15 @@
-import { MenuButton } from "@/shared/Button";
-import { FlexContainer, FlexItemContainer } from "@/shared/Container/Container";
-import { MenuButtonDescription } from "@/shared/typo/typo";
+import { MenuButton } from "@/shared/ui/Button";
+import { FlexContainer, FlexItemContainer } from "@/shared/ui/Container";
+import styled from "styled-components";
+
+export const MenuButtonDescription = styled.span`
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 18px;
+	text-align: center;
+	letter-spacing: -0.16500002145767212px;
+`;
 
 export default function ({ onChange, gender, isfemale }) {
 	const handleMenuClick = (e) => {

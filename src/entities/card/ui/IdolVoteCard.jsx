@@ -1,11 +1,12 @@
-import { FlexContainer, ImageContainer } from "@/shared/Container/Container";
+import { FlexContainer, ImageContainer } from "@/shared/ui/Container";
 import {
 	chartItemDescription,
 	chartItemIndex,
 	chartItemName,
-} from "@/shared/typo/typo";
+} from "@/shared/styles/typo";
 
 import styled from "styled-components";
+import { formatNumber } from "@/shared/utils/format";
 
 export const IdolVoteCardContainer = styled(FlexContainer)`
 	border-bottom: 1px solid #ffffff1a;
@@ -37,7 +38,6 @@ export default function IdolVoteCard({ item, index, onSelect }) {
 	const handleChange = (e) => {
 		onSelect(e.target.id);
 	};
-
 	return (
 		<IdolVoteCardContainer
 			as="label"
@@ -50,7 +50,7 @@ export default function IdolVoteCard({ item, index, onSelect }) {
 				<VoteIndex>{index + 1}</VoteIndex>
 				<FlexContainer $fd="column" $gap="4px">
 					<VoteName>{`${group} ${name}`}</VoteName>
-					<VoteDescription>{`${totalVotes}표`}</VoteDescription>
+					<VoteDescription>{`${formatNumber(totalVotes)}표`}</VoteDescription>
 				</FlexContainer>
 			</FlexContainer>
 			<Input type="radio" id={item.id} name="vote" onChange={handleChange} />

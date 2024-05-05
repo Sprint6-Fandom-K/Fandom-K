@@ -1,11 +1,12 @@
-import { FlexContainer, ImageContainer } from "@/shared/Container/Container";
+import { FlexContainer, ImageContainer } from "@/shared/ui/Container";
 
 import {
 	chartItemDescription,
 	chartItemIndex,
 	chartItemName,
-} from "@/shared/typo/typo";
+} from "@/shared/styles/typo";
 import styled from "styled-components";
+import { formatNumber } from "@/shared/utils/format";
 
 export const IdolChartCardContainer = styled(FlexContainer)`
 	border-bottom: 1px solid #ffffff1a;
@@ -34,7 +35,9 @@ export default function IdolChartCard({ item, index }) {
 				<ChartItemName>{group}</ChartItemName>
 				<ChartItemName>{name}</ChartItemName>
 			</FlexContainer>
-			<ChartItemDescription>{totalVotes + "표"}</ChartItemDescription>
+			<ChartItemDescription>
+				{formatNumber(totalVotes) + "표"}
+			</ChartItemDescription>
 		</IdolChartCardContainer>
 	);
 }

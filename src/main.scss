@@ -4,10 +4,19 @@
 * {
 	transition: all 250ms;
 	box-sizing: border-box;
+	font-family: Pretendard;
 }
 
 :root {
 	--orange: #f96d69;
+	--black1: #02000e;
+	--black2: #181d26;
+	--gray1: #67666e;
+	--gray2: #828282;
+	--gray3: #a3a5a8;
+	--white1: #8c92ab;
+	--white2: #f7f7f8;
+	--pink: #fe5493;
 }
 ::-webkit-scrollbar {
 	display: none;

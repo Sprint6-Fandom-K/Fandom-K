@@ -1,13 +1,17 @@
-import IdolChartCard from "@/entities/IdolChartCard";
+import IdolChartCard from "@/entities/card/ui/IdolChartCard";
 import { getCharts } from "@/shared/api/api";
 import { useGetData } from "@/shared/hooks/useGetData";
-import IdolChartCardSkeleton from "@/entities/IdolChartCard/IdolChartCardSkeleton";
+import IdolChartCardSkeleton from "@/entities/card/skeletons/IdolChartCardSkeleton";
 import { useEffect, useMemo, useState, useRef } from "react";
 import styled from "styled-components";
 
-import refresh from "@/shared/assets/icons/icons8-refresh-30.png";
-
 import { useInView } from "react-intersection-observer";
+import RefreshIcon from "@/shared/assets/icons/RefreshIcon";
+import { rotate } from "@/shared/styles/keyframes";
+
+const RotateIcon = styled(RefreshIcon)`
+	animation: ${rotate} 2s ease-in-out infinite;
+`;
 
 const ChartList = styled.ul`
 	width: 100%;
@@ -36,7 +40,7 @@ export default function SortChart({ gender, isfemale }) {
 	const [cursor, setCursor] = useState(null);
 
 	const [status, wrappedFunction] = useGetData(getCharts);
-	const { ref, inView, entry } = useInView({
+	const { ref, inView } = useInView({
 		threshold: 1,
 		root: rootRef.current,
 	});
@@ -57,7 +61,11 @@ export default function SortChart({ gender, isfemale }) {
 			setItems([...items, ...idols]);
 			setPageLimit(pageLimit + 10);
 		}
-		if (inView) executeRefresh();
+		if (inView) {
+			executeRefresh();
+		} else if (items.length === 0) {
+			executeRefresh();
+		}
 		return () => (executeRefresh = null);
 	}, [inView]);
 
@@ -66,15 +74,15 @@ export default function SortChart({ gender, isfemale }) {
 			{sortedItems?.map((item, index) => (
 				<IdolChartCard key={item.id} item={item} index={index} />
 			))}
-			{((!status.isLoading && !isNoMoreItems) || items.length === 0) && (
-				<RefreshSection ref={ref}>
-					<img src={refresh} />
-				</RefreshSection>
-			)}
 			{status.isLoading &&
 				Array.from(Array(10)).map((v, index) => (
 					<IdolChartCardSkeleton key={index} />
 				))}
+			{!status.isLoading && !isNoMoreItems && (
+				<RefreshSection ref={ref}>
+					<RotateIcon />
+				</RefreshSection>
+			)}
 		</ChartList>
 	);
 }
