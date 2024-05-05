@@ -1,23 +1,8 @@
 import { createPortal } from "react-dom";
 import { useState } from "react";
-import Credit from "@/shared/asset/Credit.svg";
-import Close from "@/shared/asset/CloseX.svg";
+import Credit from "@/shared/assets/Credit.svg";
+import Close from "@/shared/assets/CloseX.svg";
 import styled from "styled-components";
-
-// const NoCreditModal = styled.div`
-// 	position: absolute;
-// 	top: 45%;
-// 	left: 50%;
-// 	display: flex;
-// 	flex-direction: column;
-// 	align-items: center;
-// 	gap: 31px;
-// 	width: 339px;
-// 	height: 331px;
-// 	transform: translate(-50%, -50%);
-// 	border-radius: 12px;
-// 	background-color: #181D26;
-// `;
 
 const CloseButton = styled.button`
 	position: absolute;
@@ -140,7 +125,7 @@ const Overlay = styled.div`
 	background-color: rgba(49,49,49,0.8);
 `;
 
-const RadioModal = ({ options, onClose, onSelect }) => {
+const RadioModal = ({ options, onClose, onSelect }) => { // 크레딧 충전하는 모달 컴포넌트
 	const [selectedOption, setSelectedOption] = useState(null);
 
 	const handleOptionChange = (option) => {
@@ -206,6 +191,7 @@ export default function Modals() { // ListPage 라고 가정
 
 	const handleSelectOption = (option) => {
 		setSelectedOption(option);
+		console.log(`선택한 값 : ${option}`);
 	};
 
 	return (
