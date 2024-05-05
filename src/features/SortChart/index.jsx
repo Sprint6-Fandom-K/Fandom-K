@@ -66,7 +66,6 @@ export default function SortChart({ gender, isfemale }) {
 		} else if (items.length === 0) {
 			executeRefresh();
 		}
-		return () => (executeRefresh = null);
 	}, [inView]);
 
 	return (

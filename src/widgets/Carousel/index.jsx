@@ -1,10 +1,10 @@
-import { createContext, useContext, useRef, useState, useEffect, Children, cloneElement } from "react"; import "./index.scss";
+import { createContext, useContext, useRef, useState, useEffect, Children, cloneElement, forwardRef } from "react"; import "./index.scss"; import widget from "@/shared/utilities/widget";
 
 import Capsule from "@/shared/models/Capsule";
 
 const Context = createContext();
 
-export default function Carousel({ /* html */ id, style, children, /* props */ columns, sensitivity })
+export default function Carousel(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ swipe: null, columns: null, sensitivity: 100 })
 {
 	const [count, set_count] = useState(0);
 	const [index, set_index] = useState(0);
@@ -14,8 +14,14 @@ export default function Carousel({ /* html */ id, style, children, /* props */ c
 		{
 			props:
 			{
-				columns,
-				sensitivity,
+				swipe: props.swipe,
+				columns: props.columns,
+				sensitivity: props.sensitivity,
+			},
+			data:
+			{
+				index_min: 0,
+				index_max: count - props.columns,
 			},
 			state:
 			{
@@ -38,92 +44,104 @@ export default function Carousel({ /* html */ id, style, children, /* props */ c
 					},
 					set(value)
 					{
-						set_index((value < 0) ? (0) : ((count - columns < value) ? (count - columns): (value))); // clamp (min: 0, max: count - columns)
+						const [min, max] = [0, count - props.columns];
+
+						set_index((value < min) ? min : ((max < value) ? max : value));
 					},
 				}),
 			},
 		}}>
-			<section data-widget="Carousel" id={id} style={style}>
+			<section { ...widget("Carousel", props) }>
 			{
-				children
+				props.children
 			}
 			</section>
 		</Context.Provider>
 	);
 }
 
-Carousel.Item = function Item({ /* html */ id, style, children, /* props */ })
+Carousel.Item = forwardRef(function Item(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ }, ref)
 {
 	return (
-		<section data-widget="Carousel.Item" id={id} style={style}>
+		<section ref={ref} { ...widget("Carousel.Item", props) }>
 		{
-			children
+			props.children
 		}
 		</section>
 	);
-};
+});
 
-Carousel.Button = function Button({ /* html */ id, style, children, /* props */ to })
+Carousel.Button = forwardRef(function Button(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ to: null }, ref)
 {
-	const { props, state } = useContext(Context);
+	const ctx = useContext(Context);
 
 	function onClick(event)
 	{
-		switch (to)
+		switch (props.to)
 		{
 			case "prev":
 			{
-				state.index.set(event.shiftKey ? -Infinity : state.index.get() - props.columns);
+				ctx.state.index.set((index) => event.shiftKey ? -Infinity : index - ctx.props.columns);
 				break;
 			}
 			case "next":
 			{
-				state.index.set(event.shiftKey ? +Infinity : state.index.get() + props.columns);
+				ctx.state.index.set((index) => event.shiftKey ? +Infinity : index + ctx.props.columns);
 				break;
 			}
 			default:
 			{
-				state.index.set(to);
+				ctx.state.index.set(props.to);
 				break;
 			}
 		}
 	}
+	// omit if (index === first_index)
+	if (props.to === "prev" && ctx.state.index.get() === ctx.data.index_min)
+	{
+		return null;
+	}
+	// omit if (index === last_index)
+	if (props.to === "next" && ctx.state.index.get() === ctx.data.index_max)
+	{
+		return null;
+	}
 
 	return (
-		<section data-widget="Carousel.Button" id={id} style={style}
+		<section ref={ref} { ...widget("Carousel.Button", props) }
 			//
 			// events
 			//
 			onClick={onClick}
 		>
 		{
-			children
+			props.children
 		}
 		</section>
 	);
-};
+});
 
-Carousel.Wrapper = function Wrapper({ /* html */ id, style, children, /* props */ gap })
+Carousel.Slider = forwardRef(function Container(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ gap: 0 }, ref)
 {
-	const { props, state } = useContext(Context);
+	const ctx = useContext(Context);
 
-	const cage = useRef(null);
+	const container = useRef(null);
 
 	useEffect(() =>
 	{
-		state.count.set(Children.toArray(children).filter((child) => child.type === Carousel.Item).length);
+		ctx.state.count.set(Children.toArray(props.children).filter((child) => child.type === Carousel.Item).length);
 	},
-	[children]);
+	[props.children]);
 
 	class CSS
 	{
 		static width()
 		{
-			return `calc(+${100 / props.columns}% - ${gap * ((props.columns - 1) / props.columns)}px)`;
+			return `calc(+${100 / ctx.props.columns}% - ${props.gap * ((ctx.props.columns - 1) / ctx.props.columns)}px)`;
 		}
 		static transform(offset)
 		{
-			return "translateX(" + `calc(-${100 / props.columns * state.index.get()}% - ${(gap / props.columns * state.index.get()) + offset}px)` + ")";
+			return "translateX(" + `calc(-${100 / ctx.props.columns * ctx.state.index.get()}% - ${(props.gap / ctx.props.columns * ctx.state.index.get()) + offset}px)` + ")";
 		}
 	}
 	let [down_x, move_x, up_x] = [null, null, null];
@@ -140,47 +158,41 @@ Carousel.Wrapper = function Wrapper({ /* html */ id, style, children, /* props *
 
 		move_x = value;
 
-		if (state.index.get() !== (down_x >= move_x ? state.count.get() - props.columns : 0))
+		if (ctx.state.index.get() !== (down_x <= move_x ? ctx.data.index_min : ctx.data.index_max))
 		{
 			const delta = down_x - move_x;
 
-			if (Math.abs(delta) < props.sensitivity)
+			if (Math.abs(delta) < ctx.props.sensitivity)
 			{
-				cage.current.style.setProperty("transform", CSS.transform(delta));
+				container.current.style.setProperty("transform", CSS.transform(delta));
 			}
 			else
 			{
-				cage.current.style.setProperty("transform", CSS.transform((down_x > move_x) ? (+props.sensitivity) : (-props.sensitivity)));
+				container.current.style.setProperty("transform", CSS.transform((down_x > move_x) ? (+ctx.props.sensitivity) : (-ctx.props.sensitivity)));
 			}
 		}
 	}
+
 	function handle_up(value)
 	{
 		if (down_x === null) return;
 
 		up_x = value;
 
-		if (Math.abs(down_x - up_x) <= props.sensitivity)
+		if (Math.abs(down_x - up_x) <= ctx.props.sensitivity)
 		{
-			cage.current.style.setProperty("transform", CSS.transform(0));
+			container.current.style.setProperty("transform", CSS.transform(0));
 		}
 		else if (down_x >= up_x) // move right
 		{
-			state.index.set(state.index.get() + props.columns);
+			ctx.state.index.set((index) => index + (ctx.props.swipe ?? ctx.props.columns));
 		}
 		else if (down_x <= up_x) // move left
 		{
-			state.index.set(state.index.get() - props.columns);
+			ctx.state.index.set((index) => index - (ctx.props.swipe ?? ctx.props.columns));
 		}
 		// reset
 		[down_x, move_x, up_x] = [null, null, null];
-	}
-	//
-	// desktop
-	//
-	function onMouseDown(event)
-	{
-		handle_down(event.clientX);
 	}
 
 	function onMouseMove(event)
@@ -192,40 +204,36 @@ Carousel.Wrapper = function Wrapper({ /* html */ id, style, children, /* props *
 	{
 		handle_up(event.clientX);
 	}
-	//
-	// mobile
-	//
-	function onTouchStart(event)
-	{
-		handle_down(event.touches[0].clientX);
-	}
 
-	function onTouchMove(event)
+	useEffect(() =>
 	{
-		handle_move(event.changedTouches[0].clientX);
-	}
+		window.addEventListener("mousemove", onMouseMove);
+		return () => window.removeEventListener("mousemove", onMouseMove);
+	},
+	[onMouseMove]);
 
-	function onTouchEnd(event)
+	useEffect(() =>
 	{
-		handle_up(event.changedTouches[0].clientX);
-	}
+		window.addEventListener("mouseup", onMouseUp);
+		return () => window.removeEventListener("mouseup", onMouseUp);
+	},
+	[onMouseUp]);
 
 	return (
-		<section data-widget="Carousel.Wrapper" id={id} style={style}
+		<section ref={ref} { ...widget("Carousel.Slider", props) }
 			//
 			// events
 			//
-			onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp}
-			onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
+			onMouseDown={() => handle_down(event.clientX)} onTouchStart={(event) => handle_down(event.touches[0].clientX)} onTouchMove={(event) => handle_move(event.changedTouches[0].clientX)} onTouchEnd={(event) => handle_up(event.changedTouches[0].clientX)}
 		>
-			<div ref={cage} class="cage" style={{ gap: gap, transform: CSS.transform(0) }}>
+			<div ref={container} class="container" style={{ "gap": props.gap, "transform": CSS.transform(0) }}>
 			{
-				Children.toArray(children).filter((child) => child.type === Carousel.Item).map((child) =>
+				Children.toArray(props.children).filter((child) => child.type === Carousel.Item).map((child) =>
 				{
-					return cloneElement(child, { style: { ...child.props.style, width: CSS.width() } });
+					return cloneElement(child, { ...child.props, style: { ...child.props.style, "width": CSS.width() } });
 				})
 			}
 			</div>
 		</section>
 	);
-};
+});

@@ -4,7 +4,6 @@ export default function ArrowLeft({
 	height = 24,
 	color = "white" /* props */,
 }) {
-	// eslint-disable-next-line react/no-unknown-property
 	return (
 		<svg
 			id={id}

@@ -81,7 +81,7 @@ const RefreshSection = styled.div`
 	align-items: center;
 `;
 
-export default function ({ onCancel, gender }) {
+export default function VoteModal({ onCancel, gender }) {
 	const [cursor, setCursor] = useState(0);
 	const [items, setItems] = useState([]);
 	const [pageLimit, setPageLimit] = useState(10);
@@ -117,7 +117,6 @@ export default function ({ onCancel, gender }) {
 		} else if (items.length === 0) {
 			executeRefresh();
 		}
-		return () => (executeRefresh = null);
 	}, [inView]);
 
 	return (

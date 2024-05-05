@@ -1,12 +1,17 @@
+function TODO()
+{
+	throw new Error("Unimplemented");
+}
+
 export default class Capsule
 {
 	#getter;
 	#setter;
 
-	constructor({ get, set })
+	constructor({ get = TODO, set = TODO })
 	{
-		this.#getter = get ?? (function () { throw new Error("Unimplemented") });
-		this.#setter = set ?? (function () { throw new Error("Unimplemented") });
+		this.#getter = get;
+		this.#setter = set;
 	}
 
 	get()
@@ -16,6 +21,6 @@ export default class Capsule
 
 	set(value)
 	{
-		this.#setter(value);
+		this.#setter(value instanceof Function ? value?.(this.#getter()) : value);
 	}
 }

@@ -1,13 +1,14 @@
 @import url("https://cdn.jsdelivr.net/npm/reset-css/reset.min.css");
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css");
 
-* {
-	transition: all 250ms;
+*
+{
 	box-sizing: border-box;
-	font-family: Pretendard;
+	transition: all 250ms ease-in-out;
 }
 
-:root {
+:root
+{
+	font-family: Pretendard;
 	--orange: #f96d69;
 	--black1: #02000e;
 	--black2: #181d26;
@@ -18,10 +19,41 @@
 	--white2: #f7f7f8;
 	--pink: #fe5493;
 }
-::-webkit-scrollbar {
-	display: none;
+
+::-webkit-scrollbar
+{
+	width: 0px;
 }
 
-::-webkit-scrollbar-thumb {
-	border-radius: 40px;
+html, body, #root, #root > *
+{
+	width: 100%;
+	height: 100%;
+	user-select: none;
+	touch-action: none;
+}
+
+/* desktop */
+@media screen and (1200px <= width)
+{
+	.hide-on-pc
+	{
+		display: none !important;
+	}
+}
+/* tablet */
+@media screen and (768px <= width < 1200px)
+{
+	.hide-on-tablet
+	{
+		display: none !important;
+	}
+}
+/* mobile */
+@media screen and (375px <= width < 768px)
+{
+	.hide-on-mobile
+	{
+		display: none !important;
+	}
 }

@@ -2,7 +2,6 @@ import { PinkButton } from "@/shared/ui/Button";
 import { FlexContainer } from "@/shared/ui/Container";
 import { useCallback, useState } from "react";
 import styled from "styled-components";
-import { createPortal } from "react-dom";
 import VoteIdols from "@/features/VoteIdols/modal";
 import ChartButton from "@/shared/assets/icons/ChartButton";
 import Modal from "@/shared/ui/Modal";
