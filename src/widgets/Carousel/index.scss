@@ -15,12 +15,12 @@
 	// TODO: none
 }
 
-[data-widget="Carousel.Wrapper"]
+[data-widget="Carousel.Slider"]
 {
 	width: 100%;
 	overflow: hidden;
 
-	> .cage
+	> .container
 	{
 		width: 100%;
 		display: flex;

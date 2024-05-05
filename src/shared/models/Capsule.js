@@ -21,6 +21,6 @@ export default class Capsule
 
 	set(value)
 	{
-		this.#setter(value);
+		this.#setter(value instanceof Function ? value?.(this.#getter()) : value);
 	}
 }

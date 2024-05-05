@@ -5,28 +5,52 @@ import Carousel from "@/widgets/Carousel";
 import ArrowLeft from "@/shared/assets/icons/ArrowLeft";
 import ArrowRight from "@/shared/assets/icons/ArrowRight";
 
-import Header from "@/widgets/Header";
-import Donate from "@/widgets/Donate";
 import API from "@/shared/api";
 
-const COLUMNS = 4;
+import Header from "@/widgets/Header";
+import Donate from "@/widgets/Donate";
+
+import useViewport from "@/shared/hooks/useViewport";
 
 export default function ListPage()
 {
+	const { isDesktop, isTablet, isMobile } = useViewport();
+
 	const [idols, set_idols] = useState([]);
 	const [cursor, set_cursor] = useState(null);
+	const [columns, set_columns] = useState(null);
 
-	const ref = useRef();
+	const last_child = useRef();
 
 	useEffect(() =>
 	{
-		API["{team_name}/idols"].GET(undefined, { page_size: COLUMNS }).then((response) =>
-		{
-			set_idols(response.list);
-			set_cursor(response.nextCursor);
-		});
+		if (isDesktop) set_columns(4);
 	},
-	[]);
+	[isDesktop]);
+
+	useEffect(() =>
+	{
+		if (isTablet) set_columns(3);
+	},
+	[isTablet]);
+
+	useEffect(() =>
+	{
+		if (isMobile) set_columns(3);
+	},
+	[isMobile]);
+
+	useEffect(() =>
+	{
+		if (columns)
+		{
+			API["{team_name}/idols"].GET(undefined, { page_size: columns }).then((response) =>
+			{
+				set_idols(response.list); set_cursor(response.nextCursor);
+			});
+		}
+	},
+	[columns]);
 
 	useEffect(() =>
 	{
@@ -38,10 +62,9 @@ export default function ListPage()
 				{
 					if (entry.isIntersecting)
 					{
-						API["{team_name}/idols"].GET(undefined, { page_size: COLUMNS, cursor: cursor }).then((response) =>
+						API["{team_name}/idols"].GET(undefined, { page_size: columns, cursor: cursor }).then((response) =>
 						{
-							set_idols((idols) => [...idols, ...response.list]);
-							set_cursor(response.list.length >= COLUMNS ? response.nextCursor : null);
+							set_idols((idols) => [...idols, ...response.list]); set_cursor(response.list.length >= columns ? response.nextCursor : null);
 						});
 						// big brother is gone...
 						observer.disconnect();
@@ -52,7 +75,7 @@ export default function ListPage()
 				threshold: 0.25
 			});
 			// big brother
-			observer.observe(ref.current);
+			observer.observe(last_child.current);
 		}
 	},
 	[cursor]);
@@ -65,22 +88,22 @@ export default function ListPage()
 					<div class="heading">
 						후원을 기다리는 조공
 					</div>
-					<Carousel columns={COLUMNS} threshold={100}>
+					<Carousel swipe={isDesktop ? null : 1} columns={columns} sensitivity={100}>
 						<Carousel.Button to="prev" style={{ left: -80 }} class={["hide-on-tablet", "hide-on-mobile"]}>
 							<ArrowLeft></ArrowLeft>
 						</Carousel.Button>
-						<Carousel.Wrapper gap={25}>
+						<Carousel.Slider gap={25}>
 						{
-							(idols ? idols : new Array(COLUMNS * 2).fill(null)).map((idol, index, array) =>
+							(idols ? idols : new Array(columns).fill(null)).map((idol, index, array) =>
 							{
 								return (
-									<Carousel.Item key={index} ref={index === array.length - 1 ? ref : null}>
+									<Carousel.Item key={index} ref={index === array.length - 1 ? last_child : null}>
 										<Donate idol={idol}></Donate>
 									</Carousel.Item>
 								);
 							})
 						}
-						</Carousel.Wrapper>
+						</Carousel.Slider>
 						<Carousel.Button to="next" style={{ right: -80 }} class={["hide-on-tablet", "hide-on-mobile"]}>
 							<ArrowRight></ArrowRight>
 						</Carousel.Button>

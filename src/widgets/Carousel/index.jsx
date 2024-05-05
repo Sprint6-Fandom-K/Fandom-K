@@ -4,7 +4,7 @@ import Capsule from "@/shared/models/Capsule";
 
 const Context = createContext();
 
-const Carousel = forwardRef(function Carousel(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ columns: 1, threshold: 100 }, ref)
+export default function Carousel(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ swipe: null, columns: null, sensitivity: 100 })
 {
 	const [count, set_count] = useState(0);
 	const [index, set_index] = useState(0);
@@ -14,8 +14,14 @@ const Carousel = forwardRef(function Carousel(props = { /* html */ id: null, cla
 		{
 			props:
 			{
+				swipe: props.swipe,
 				columns: props.columns,
-				threshold: props.threshold,
+				sensitivity: props.sensitivity,
+			},
+			data:
+			{
+				index_min: 0,
+				index_max: count - props.columns,
 			},
 			state:
 			{
@@ -38,19 +44,21 @@ const Carousel = forwardRef(function Carousel(props = { /* html */ id: null, cla
 					},
 					set(value)
 					{
-						set_index((value < 0) ? (0) : ((count - props.columns < value) ? (count - props.columns): (value))); // clamp (min: 0, max: count - columns)
+						const [min, max] = [0, count - props.columns];
+
+						set_index((value < min) ? min : ((max < value) ? max : value));
 					},
 				}),
 			},
 		}}>
-			<section ref={ref} { ...widget("Carousel", props) }>
+			<section { ...widget("Carousel", props) }>
 			{
 				props.children
 			}
 			</section>
 		</Context.Provider>
 	);
-});
+}
 
 Carousel.Item = forwardRef(function Item(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ }, ref)
 {
@@ -73,12 +81,12 @@ Carousel.Button = forwardRef(function Button(props = { /* html */ id: null, clas
 		{
 			case "prev":
 			{
-				ctx.state.index.set(event.shiftKey ? -Infinity : ctx.state.index.get() - ctx.props.columns);
+				ctx.state.index.set((index) => event.shiftKey ? -Infinity : index - ctx.props.columns);
 				break;
 			}
 			case "next":
 			{
-				ctx.state.index.set(event.shiftKey ? +Infinity : ctx.state.index.get() + ctx.props.columns);
+				ctx.state.index.set((index) => event.shiftKey ? +Infinity : index + ctx.props.columns);
 				break;
 			}
 			default:
@@ -89,12 +97,12 @@ Carousel.Button = forwardRef(function Button(props = { /* html */ id: null, clas
 		}
 	}
 	// omit if (index === first_index)
-	if (props.to === "prev" && ctx.state.index.get() === 0)
+	if (props.to === "prev" && ctx.state.index.get() === ctx.data.index_min)
 	{
 		return null;
 	}
 	// omit if (index === last_index)
-	if (props.to === "next" && ctx.state.index.get() === ctx.state.count.get() - ctx.props.columns)
+	if (props.to === "next" && ctx.state.index.get() === ctx.data.index_max)
 	{
 		return null;
 	}
@@ -113,11 +121,11 @@ Carousel.Button = forwardRef(function Button(props = { /* html */ id: null, clas
 	);
 });
 
-Carousel.Wrapper = forwardRef(function Wrapper(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ gap: 0 }, ref)
+Carousel.Slider = forwardRef(function Container(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ gap: 0 }, ref)
 {
 	const ctx = useContext(Context);
 
-	const cage = useRef(null);
+	const container = useRef(null);
 
 	useEffect(() =>
 	{
@@ -150,47 +158,41 @@ Carousel.Wrapper = forwardRef(function Wrapper(props = { /* html */ id: null, cl
 
 		move_x = value;
 
-		if (ctx.state.index.get() !== (down_x >= move_x ? ctx.state.count.get() - ctx.props.columns : 0))
+		if (ctx.state.index.get() !== (down_x <= move_x ? ctx.data.index_min : ctx.data.index_max))
 		{
 			const delta = down_x - move_x;
 
-			if (Math.abs(delta) < ctx.props.threshold)
+			if (Math.abs(delta) < ctx.props.sensitivity)
 			{
-				cage.current.style.setProperty("transform", CSS.transform(delta));
+				container.current.style.setProperty("transform", CSS.transform(delta));
 			}
 			else
 			{
-				cage.current.style.setProperty("transform", CSS.transform((down_x > move_x) ? (+ctx.props.threshold) : (-ctx.props.threshold)));
+				container.current.style.setProperty("transform", CSS.transform((down_x > move_x) ? (+ctx.props.sensitivity) : (-ctx.props.sensitivity)));
 			}
 		}
 	}
+
 	function handle_up(value)
 	{
 		if (down_x === null) return;
 
 		up_x = value;
 
-		if (Math.abs(down_x - up_x) <= ctx.props.threshold)
+		if (Math.abs(down_x - up_x) <= ctx.props.sensitivity)
 		{
-			cage.current.style.setProperty("transform", CSS.transform(0));
+			container.current.style.setProperty("transform", CSS.transform(0));
 		}
 		else if (down_x >= up_x) // move right
 		{
-			ctx.state.index.set(ctx.state.index.get() + ctx.props.columns);
+			ctx.state.index.set((index) => index + (ctx.props.swipe ?? ctx.props.columns));
 		}
 		else if (down_x <= up_x) // move left
 		{
-			ctx.state.index.set(ctx.state.index.get() - ctx.props.columns);
+			ctx.state.index.set((index) => index - (ctx.props.swipe ?? ctx.props.columns));
 		}
 		// reset
 		[down_x, move_x, up_x] = [null, null, null];
-	}
-	//
-	// desktop
-	//
-	function onMouseDown(event)
-	{
-		handle_down(event.clientX);
 	}
 
 	function onMouseMove(event)
@@ -202,33 +204,29 @@ Carousel.Wrapper = forwardRef(function Wrapper(props = { /* html */ id: null, cl
 	{
 		handle_up(event.clientX);
 	}
-	//
-	// mobile
-	//
-	function onTouchStart(event)
-	{
-		handle_down(event.touches[0].clientX);
-	}
 
-	function onTouchMove(event)
+	useEffect(() =>
 	{
-		handle_move(event.changedTouches[0].clientX);
-	}
+		window.addEventListener("mousemove", onMouseMove);
+		return () => window.removeEventListener("mousemove", onMouseMove);
+	},
+	[onMouseMove]);
 
-	function onTouchEnd(event)
+	useEffect(() =>
 	{
-		handle_up(event.changedTouches[0].clientX);
-	}
+		window.addEventListener("mouseup", onMouseUp);
+		return () => window.removeEventListener("mouseup", onMouseUp);
+	},
+	[onMouseUp]);
 
 	return (
-		<section ref={ref} { ...widget("Carousel.Wrapper", props) }
+		<section ref={ref} { ...widget("Carousel.Slider", props) }
 			//
 			// events
 			//
-			onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp}
-			onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
+			onMouseDown={() => handle_down(event.clientX)} onTouchStart={(event) => handle_down(event.touches[0].clientX)} onTouchMove={(event) => handle_move(event.changedTouches[0].clientX)} onTouchEnd={(event) => handle_up(event.changedTouches[0].clientX)}
 		>
-			<div ref={cage} class="cage" style={{ "gap": props.gap, "transform": CSS.transform(0) }}>
+			<div ref={container} class="container" style={{ "gap": props.gap, "transform": CSS.transform(0) }}>
 			{
 				Children.toArray(props.children).filter((child) => child.type === Carousel.Item).map((child) =>
 				{
@@ -239,5 +237,3 @@ Carousel.Wrapper = forwardRef(function Wrapper(props = { /* html */ id: null, cl
 		</section>
 	);
 });
-
-export default Carousel;
