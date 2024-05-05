@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
-import "./MyPage.css";
+import "./mypage.css";
 
 // 이미지
 import logoImg from "../../../shared/assets/icons/logo.svg";
@@ -75,7 +75,7 @@ const MyPage = () => {
 					<Box>
 						<a href="#none" className="logo">
 							{/* alt 속성은 이미지 엑박뜰 때 보이는 텍스트라서 알아보기 쉬운 문구로 하는 게 좋아요! */}
-							<logoImg alt="FANDOM-K" />
+							<img src={logoImg} alt="FANDOM-K" />
 						</a>
 					</Box>
 
@@ -99,7 +99,7 @@ const MyPage = () => {
 
 						<CarouselContainer>
 							<Arrow>
-								<leftArrow alt="line" />
+								<img src={leftArrow} alt="line" />
 							</Arrow>
 							<IdolList>
 								{idolList?.map((idol) => {
@@ -115,14 +115,14 @@ const MyPage = () => {
 								})}
 							</IdolList>
 							<Arrow>
-								<rightArrow alt="line" />
+								<img src={rightArrow} alt="line" />
 							</Arrow>
 						</CarouselContainer>
 					</IdolSection>
 
 					<Button onClick={setLocalStorage}>
 						<Icon>
-							<plusIcon alt="+" />
+							<img src={plusIcon} alt="+" />
 						</Icon>
 						<Span>추가하기</Span>
 					</Button>
@@ -178,14 +178,12 @@ const Arrow = styled.button`
 	min-width: 29px;
 	height: 135px;
 	border-radius: 4px;
-	background-color:${({ theme }) => theme.colors.black[0]};
 	opacity: 0.8;
 	border: 0;
 `;
 
 //추가하기 버튼
 const Button = styled.button`
-    background: ${({ theme }) => theme.colors.brand[0]};
 	padding: 11px 83px;
 	margin: 0 auto;
 	border-radius: 24px;
