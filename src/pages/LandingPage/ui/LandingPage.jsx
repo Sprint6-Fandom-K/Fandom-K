@@ -7,6 +7,7 @@ import HeaderBackgroundImage from "@/shared/assets/images/HeaderBackground.svg";
 import MainBackgroundImage1 from "@/shared/assets/images/MainBackground_1.svg";
 import MainBackgroundImage2 from "@/shared/assets/images/MainBackground_2.svg";
 import MainBackgroundImage3 from "@/shared/assets/images/MainBackground_3.svg";
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   background-color: #02000e;
@@ -25,7 +26,6 @@ const Header = styled.div`
     ),url(${props => props.imgurl});
   background-repeat: no-repeat;
 	background-position: center;
-
 
   @media only screen and (max-width: 744px){
     height: 1200px;
@@ -94,7 +94,7 @@ const HeaderLogo = styled.img`
   }
 `;
 
-const HeaderButotn = styled.button`
+const HeaderButton = styled.button`
   margin-top: 584px;
   width: 477px;
   height: 48px;
@@ -255,6 +255,7 @@ const Main = styled.div`
 
 
 export default function LandingPage() {
+	const navigate = useNavigate();
 	return (
 		<Container>
 			<Header imgurl={HeaderBackgroundImage}>
@@ -264,7 +265,7 @@ export default function LandingPage() {
 					가장 <span>쉽게 덕질</span> 하는 방법
 				</HeaderTitle>
 				<HeaderLogo src={LogoImage} alt='헤더로고' />
-				<HeaderButotn>지금 시작하기</HeaderButotn>
+				<HeaderButton onClick={() => navigate("/list")}>지금 시작하기</HeaderButton>
 			</Header>
 			<Main>
 				<MainGradient>

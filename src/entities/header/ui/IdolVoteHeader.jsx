@@ -32,7 +32,7 @@ const CancelButton = styled.button`
 	}
 `;
 
-export default function ({ gender, onCancel }) {
+export default function IdolVoteHeader({ gender, onCancel }) {
 	const { isMobile } = useCustomMediaQuery();
 	return (
 		<>

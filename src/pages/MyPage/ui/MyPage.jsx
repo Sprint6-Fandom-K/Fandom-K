@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
-import "./MyPage.css";
 
 // 이미지
 import logoImg from "../../../shared/assets/icons/logo.svg";

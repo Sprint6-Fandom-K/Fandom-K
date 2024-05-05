@@ -1,13 +1,12 @@
 import {} from "react"; import "./index.scss";
-import LandingPage from "@/pages/LandingPage/ui/LandingPage";
-import MyPage from "@/pages/MyPage/ui/MyPage";
-import ListPage from "@/pages/ListPage";
+
+import { Outlet } from "react-router-dom";
 
 export default function App()
 {
-	return <>
-		<LandingPage/>
-	<MyPage />
-	<ListPage></ListPage>
-	</>;
+	return (
+		<>
+			<Outlet/>
+		</>
+	);
 }
