@@ -11,7 +11,7 @@ export const MenuButtonDescription = styled.span`
 	letter-spacing: -0.16500002145767212px;
 `;
 
-export default function ({ onChange, gender, isfemale }) {
+export default function SelectGender({ onChange, gender, isfemale }) {
 	const handleMenuClick = (e) => {
 		if (gender === e.currentTarget.name) return;
 		onChange(e.currentTarget.name);
