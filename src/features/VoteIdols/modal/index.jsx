@@ -14,18 +14,11 @@ import { useInView } from "react-intersection-observer";
 import RefreshIcon from "@/shared/assets/icons/RefreshIcon";
 import { rotate } from "@/shared/styles/keyframes";
 
-const BackDrop = styled.div`
-	background-color: rgba(0, 0, 0, 0.6);
-	position: fixed;
-	inset: 0;
-	z-index: 1;
-`;
-
 const RotateIcon = styled(RefreshIcon)`
 	animation: ${rotate} 2s ease-in-out infinite;
 `;
 
-const Modal = styled.form`
+const VoteContainer = styled.form`
 	background-color: var(--black2);
 	color: white;
 	width: 525px;
@@ -38,8 +31,8 @@ const Modal = styled.form`
 		background-color: var(--black1);
 		background-image: url(${backgroundBlueSomething});
 		background-repeat: no-repeat;
-		height: 100%;
-		width: 100%;
+		height: 100vh;
+		width: 100vw;
 		z-index: 2;
 	}
 `;
@@ -66,7 +59,7 @@ const ModalContentContainer = styled(FlexContainer)`
 	position: relative;
 	overflow: auto;
 	@media (width<=767px) {
-		margin-top: 67px;
+		margin-top: 43px;
 		flex: 1;
 	}
 `;
@@ -129,48 +122,42 @@ export default function ({ onCancel, gender }) {
 
 	return (
 		<>
-			<BackDrop>
-				<Modal
-					aria-modal="true"
-					aria-labelledby="voteModal"
-					onSubmit={handleSubmit}
-				>
-					<FlexContainer $fd="column" $gap="20px">
-						<ModalHeader gender={gender} onCancel={onCancel} />
-						<ModalContentContainer $fd="column" $gap="8px">
-							{items.map((v, index) => (
-								<IdolVoteCard
-									key={v.id}
-									item={v}
-									index={index}
-									onSelect={setSelect}
-								/>
+			<VoteContainer onSubmit={handleSubmit}>
+				<FlexContainer $fd="column" $gap="20px">
+					<ModalHeader gender={gender} onCancel={onCancel} />
+					<ModalContentContainer $fd="column" $gap="8px">
+						{items.map((v, index) => (
+							<IdolVoteCard
+								key={v.id}
+								item={v}
+								index={index}
+								onSelect={setSelect}
+							/>
+						))}
+						{status.isLoading &&
+							Array.from(Array(10)).map((_, index) => (
+								<IdolVoteCardSkeleton key={index} />
 							))}
-							{status.isLoading &&
-								Array.from(Array(10)).map((_, index) => (
-									<IdolVoteCardSkeleton key={index} />
-								))}
-							{!status.isLoading && !isNoMoreItems ? (
-								<RefreshSection ref={ref}>
-									<RotateIcon />
-								</RefreshSection>
-							) : (
-								<RefreshSection></RefreshSection>
-							)}
-						</ModalContentContainer>
-						<VoteBottom>
-							<PinkButton type="submit" height="42px" disabled={!select}>
-								투표하기
-							</PinkButton>
-							<VoteBottomDescription>
-								투표하는 데{" "}
-								<CreditHighLight>{CREDIT_FOR_ONE_VOTE}</CreditHighLight>{" "}
-								크레딧이 소모됩니다.
-							</VoteBottomDescription>
-						</VoteBottom>
-					</FlexContainer>
-				</Modal>
-			</BackDrop>
+						{!status.isLoading && !isNoMoreItems ? (
+							<RefreshSection ref={ref}>
+								<RotateIcon />
+							</RefreshSection>
+						) : (
+							<RefreshSection></RefreshSection>
+						)}
+					</ModalContentContainer>
+					<VoteBottom>
+						<PinkButton type="submit" height="42px" disabled={!select}>
+							투표하기
+						</PinkButton>
+						<VoteBottomDescription>
+							투표하는 데{" "}
+							<CreditHighLight>{CREDIT_FOR_ONE_VOTE}</CreditHighLight> 크레딧이
+							소모됩니다.
+						</VoteBottomDescription>
+					</VoteBottom>
+				</FlexContainer>
+			</VoteContainer>
 		</>
 	);
 }

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { createPortal } from "react-dom";
 import VoteIdols from "@/features/VoteIdols/modal";
 import ChartButton from "@/shared/assets/icons/ChartButton";
+import Modal from "@/shared/ui/Modal";
 
 const ButtonDescription = styled.span`
 	color: white;
@@ -53,18 +54,11 @@ export default function CreateVoteModal({ gender }) {
 				<ChartButton />
 				<ButtonDescription>차트 투표하기</ButtonDescription>
 			</NewPinkButton>
-			{/* {showVoteModal && (
+			{showVoteModal && (
 				<Modal>
-					<VoteIdols onCancel={handleCancel}
-						gender={gender}
-						show={showVoteModal}/>
+					<VoteIdols onCancel={handleCancel} gender={gender} />
 				</Modal>
-			)} */}
-			{showVoteModal &&
-				createPortal(
-					<VoteIdols onCancel={handleCancel} gender={gender} />,
-					document.body,
-				)}
+			)}
 		</FlexContainer>
 	);
 }
