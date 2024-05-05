@@ -1,12 +1,14 @@
-import { FlexContainer, ImageContainer } from "@/shared/Container/Container";
+import { FlexContainer, ImageContainer } from "@/shared/ui/Container";
+
 import {
 	chartItemDescription,
 	chartItemIndex,
 	chartItemName,
-} from "@/shared/typo/typo";
+} from "@/shared/styles/typo";
 import styled from "styled-components";
+import { formatNumber } from "@/shared/utils/format";
 
-const NewFlexContainer = styled(FlexContainer)`
+export const IdolChartCardContainer = styled(FlexContainer)`
 	border-bottom: 1px solid #ffffff1a;
 	height: 85px;
 `;
@@ -26,14 +28,16 @@ const ChartItemIndex = styled.span`
 export default function IdolChartCard({ item, index }) {
 	const { group, name, profilePicture, totalVotes } = item;
 	return (
-		<NewFlexContainer $jc="space-between" $ai="center">
+		<IdolChartCardContainer $jc="space-between" $ai="center">
 			<FlexContainer $gap="12px" $ai="center">
 				<ImageContainer src={profilePicture} alt={`${name} 사진`} />
 				<ChartItemIndex>{index + 1}</ChartItemIndex>
 				<ChartItemName>{group}</ChartItemName>
 				<ChartItemName>{name}</ChartItemName>
 			</FlexContainer>
-			<ChartItemDescription>{totalVotes + "표"}</ChartItemDescription>
-		</NewFlexContainer>
+			<ChartItemDescription>
+				{formatNumber(totalVotes) + "표"}
+			</ChartItemDescription>
+		</IdolChartCardContainer>
 	);
 }

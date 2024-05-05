@@ -1,22 +1,23 @@
-import IdolChartCard from "@/entities/IdolChartCard";
-import { MenuButton } from "@/shared/Button";
-import { FlexContainer, FlexItemContainer } from "@/shared/Container/Container";
+import IdolChartCard from "@/entities/card/ui/IdolChartCard";
 import { getCharts } from "@/shared/api/api";
-import { useCustomMediaQuery } from "@/shared/hooks/useCustomMediaQuery";
 import { useGetData } from "@/shared/hooks/useGetData";
-import { MenuButtonDescription } from "@/shared/typo/typo";
+import IdolChartCardSkeleton from "@/entities/card/skeletons/IdolChartCardSkeleton";
 import { useEffect, useMemo, useState, useRef } from "react";
 import styled from "styled-components";
 
-import refresh from "@/shared/asset/icons8-refresh-30.png";
-import { rotate } from "@/shared/keyframes/keyframes";
 import { useInView } from "react-intersection-observer";
+import RefreshIcon from "@/shared/assets/icons/RefreshIcon";
+import { rotate } from "@/shared/styles/keyframes";
+
+const RotateIcon = styled(RefreshIcon)`
+	animation: ${rotate} 2s ease-in-out infinite;
+`;
 
 const ChartList = styled.ul`
 	width: 100%;
 	height: 418px;
 	overflow: auto;
-	display: grid;
+	display: ${({ $isdisplay }) => ($isdisplay === "true" ? "none" : "grid")};
 	column-gap: 24px;
 	grid-template: repeat(${({ $numbers }) => Math.floor($numbers / 2)}, 1fr) / 1fr 1fr;
 	@media (width<=1199px) {
@@ -32,97 +33,56 @@ const RefreshSection = styled.div`
 	align-items: center;
 `;
 
-const RefreshImg = styled.img`
-	animation: ${rotate} 1s linear infinite;
-`;
-
-export default function SortChart({ onChange, gender }) {
+export default function SortChart({ gender, isfemale }) {
 	const rootRef = useRef(null);
 	const [items, setItems] = useState([]);
-	const [moreItems, setMoreItems] = useState(0);
+	const [pageLimit, setPageLimit] = useState(10);
+	const [cursor, setCursor] = useState(null);
 
 	const [status, wrappedFunction] = useGetData(getCharts);
-	const { isNotDesktop } = useCustomMediaQuery();
-	const { ref, inView, entry } = useInView({
+	const { ref, inView } = useInView({
 		threshold: 1,
 		root: rootRef.current,
 	});
-
-	const numberOfItem = useMemo(
-		() => (isNotDesktop ? 5 + moreItems : 10 + moreItems * 2),
-		[moreItems, isNotDesktop],
-	);
 	const sortedItems = useMemo(() => {
-		const sortedData = items.sort((a, b) => a.totalVotes > b.totalVotes);
-		const SlicedData = sortedData.slice(0, numberOfItem);
-		return SlicedData;
-	}, [numberOfItem, items]);
+		return items.sort((a, b) => a.totalVotes > b.totalVotes);
+	}, [items]);
 
-	const isMale = gender == "male";
-	const noMoreItem = numberOfItem < items.length;
-
-	const handleMenuClick = (e) => {
-		if (gender === e.currentTarget.name) return;
-		onChange(e.currentTarget.name);
-	};
+	const isNoMoreItems = cursor === null && pageLimit >= items.length;
 
 	useEffect(() => {
-		let fetchData = async () => {
-			const data = await wrappedFunction({ gender });
-			if (!data) return;
-			setItems((prevItem) => data);
-		};
-		fetchData();
-		return () => (fetchData = null);
-	}, [gender]);
-
-	useEffect(() => {
-		setMoreItems((prevItem) => 0);
-	}, [isNotDesktop, gender]);
-
-	useEffect(() => {
-		if (inView) setMoreItems((prevMoreItems) => prevMoreItems + 5);
+		async function executeRefresh() {
+			const { idols, nextCursor } = await wrappedFunction({
+				gender,
+				cursor,
+			});
+			if (!idols) return;
+			setCursor(nextCursor);
+			setItems([...items, ...idols]);
+			setPageLimit(pageLimit + 10);
+		}
+		if (inView) {
+			executeRefresh();
+		} else if (items.length === 0) {
+			executeRefresh();
+		}
+		return () => (executeRefresh = null);
 	}, [inView]);
 
 	return (
-		<>
-			<FlexContainer>
-				<FlexItemContainer $flex="1">
-					<MenuButton
-						name="female"
-						onClick={handleMenuClick}
-						$isactive={`${!isMale}`}
-					>
-						<MenuButtonDescription>이달의 여자 아이돌</MenuButtonDescription>
-					</MenuButton>
-				</FlexItemContainer>
-				<FlexItemContainer $flex="1">
-					<MenuButton
-						name="male"
-						onClick={handleMenuClick}
-						$isactive={`${isMale}`}
-					>
-						<MenuButtonDescription>이달의 남자 아이돌</MenuButtonDescription>
-					</MenuButton>
-				</FlexItemContainer>
-			</FlexContainer>
-			<ChartList $numbers={numberOfItem} ref={rootRef}>
-				{status.isLoading ? (
-					<div>로딩화면</div>
-				) : (
-					<>
-						{sortedItems?.map((item, index) => (
-							<IdolChartCard key={item.id} item={item} index={index} />
-						))}
-						{noMoreItem && (
-							<RefreshSection ref={ref}>
-								<div>{inView}</div>
-								<RefreshImg src={refresh} />
-							</RefreshSection>
-						)}
-					</>
-				)}
-			</ChartList>
-		</>
+		<ChartList $numbers={pageLimit} ref={rootRef} $isdisplay={`${isfemale}`}>
+			{sortedItems?.map((item, index) => (
+				<IdolChartCard key={item.id} item={item} index={index} />
+			))}
+			{status.isLoading &&
+				Array.from(Array(10)).map((v, index) => (
+					<IdolChartCardSkeleton key={index} />
+				))}
+			{!status.isLoading && !isNoMoreItems && (
+				<RefreshSection ref={ref}>
+					<RotateIcon />
+				</RefreshSection>
+			)}
+		</ChartList>
 	);
 }
