@@ -1,10 +1,15 @@
-import { } from "react"; import "./index.scss";
+import { MainContainer, MainContentContainer } from "@/shared/ui/Container";
+import MonthChart from "@/widgets/MonthChart";
 import PendingDonations from "@/widgets/PendingDonations";
 
-export default function ListPage()
-{
-
+export default function ListPage() {
 	return (
-		<PendingDonations></PendingDonations>
+		<MainContainer>
+			<MainContentContainer>
+				{/* 크레딧 widget */}
+				<PendingDonations></PendingDonations>
+				<MonthChart />
+			</MainContentContainer>
+		</MainContainer>
 	);
 }
