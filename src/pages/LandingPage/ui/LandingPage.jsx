@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import LogoImage from "@/shared/assets/HeaderLogo.svg";
-import ContentImage1 from "@/shared/assets/MainContent_1.svg";
-import ContentImage2 from "@/shared/assets/MainContent_2.svg";
-import ContentImage3 from "@/shared/assets/MainContent_3.svg";
-import HeaderBackgroundImage from "@/shared/assets/HeaderBackground.svg";
-import MainBackgroundImage1 from "@/shared/assets/MainBackground_1.svg";
-import MainBackgroundImage2 from "@/shared/assets/MainBackground_2.svg";
-import MainBackgroundImage3 from "@/shared/assets/MainBackground_3.svg";
+import LogoImage from "@/shared/assets/images/HeaderLogo.svg";
+import ContentImage1 from "@/shared/assets/images/MainContent_1.svg";
+import ContentImage2 from "@/shared/assets/images/MainContent_2.svg";
+import ContentImage3 from "@/shared/assets/images/MainContent_3.svg";
+import HeaderBackgroundImage from "@/shared/assets/images/HeaderBackground.svg";
+import MainBackgroundImage1 from "@/shared/assets/images/MainBackground_1.svg";
+import MainBackgroundImage2 from "@/shared/assets/images/MainBackground_2.svg";
+import MainBackgroundImage3 from "@/shared/assets/images/MainBackground_3.svg";
 
 const Container = styled.div`
   background-color: #02000e;

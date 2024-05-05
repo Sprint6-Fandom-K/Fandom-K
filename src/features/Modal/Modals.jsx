@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
 import { useState } from "react";
-import Credit from "@/shared/assets/Credit.svg";
-import Close from "@/shared/assets/CloseX.svg";
+import Credit from "@/shared/assets/icons/Credit.svg";
+import Close from "@/shared/assets/icons/CloseX.svg";
 import styled from "styled-components";
 
 const CloseButton = styled.button`
