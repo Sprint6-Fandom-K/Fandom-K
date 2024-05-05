@@ -1,182 +1,70 @@
-import IdolVoteCard from "@/entities/IdolVoteCard";
-import IdolVoteCardSkeleton from "@/entities/IdolVoteCard/IdolVoteCardSkeleton";
-import ModalHeader from "@/entities/IdolVoteHeader";
+import { PinkButton } from "@/shared/ui/Button";
+import { FlexContainer } from "@/shared/ui/Container";
+import { useCallback, useState } from "react";
 import styled from "styled-components";
+import { createPortal } from "react-dom";
+import VoteIdols from "@/features/VoteIdols/modal";
+import ChartButton from "@/shared/assets/icons/ChartButton";
 
-import backgroundBlueSomething from "@/shared/assets/images/backgroundBlueSomething.svg";
-import { FlexContainer } from "@/shared/Container/Container";
-import { PinkButton } from "@/shared/Button";
-import { modalDescription } from "@/shared/typo/typo";
-import { CREDIT_FOR_ONE_VOTE } from "@/shared/constant/constant";
-import { useGetData } from "@/shared/hooks/useGetData";
-import { getCharts } from "@/shared/api/api";
-import { useEffect, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
-
-import refresh from "@/shared/assets/icons/icons8-refresh-30.png";
-
-const BackDrop = styled.div`
-	background-color: rgba(0, 0, 0, 0.6);
-	position: absolute;
-	inset: 0;
-	z-index: 1;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	@media (width<=767px) {
-		background-color: #02000e;
-	}
-`;
-
-const Modal = styled.form`
-	background-color: #181d26;
+const ButtonDescription = styled.span`
 	color: white;
-	width: 525px;
-	height: 693px;
-	border: none;
-	overflow: auto;
-	padding: 24px 24px 12px;
-	border-radius: 12px;
+	word-break: keep-all;
+	width: 72px;
+	height: 26px;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 26px;
+	letter-spacing: 0.02em;
+	text-align: left;
+`;
+
+const SubTitle = styled.span`
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 26px;
+	text-align: left;
+	color: white;
+	@media (width<=1199px) {
+		font-size: 20px;
+	}
 	@media (width<=767px) {
-		background-color: inherit;
-		background-image: url(${backgroundBlueSomething});
-		background-repeat: no-repeat;
-		height: 100%;
-		width: 100%;
-		z-index: 2;
+		font-size: 16px;
 	}
 `;
 
-const VoteButton = styled(PinkButton).attrs({ type: "submit" })`
-	@media (width<=767px) {
-		position: relative;
-		left: 0;
-		right: 0;
-	}
-`;
-
-const VoteBottom = styled(FlexContainer)`
+const NewPinkButton = styled(PinkButton)`
 	display: flex;
-	flex-direction: column;
-	gap: 8px;
-	@media (width<=767px) {
-		background-color: #02000ecc;
-		position: fixed;
-		bottom: 0;
-		gap: 12px;
-		z-index: 1;
-		padding: 16px 24px 14px;
-		left: 0;
-		right: 0;
-		height: 106px;
-	}
-`;
-
-const ModalContentContainer = styled(FlexContainer)`
-	height: 514px;
-	position: relative;
-	overflow: auto;
-	@media (width<=767px) {
-		margin-top: 67px;
-		flex: 1;
-	}
-`;
-
-const VoteBottomDescription = styled.div`
-	text-align: center;
-	${modalDescription};
-`;
-
-const CreditHighLight = styled.span`
-	color: var(--orange);
-`;
-
-const RefreshSection = styled.div`
-	height: 78px;
-	width: 100%;
-	display: flex;
-	justify-content: center;
 	align-items: center;
+	gap: 4px;
 `;
 
-export default function ({ onCancel, gender }) {
-	const [status, wrappedFunction] = useGetData(getCharts);
-	const [cursor, setCursor] = useState(0);
-	const [items, setItems] = useState([]);
-	const [pageLimit, setPageLimit] = useState(10);
-	const [select, setSelect] = useState(false);
-	const lastCardRef = useRef(null);
+export default function CreateVoteModal({ gender }) {
+	const [showVoteModal, setShowVoteModal] = useState(false);
 
-	const isNoMoreItems = cursor === null && pageLimit >= items.length;
+	const handleClick = useCallback(() => setShowVoteModal(true), []);
 
-	const { ref, inView } = useInView({
-		threshold: 1,
-		root: lastCardRef.current,
-	});
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-	};
-
-	useEffect(() => {
-		async function executeRefresh() {
-			const { idols, nextCursor } = await wrappedFunction({
-				gender,
-				cursor,
-			});
-			if (!idols) return;
-			setCursor(nextCursor);
-			setItems([...items, ...idols]);
-			setPageLimit(pageLimit + 10);
-		}
-		if (inView) executeRefresh();
-		return () => (executeRefresh = null);
-	}, [inView]);
+	const handleCancel = useCallback(() => setShowVoteModal(false), []);
 
 	return (
-		<>
-			<BackDrop>
-				<Modal
-					open
-					aria-modal="true"
-					aria-labelledby="voteModal"
-					onSubmit={handleSubmit}
-				>
-					<FlexContainer $fd="column" $gap="20px">
-						<ModalHeader gender={gender} onCancel={onCancel} />
-						<ModalContentContainer $fd="column" $gap="8px">
-							{items.map((v, index) => (
-								<IdolVoteCard
-									key={v.id}
-									item={v}
-									index={index}
-									onSelect={setSelect}
-								/>
-							))}
-							{((!status.isLoading && !isNoMoreItems) ||
-								items.length === 0) && (
-								<RefreshSection ref={ref}>
-									<img src={refresh} />
-								</RefreshSection>
-							)}
-							{status.isLoading &&
-								Array.from(Array(10)).map((_, index) => (
-									<IdolVoteCardSkeleton key={index} />
-								))}
-						</ModalContentContainer>
-						<VoteBottom>
-							<VoteButton width="auto" height="42px" disabled={!select}>
-								투표하기
-							</VoteButton>
-							<VoteBottomDescription>
-								투표하는 데{" "}
-								<CreditHighLight>{CREDIT_FOR_ONE_VOTE}</CreditHighLight>{" "}
-								크레딧이 소모됩니다.
-							</VoteBottomDescription>
-						</VoteBottom>
-					</FlexContainer>
+		<FlexContainer $jc="space-between">
+			<SubTitle>이달의 차트</SubTitle>
+
+			<NewPinkButton onClick={handleClick} height="32px" width="128px">
+				<ChartButton />
+				<ButtonDescription>차트 투표하기</ButtonDescription>
+			</NewPinkButton>
+			{/* {showVoteModal && (
+				<Modal>
+					<VoteIdols onCancel={handleCancel}
+						gender={gender}
+						show={showVoteModal}/>
 				</Modal>
-			</BackDrop>
-		</>
+			)} */}
+			{showVoteModal &&
+				createPortal(
+					<VoteIdols onCancel={handleCancel} gender={gender} />,
+					document.body,
+				)}
+		</FlexContainer>
 	);
 }

@@ -1,7 +1,7 @@
-import { FlexContainer } from "@/shared/Container/Container";
-import skeletonStyle from "@/shared/skeleton/skeletonStyle";
+import { FlexContainer } from "@/shared/ui/Container";
+import skeletonStyle from "@/shared/styles/skeletonStyle";
 import styled from "styled-components";
-import { IdolVoteCardContainer } from ".";
+import { IdolVoteCardContainer } from "../ui/IdolVoteCard";
 
 const SkeletonImageContainer = styled.div`
 	width: 70px;

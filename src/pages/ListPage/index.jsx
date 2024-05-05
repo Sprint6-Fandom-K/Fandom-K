@@ -1,7 +1,4 @@
-import {
-	MainContainer,
-	MainContentContainer,
-} from "@/shared/Container/Container";
+import { MainContainer, MainContentContainer } from "@/shared/ui/Container";
 import MonthChart from "@/widgets/MonthChart";
 
 export default function ListPage() {

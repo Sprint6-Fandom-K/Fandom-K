@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-import { skeleton } from "../keyframes/keyframes";
+import { skeleton } from "./keyframes";
 
 export default css`
 	background-color: #363636;

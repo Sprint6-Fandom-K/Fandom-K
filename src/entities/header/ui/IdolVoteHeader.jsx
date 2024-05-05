@@ -1,13 +1,13 @@
 import ArrowLeft from "@/shared/assets/icons/ArrowLeft";
 import ModalCancelIcon from "@/shared/assets/icons/ModalCancelIcon";
 import { useCustomMediaQuery } from "@/shared/hooks/useCustomMediaQuery";
-import { ModalTitleTypo } from "@/shared/typo/typo";
+import { modalTitleTypo } from "@/shared/styles/typo";
 import styled from "styled-components";
 
 const VoteTitle = styled.h2`
 	display: flex;
 	align-items: center;
-	${ModalTitleTypo}
+	${modalTitleTypo}
 `;
 
 const VoteHeaderContainer = styled.div`
