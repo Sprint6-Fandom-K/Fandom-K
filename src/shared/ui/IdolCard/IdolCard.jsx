@@ -6,7 +6,15 @@ import checkIcon from "../../assets/icons/Checkmark.svg";
 import deleteIcon from "@/shared/assets/icons/DeleteIcon.svg";
 
 const IdolCard = (props) => {
-	const { info, padding, width, onClick, remove } = props;
+	const {
+		info,
+		padding,
+		width,
+		chooseIdol,
+		remove,
+		deleteIdol,
+		pointerEvents,
+	} = props;
 	const isAddingMode = useContext(SelectContext);
 	const { profilePicture, name, group } = info;
 	const [isSelected, setIsSelected] = useState(false);
@@ -19,12 +27,16 @@ const IdolCard = (props) => {
 
 	const handleCardClick = () => {
 		setIsSelected(!isSelected);
-		onClick();
+		chooseIdol();
 	};
 
 	return (
 		<Card width={width}>
-			<ImgArea padding={padding} onClick={handleCardClick}>
+			<ImgArea
+				padding={padding}
+				pointerEvents={pointerEvents}
+				onClick={handleCardClick}
+			>
 				<Img src={profilePicture} />
 				{isSelected && isAddingMode && (
 					<Check padding={padding}>
@@ -39,7 +51,7 @@ const IdolCard = (props) => {
 				<Group>{group}</Group>
 			</TextArea>
 			{remove && (
-				<DeleteButton>
+				<DeleteButton onClick={deleteIdol}>
 					<img src={deleteIcon} />
 				</DeleteButton>
 			)}
@@ -64,6 +76,7 @@ const ImgArea = styled.div`
 	cursor: pointer;
 	aspect-ratio: 1 / 1;
 	position: relative;
+	pointer-events: ${({ pointerEvents }) => pointerEvents ?? "auto"};
 `;
 
 const Check = styled.div`

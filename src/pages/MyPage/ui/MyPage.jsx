@@ -31,8 +31,8 @@ const MyPage = () => {
 	const [isAddingMode, setIsAddingMode] = useState(true); // 추가하기 모드 상태
 
 	// 관심있는 아이돌 localStorage 업데이트
-	const setLocalStorage = () => {
-		const string = JSON.stringify(interestIdols);
+	const setLocalStorage = (data) => {
+		const string = JSON.stringify(data);
 		window.localStorage.setItem(LOCAL_STORAGE_KEY, string);
 		setLocalStorageData(() => getLocalStorage());
 		setIsAddingMode(false); // 추가하기 모드 해제
@@ -56,6 +56,14 @@ const MyPage = () => {
 				return deleteList;
 			}
 		});
+	};
+
+	// 관심있는 아이돌 삭제 함수
+	const deleteIdol = (idol) => {
+		const LocalStorageData = getLocalStorage();
+		const updateData = LocalStorageData.filter((data) => data.id !== idol.id);
+		setLocalStorage(updateData);
+		console.log(updateData, "dyrjdi");
 	};
 
 	// 아이돌 목록 불러오기
@@ -98,6 +106,8 @@ const MyPage = () => {
 											padding="7.14"
 											width="98"
 											remove={true}
+											pointerEvents="none"
+											deleteIdol={() => deleteIdol(idol)}
 										/>
 									);
 								})}
@@ -121,7 +131,7 @@ const MyPage = () => {
 												key={idol.id}
 												info={idol}
 												padding="6.48"
-												onClick={() => handleClickIdolList(idol)}
+												chooseIdol={() => handleClickIdolList(idol)}
 											/>
 										);
 									})}
@@ -132,7 +142,7 @@ const MyPage = () => {
 							</CarouselContainer>
 						</IdolSection>
 
-						<Button onClick={setLocalStorage}>
+						<Button onClick={() => setLocalStorage(interestIdols)}>
 							<Icon>
 								<img src={plusIcon} alt="+" />
 							</Icon>
