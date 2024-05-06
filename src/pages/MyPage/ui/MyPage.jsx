@@ -10,6 +10,7 @@ import myLogo from "../../../shared/assets/icons/my_logo.svg";
 import leftArrow from "../../../shared/assets/icons/left_arrow.svg";
 import rightArrow from "../../../shared/assets/icons/right_arrow.svg";
 import plusIcon from "../../../shared/assets/icons/Ic_plus_24px.svg";
+import { Link } from "react-router-dom";
 
 const LOCAL_STORAGE_KEY = "interest";
 
@@ -82,14 +83,14 @@ const MyPage = () => {
 			<Inner>
 				<Header>
 					<Box>
-						<a href="#none" className="logo">
+						<Link to="/">
 							<img src={logoImg} alt="FANDOM-K" />
-						</a>
+						</Link>
 					</Box>
 
-					<a href="#none">
+					<Link href="/mypage">
 						<img src={myLogo} alt="마이페이지" />
-					</a>
+					</Link>
 				</Header>
 
 				<SelectContext.Provider value={isAddingMode}>
