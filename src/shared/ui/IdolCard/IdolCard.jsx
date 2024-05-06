@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { SelectContext } from "@/pages/MyPage/ui/MyPage";
 
 import checkIcon from "../../assets/icons/Checkmark.svg";
 
 const IdolCard = (props) => {
-	const { info, padding, onClick, select } = props;
+	const { info, padding, onClick } = props;
+	const isAddingMode = useContext(SelectContext);
 	const { profilePicture, name, group } = info;
-	const [isSelect, setIsSelect] = useState(select);
+	const [isSelected, setIsSelected] = useState(false);
 
 	useEffect(() => {
-		console.log(select, "effect");
-	}, [isSelect]);
+		if (!isAddingMode) {
+			setIsSelected(false);
+		}
+	}, [isAddingMode]);
 
 	const handleCardClick = () => {
-		setIsSelect(!isSelect);
+		setIsSelected(!isSelected);
 		onClick();
 	};
 
@@ -21,7 +25,7 @@ const IdolCard = (props) => {
 		<Card>
 			<ImgArea padding={padding} onClick={handleCardClick}>
 				<Img src={profilePicture} />
-				{isSelect && (
+				{isSelected && isAddingMode && (
 					<Check padding={padding}>
 						<CheckIconBox>
 							<img src={checkIcon} />

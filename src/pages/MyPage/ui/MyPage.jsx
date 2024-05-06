@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import getIdols from "@/shared/api/idols";
@@ -19,23 +19,25 @@ const getLocalStorage = () => {
 	return list && list.length > 0 ? list : [];
 };
 
+export const SelectContext = createContext();
+
 const MyPage = () => {
 	const [idolList, setIdolList] = useState([]); // 아이돌 목록 state
 	const [interestIdols, setInterestIdols] = useState(() => getLocalStorage()); // 관심있는 아이돌 목록 state
-	const [isSelect, setIsSelect] = useState(null);
+	const [isAddingMode, setIsAddingMode] = useState(true); // 추가하기 모드 상태
 
 	// 관심있는 아이돌 localStorage 업데이트
 	const setLocalStorage = () => {
 		const string = JSON.stringify(interestIdols);
 		window.localStorage.setItem(LOCAL_STORAGE_KEY, string);
-		setIsSelect(true);
+		setIsAddingMode(false); // 추가하기 모드 해제
 	};
 
 	// 아이돌 목록에서 체크하면 관심있는 아이돌 state 업데이트
 	const handleClickIdolList = (target) => {
 		// localStorage에 저장된 데이터
-		setIsSelect(false);
 		const localStorageData = getLocalStorage();
+		setIsAddingMode(true);
 
 		setInterestIdols((prev) => {
 			if (!prev.some((item) => item.id === target.id)) {
@@ -60,10 +62,6 @@ const MyPage = () => {
 	};
 
 	useEffect(() => {
-		// idols를 업데이트 해줘야함
-	}, [interestIdols]);
-
-	useEffect(() => {
 		getIdolList();
 	}, []);
 
@@ -83,49 +81,50 @@ const MyPage = () => {
 					</a>
 				</Header>
 
-				<Page>
-					{/* 관심있는 아이돌 */}
-					<IdolSection>
-						<Title>내가 관심있는 아이돌</Title>
-						<Box>{/* <IdolCard /> */}</Box>
-					</IdolSection>
+				<SelectContext.Provider value={isAddingMode}>
+					<Page>
+						{/* 관심있는 아이돌 */}
+						<IdolSection>
+							<Title>내가 관심있는 아이돌</Title>
+							<Box>{/* <IdolCard /> */}</Box>
+						</IdolSection>
 
-					<Hr />
+						<Hr />
 
-					{/* 아이돌 목록 */}
-					<IdolSection>
-						<Title>관심 있는 아이돌을 추가해보세요.</Title>
+						{/* 아이돌 목록 */}
+						<IdolSection>
+							<Title>관심 있는 아이돌을 추가해보세요.</Title>
 
-						<CarouselContainer>
-							<Arrow>
-								<img src={leftArrow} alt="line" />
-							</Arrow>
-							<IdolList>
-								{idolList?.map((idol) => {
-									return (
-										<IdolCard
-											key={idol.id}
-											info={idol}
-											padding="6.48"
-											select={isSelect}
-											onClick={() => handleClickIdolList(idol)}
-										/>
-									);
-								})}
-							</IdolList>
-							<Arrow>
-								<img src={rightArrow} alt="line" />
-							</Arrow>
-						</CarouselContainer>
-					</IdolSection>
+							<CarouselContainer>
+								<Arrow>
+									<img src={leftArrow} alt="이전" />
+								</Arrow>
+								<IdolList>
+									{idolList?.map((idol) => {
+										return (
+											<IdolCard
+												key={idol.id}
+												info={idol}
+												padding="6.48"
+												onClick={() => handleClickIdolList(idol)}
+											/>
+										);
+									})}
+								</IdolList>
+								<Arrow>
+									<img src={rightArrow} alt="다음" />
+								</Arrow>
+							</CarouselContainer>
+						</IdolSection>
 
-					<Button onClick={setLocalStorage}>
-						<Icon>
-							<img src={plusIcon} alt="+" />
-						</Icon>
-						<Span>추가하기</Span>
-					</Button>
-				</Page>
+						<Button onClick={setLocalStorage}>
+							<Icon>
+								<img src={plusIcon} alt="+" />
+							</Icon>
+							<Span>추가하기</Span>
+						</Button>
+					</Page>
+				</SelectContext.Provider>
 			</Inner>
 		</Container>
 	);
@@ -143,6 +142,7 @@ const Inner = styled.div`
 	margin: 0 auto;
 	padding: 0 24px;
 	box-sizing: content-box;
+	background-color: #02000e;
 `;
 
 //헤더
@@ -196,9 +196,6 @@ const Button = styled.button`
 	gap: 8px;
 `;
 
-
-
-
 //추가하기 버튼의 +아이콘
 const Icon = styled.div`
 	width: 24px;
@@ -248,7 +245,5 @@ const IdolList = styled.ul`
 		grid-template-columns: repeat(6, 1fr);
 	} */
 `;
-
-
 
 export default MyPage;
