@@ -6,15 +6,7 @@ import checkIcon from "../../assets/icons/Checkmark.svg";
 import deleteIcon from "@/shared/assets/icons/DeleteIcon.svg";
 
 const IdolCard = (props) => {
-	const {
-		info,
-		padding,
-		width,
-		chooseIdol,
-		remove,
-		deleteIdol,
-		pointerEvents,
-	} = props;
+	const { info, padding, width, chooseIdol, remove, deleteIdol } = props;
 	const isAddingMode = useContext(SelectContext);
 	const { profilePicture, name, group } = info;
 	const [isSelected, setIsSelected] = useState(false);
@@ -26,15 +18,17 @@ const IdolCard = (props) => {
 	}, [isAddingMode]);
 
 	const handleCardClick = () => {
-		setIsSelected(!isSelected);
-		chooseIdol();
+		if (typeof chooseIdol === "function") {
+			setIsSelected(!isSelected);
+			chooseIdol();
+		}
 	};
 
 	return (
 		<Card width={width}>
 			<ImgArea
 				padding={padding}
-				pointerEvents={pointerEvents}
+				pointerEvents={typeof chooseIdol === "function" ? "auto" : "none"}
 				onClick={handleCardClick}
 			>
 				<Img src={profilePicture} />

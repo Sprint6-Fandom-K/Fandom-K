@@ -24,11 +24,8 @@ export const SelectContext = createContext();
 
 const MyPage = () => {
 	const [idolList, setIdolList] = useState([]); // 아이돌 목록 state
-	const [interestIdols, setInterestIdols] = useState(() => getLocalStorage()); // 관심있는 아이돌 목록 state
-	const [localStorageData, setLocalStorageData] = useState(() =>
-		// localStorage 데이터
-		getLocalStorage(),
-	);
+	const [interestIdols, setInterestIdols] = useState(getLocalStorage()); // 관심있는 아이돌 목록 state
+	const [localStorageData, setLocalStorageData] = useState(getLocalStorage()); // localStorage 데이터
 	const [isAddingMode, setIsAddingMode] = useState(true); // 추가하기 모드 상태
 
 	// 관심있는 아이돌 localStorage 업데이트
@@ -63,8 +60,8 @@ const MyPage = () => {
 	const deleteIdol = (idol) => {
 		const LocalStorageData = getLocalStorage();
 		const updateData = LocalStorageData.filter((data) => data.id !== idol.id);
+		setInterestIdols(updateData);
 		setLocalStorage(updateData);
-		console.log(updateData, "dyrjdi");
 	};
 
 	// 아이돌 목록 불러오기
@@ -107,7 +104,6 @@ const MyPage = () => {
 											padding="7.14"
 											width="98"
 											remove={true}
-											pointerEvents="none"
 											deleteIdol={() => deleteIdol(idol)}
 										/>
 									);
