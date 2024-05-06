@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { SelectContext } from "@/pages/MyPage/ui/MyPage";
 
 import checkIcon from "../../assets/icons/Checkmark.svg";
+import deleteIcon from "@/shared/assets/icons/DeleteIcon.svg";
 
 const IdolCard = (props) => {
-	const { info, padding, onClick } = props;
+	const { info, padding, width, onClick, remove } = props;
 	const isAddingMode = useContext(SelectContext);
 	const { profilePicture, name, group } = info;
 	const [isSelected, setIsSelected] = useState(false);
@@ -22,7 +23,7 @@ const IdolCard = (props) => {
 	};
 
 	return (
-		<Card>
+		<Card width={width}>
 			<ImgArea padding={padding} onClick={handleCardClick}>
 				<Img src={profilePicture} />
 				{isSelected && isAddingMode && (
@@ -37,14 +38,22 @@ const IdolCard = (props) => {
 				<Name>{name}</Name>
 				<Group>{group}</Group>
 			</TextArea>
+			{remove && (
+				<DeleteButton>
+					<img src={deleteIcon} />
+				</DeleteButton>
+			)}
 		</Card>
 	);
 };
 
 const Card = styled.li`
+	position: relative;
 	display: grid;
 	gap: 8px;
 	background-color: #02000e;
+	width: ${({ width }) => width}px;
+	flex: 0 0 auto;
 `;
 
 const ImgArea = styled.div`
@@ -75,6 +84,19 @@ const Check = styled.div`
 `;
 
 const CheckIconBox = styled.div``;
+
+const DeleteButton = styled.button`
+	position: absolute;
+	top: 0;
+	right: 0;
+	border-radius: 50%;
+	background-color: #fff;
+	aspect-ratio: 1 / 1;
+	border: 2.87px solid #02000e;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
 
 const Img = styled.img`
 	width: 100%;

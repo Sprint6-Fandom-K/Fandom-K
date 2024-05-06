@@ -31,6 +31,10 @@ body,
 	touch-action: none;
 }
 
+button {
+	cursor: pointer;
+}
+
 /* desktop */
 @media screen and (1200px <= width) {
 	.hide-on-pc {

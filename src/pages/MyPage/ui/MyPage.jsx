@@ -24,19 +24,23 @@ export const SelectContext = createContext();
 const MyPage = () => {
 	const [idolList, setIdolList] = useState([]); // 아이돌 목록 state
 	const [interestIdols, setInterestIdols] = useState(() => getLocalStorage()); // 관심있는 아이돌 목록 state
+	const [localStorageData, setLocalStorageData] = useState(() =>
+		// localStorage 데이터
+		getLocalStorage(),
+	);
 	const [isAddingMode, setIsAddingMode] = useState(true); // 추가하기 모드 상태
 
 	// 관심있는 아이돌 localStorage 업데이트
 	const setLocalStorage = () => {
 		const string = JSON.stringify(interestIdols);
 		window.localStorage.setItem(LOCAL_STORAGE_KEY, string);
+		setLocalStorageData(() => getLocalStorage());
 		setIsAddingMode(false); // 추가하기 모드 해제
 	};
 
 	// 아이돌 목록에서 체크하면 관심있는 아이돌 state 업데이트
 	const handleClickIdolList = (target) => {
 		// localStorage에 저장된 데이터
-		const localStorageData = getLocalStorage();
 		setIsAddingMode(true);
 
 		setInterestIdols((prev) => {
@@ -71,7 +75,6 @@ const MyPage = () => {
 				<Header>
 					<Box>
 						<a href="#none" className="logo">
-							{/* alt 속성은 이미지 엑박뜰 때 보이는 텍스트라서 알아보기 쉬운 문구로 하는 게 좋아요! */}
 							<img src={logoImg} alt="FANDOM-K" />
 						</a>
 					</Box>
@@ -86,7 +89,19 @@ const MyPage = () => {
 						{/* 관심있는 아이돌 */}
 						<IdolSection>
 							<Title>내가 관심있는 아이돌</Title>
-							<Box>{/* <IdolCard /> */}</Box>
+							<InterestIdolList>
+								{localStorageData.map((idol) => {
+									return (
+										<IdolCard
+											key={idol.id}
+											info={idol}
+											padding="7.14"
+											width="98"
+											remove={true}
+										/>
+									);
+								})}
+							</InterestIdolList>
 						</IdolSection>
 
 						<Hr />
@@ -244,6 +259,12 @@ const IdolList = styled.ul`
 		gap: 24px;
 		grid-template-columns: repeat(6, 1fr);
 	} */
+`;
+
+const InterestIdolList = styled.ul`
+	display: flex;
+	overflow-x: scroll;
+	gap: 22px;
 `;
 
 export default MyPage;
