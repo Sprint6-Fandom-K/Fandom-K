@@ -1,9 +1,9 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
+
 import styled from "styled-components";
 
 import getIdols from "@/shared/api/idols";
@@ -15,7 +15,6 @@ import myLogo from "../../../shared/assets/icons/my_logo.svg";
 import leftArrow from "../../../shared/assets/icons/left_arrow.svg";
 import rightArrow from "../../../shared/assets/icons/right_arrow.svg";
 import plusIcon from "../../../shared/assets/icons/Ic_plus_24px.svg";
-import { Link } from "react-router-dom";
 
 const LOCAL_STORAGE_KEY = "interest";
 
@@ -28,6 +27,11 @@ const getLocalStorage = () => {
 export const SelectContext = createContext();
 
 const MyPage = () => {
+	//ref
+	const swiperRef = useRef(null);
+	//state
+	const [firstSwiperState, setFirstSwiperState] = useState(true);
+	const [idolPageData, setIdolPageData] = useState([]); // swiper 돌릴 데이터
 	const [idolList, setIdolList] = useState([]); // 아이돌 목록 state
 	const [interestIdols, setInterestIdols] = useState(getLocalStorage()); // 관심있는 아이돌 목록 state
 	const [localStorageData, setLocalStorageData] = useState(getLocalStorage()); // localStorage 데이터
@@ -73,8 +77,22 @@ const MyPage = () => {
 	const getIdolList = async () => {
 		const lists = await getIdols();
 		const { list } = lists;
-		console.log(lists, "list");
 		setIdolList(list);
+		// setIdolPageData([list]);
+
+		setIdolPageData((prev) => {
+			return [...prev, list];
+		});
+	};
+
+	// 스와이퍼 다음 페이지 불러오기
+	const getIdolPageData = async () => {
+		const lists = await getIdols(nextcursor);
+		const { list } = lists;
+
+		setIdolPageData((prev) => {
+			return [...prev, list];
+		});
 	};
 
 	useEffect(() => {
@@ -95,7 +113,6 @@ const MyPage = () => {
 						<img src={myLogo} alt="마이페이지" />
 					</Link>
 				</Header>
-
 				<SelectContext.Provider value={isAddingMode}>
 					<Page>
 						{/* 관심있는 아이돌 */}
@@ -123,28 +140,48 @@ const MyPage = () => {
 						<IdolSection>
 							<Title>관심 있는 아이돌을 추가해보세요.</Title>
 
-							<CarouselContainer>
-								<Arrow>
-									<img src={leftArrow} alt="이전" />
-								</Arrow>
-								<IdolList>
-									{idolList?.map((idol) => {
+							<SwiperContainer>
+								{firstSwiperState && (
+									<LeftArrow>
+										<img src={leftArrow} alt="이전" />
+									</LeftArrow>
+								)}
+								<Swiper
+									slidesPerView={1}
+									observer
+									observeParents
+									onSwiper={(swiper) => {
+										swiperRef.current = swiper;
+										setFirstSwiperState(Boolean(swiper.activeIndex));
+									}}
+									onSlideChange={(swiper) => {
+										console.log(swiper.isBeginning);
+										setFirstSwiperState(Boolean(swiper.activeIndex));
+									}}
+								>
+									{idolPageData.map((slideData, slideIndex) => {
 										return (
-											<SwiperSlide>
-												<IdolCard
-													key={idol.id}
-													info={idol}
-													padding="6.48"
-													chooseIdol={() => handleClickIdolList(idol)}
-												/>
+											<SwiperSlide key={slideIndex}>
+												<IdolList>
+													{slideData.map((idol) => {
+														return (
+															<IdolCard
+																key={idol.id}
+																info={idol}
+																padding="6.48"
+																chooseIdol={() => handleClickIdolList(idol)}
+															/>
+														);
+													})}
+												</IdolList>
 											</SwiperSlide>
 										);
 									})}
-								</IdolList>
-								<Arrow>
+								</Swiper>
+								<RightArrow>
 									<img src={rightArrow} alt="다음" />
-								</Arrow>
-							</CarouselContainer>
+								</RightArrow>
+							</SwiperContainer>
 						</IdolSection>
 
 						<Button onClick={() => setLocalStorage(interestIdols)}>
@@ -183,39 +220,57 @@ const Header = styled.header`
 `;
 
 //아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
-const CarouselContainer = styled.div`
-	display: flex;
-	align-items: center;
-	width: calc(100% + 126px);
-	margin-left: -63px;
-	max-width: calc(100vw - 48px);
-	@media only screen and (max-width: 1374px) {
-		width: 100%;
-		margin-left: 0;
+const SwiperContainer = styled.div`
+	position: relative;
+	width: 100%;
+
+	@media only screen and (max-width: 1322px) {
+		display: flex;
 	}
 `;
 
 //마이페이지
 const Page = styled.div`
 	padding: 75px 0 80px;
-	display: grid;
-	gap: 40px;
 `;
 
 //arrow
 const Arrow = styled.button`
+	position: absolute;
+	top: 50%;
+	z-index: 1;
 	min-width: 29px;
 	height: 135px;
 	border-radius: 4px;
 	opacity: 0.8;
 	border: 0;
 	background-color: var(--black3);
+	transform: translateY(-50%);
+
+	@media only screen and (max-width: 1322px) {
+	}
+`;
+
+const LeftArrow = styled(Arrow)`
+	left: -61px;
+
+	@media only screen and (max-width: 1322px) {
+		left: 0;
+	}
+`;
+
+const RightArrow = styled(Arrow)`
+	right: -61px;
+
+	@media only screen and (max-width: 1322px) {
+		right: 0;
+	}
 `;
 
 //추가하기 버튼
 const Button = styled.button`
 	padding: 11px 83px;
-	margin: 0 auto;
+	margin: 40px auto 0;
 	border-radius: 24px;
 	border: none;
 	color: white;
@@ -251,28 +306,32 @@ const Title = styled.h1`
 	font-weight: 700;
 	font-size: 24px;
 	line-height: 1.08;
+	margin-bottom: 32px;
 `;
 
 //hr
 const Hr = styled.hr`
 	border: 1px solid rgba(255, 255, 255, 0.1);
+	margin: 40px 0;
 `;
 
 //idol-section
 const IdolSection = styled.section`
-	display: grid;
-	gap: 32px;
+	/* margin-bottom: 40px; */
+	/* display: grid;
+	gap: 32px; */
 `;
 
 //idol-list ,미디어쿼리 idol-list
-const IdolList = styled(Swiper)`
+const IdolList = styled.div`
+	width: 100%;
 	display: grid;
 	grid-template-rows: repeat(2, 1fr);
 	grid-template-columns: repeat(8, 1fr);
-	padding: 0 34px;
+	/* padding: 0 34px; */
 	gap: 31px 22px;
-	@media only screen and (max-width: 1374px) {
-		padding: 0 27px;
+	@media only screen and (max-width: 1322px) {
+		padding: 0 56px;
 		gap: 24px;
 		grid-template-columns: repeat(6, 1fr);
 	}
