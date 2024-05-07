@@ -86,7 +86,7 @@ const MyPage = () => {
 						</Link>
 					</Box>
 
-					<Link href="/mypage">
+					<Link href="/MyPage">
 						<img src={myLogo} alt="마이페이지" />
 					</Link>
 				</Header>
@@ -220,7 +220,7 @@ const Button = styled.button`
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	background: linear-gradient(to right, #f77063, #fe5790);
+	background: var(--brand);
 `;
 
 //추가하기 버튼의 +아이콘
@@ -242,7 +242,7 @@ const Box = styled.div`
 
 //h1
 const Title = styled.h1`
-	color: #f6f6f8;
+	color: var(--white3);
 	font-weight: 700;
 	font-size: 24px;
 	line-height: 1.08;
