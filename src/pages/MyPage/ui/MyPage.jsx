@@ -15,6 +15,7 @@ import myLogo from "../../../shared/assets/icons/my_logo.svg";
 import leftArrow from "../../../shared/assets/icons/left_arrow.svg";
 import rightArrow from "../../../shared/assets/icons/right_arrow.svg";
 import plusIcon from "../../../shared/assets/icons/Ic_plus_24px.svg";
+import IdolListCardSkeleton from "@/entities/card/skeletons/IdolListCardSkeleton";
 
 const LOCAL_STORAGE_KEY = "interest";
 
@@ -85,8 +86,11 @@ const MyPage = () => {
 		if (idolPageData.length === swiperIndex + 1) {
 			const prevCursor = idolPageData[idolPageData.length - 1].nextCursor;
 			if (!prevCursor) {
+				console.log("이건가");
 			} else {
+				console.log("이거..?");
 				const lists = await getIdols(16, prevCursor);
+				console.log(idolPageData, "li9sts");
 
 				const nextCursor = lists.nextCursor;
 				setNextCursor(nextCursor);
@@ -97,6 +101,7 @@ const MyPage = () => {
 			}
 		} else {
 			if (swiperRef) {
+				console.log("이거다");
 				swiperRef.slideNext();
 			}
 		}
@@ -163,6 +168,7 @@ const MyPage = () => {
 								)}
 								<Swiper
 									slidesPerView={1}
+									spaceBetween={22}
 									observer
 									observeParents
 									onSwiper={(swiper) => {
@@ -173,24 +179,28 @@ const MyPage = () => {
 										setSwiperIndex(swiper.activeIndex);
 									}}
 								>
-									{idolPageData.map((slideData, slideIndex) => {
-										return (
-											<SwiperSlide key={slideIndex}>
-												<IdolList>
-													{slideData.list.map((idol) => {
-														return (
-															<IdolCard
-																key={idol.id}
-																info={idol}
-																padding="6.48"
-																chooseIdol={() => handleClickIdolList(idol)}
-															/>
-														);
-													})}
-												</IdolList>
-											</SwiperSlide>
-										);
-									})}
+									{idolPageData.length === 0 ? (
+										<IdolListCardSkeleton />
+									) : (
+										idolPageData.map((slideData, slideIndex) => {
+											return (
+												<SwiperSlide key={slideIndex}>
+													<IdolList>
+														{slideData.list.map((idol) => {
+															return (
+																<IdolCard
+																	key={idol.id}
+																	info={idol}
+																	padding="6.48"
+																	chooseIdol={() => handleClickIdolList(idol)}
+																/>
+															);
+														})}
+													</IdolList>
+												</SwiperSlide>
+											);
+										})
+									)}
 								</Swiper>
 								{nextCursor && (
 									<RightArrow onClick={getIdolPageData}>
@@ -304,6 +314,7 @@ const Icon = styled.div`
 	width: 24px;
 	height: 24px;
 `;
+
 //추가하기 버튼의 span
 const Span = styled.span`
 	font-weight: 700;
