@@ -6,7 +6,8 @@ import {
 	chartItemName,
 } from "@/shared/styles/typo";
 import styled from "styled-components";
-import { formatNumber } from "@/shared/utils/format";
+import { formatNumber } from "@/shared/utilities/format";
+import { forwardRef } from "react";
 
 export const IdolChartCardContainer = styled(FlexContainer)`
 	border-bottom: 1px solid #ffffff1a;
@@ -25,10 +26,10 @@ const ChartItemIndex = styled.span`
 	${chartItemIndex}
 `;
 
-export default function IdolChartCard({ item, index }) {
+export default forwardRef(function IdolChartCard({ item, index }, ref) {
 	const { group, name, profilePicture, totalVotes } = item;
 	return (
-		<IdolChartCardContainer $jc="space-between" $ai="center">
+		<IdolChartCardContainer $jc="space-between" $ai="center" ref={ref}>
 			<FlexContainer $gap="12px" $ai="center">
 				<ImageContainer src={profilePicture} alt={`${name} 사진`} />
 				<ChartItemIndex>{index + 1}</ChartItemIndex>
@@ -40,4 +41,4 @@ export default function IdolChartCard({ item, index }) {
 			</ChartItemDescription>
 		</IdolChartCardContainer>
 	);
-}
+});
