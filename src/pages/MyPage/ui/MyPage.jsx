@@ -1,4 +1,9 @@
 import React, { createContext, useEffect, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
 import styled from "styled-components";
 
 import getIdols from "@/shared/api/idols";
@@ -125,12 +130,14 @@ const MyPage = () => {
 								<IdolList>
 									{idolList?.map((idol) => {
 										return (
-											<IdolCard
-												key={idol.id}
-												info={idol}
-												padding="6.48"
-												chooseIdol={() => handleClickIdolList(idol)}
-											/>
+											<SwiperSlide>
+												<IdolCard
+													key={idol.id}
+													info={idol}
+													padding="6.48"
+													chooseIdol={() => handleClickIdolList(idol)}
+												/>
+											</SwiperSlide>
 										);
 									})}
 								</IdolList>
@@ -205,8 +212,6 @@ const Arrow = styled.button`
 	background-color: var(--black3);
 `;
 
-
-
 //추가하기 버튼
 const Button = styled.button`
 	padding: 11px 83px;
@@ -260,7 +265,7 @@ const IdolSection = styled.section`
 `;
 
 //idol-list ,미디어쿼리 idol-list
-const IdolList = styled.ul`
+const IdolList = styled(Swiper)`
 	display: grid;
 	grid-template-rows: repeat(2, 1fr);
 	grid-template-columns: repeat(8, 1fr);
@@ -273,7 +278,7 @@ const IdolList = styled.ul`
 	}
 `;
 
-const InterestIdolList = styled.ul`
+const InterestIdolList = styled.div`
 	display: flex;
 	overflow-x: scroll;
 	gap: 22px;

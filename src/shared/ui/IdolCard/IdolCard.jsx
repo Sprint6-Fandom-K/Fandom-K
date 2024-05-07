@@ -53,7 +53,7 @@ const IdolCard = (props) => {
 	);
 };
 
-const Card = styled.li`
+const Card = styled.div`
 	position: relative;
 	display: grid;
 	gap: 8px;
