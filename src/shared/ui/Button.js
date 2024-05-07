@@ -1,6 +1,6 @@
 import { css, styled } from "styled-components";
 
-const buttonStyle = css`
+export const buttonStyle = css`
 	color: white;
 	&:hover {
 		cursor: pointer;

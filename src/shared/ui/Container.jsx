@@ -33,23 +33,3 @@ export const FlexContainer = styled.div`
 export const FlexItemContainer = styled.div`
 	flex: ${({ $flex }) => $flex};
 `;
-
-export const MainContainer = styled.main`
-	background-color: #02000e;
-	display: flex;
-`;
-
-export const MainContentContainer = styled.div`
-	background-color: #02000e;
-	margin-inline: auto;
-	margin-bottom: 243px;
-	width: 1200px;
-	@media (width<=1199px) {
-		margin-bottom: 330px;
-		margin-inline: 20px;
-	}
-	@media (width<=767px) {
-		margin-bottom: 59px;
-		margin-inline: 24px;
-	}
-`;

@@ -40,7 +40,6 @@ export default function SortChart({ gender, isactive }) {
 	useEffect(() => {
 		if (inView) {
 			executeRefresh();
-			console.log("refatching");
 		} else if (items.length === 0) {
 			executeRefresh();
 		}

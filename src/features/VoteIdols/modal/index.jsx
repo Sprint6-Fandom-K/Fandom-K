@@ -53,7 +53,7 @@ const ModalContentContainer = styled(FlexContainer)`
 	position: relative;
 	overflow: auto;
 	@media (width<=767px) {
-		margin-top: 43px;
+		padding-block: 43px 106px;
 		flex: 1;
 	}
 `;
@@ -72,7 +72,7 @@ export default function VoteModal({ onCancel, gender }) {
 	const [items, setItems] = useState([]);
 	const [pageLimit, setPageLimit] = useState(10);
 	const [select, setSelect] = useState(false);
-	const lastCardRef = useRef(null);
+	const rootRef = useRef(null);
 	const handleSubmit = useCallback((e) => {
 		e.preventDefault();
 	}, []);
@@ -80,7 +80,7 @@ export default function VoteModal({ onCancel, gender }) {
 	const [status, wrappedFunction] = useGetData(getCharts);
 	const { ref, inView } = useInView({
 		threshold: 0,
-		root: lastCardRef.current,
+		root: rootRef.current,
 	});
 
 	async function executeRefresh() {
@@ -95,7 +95,11 @@ export default function VoteModal({ onCancel, gender }) {
 	}
 
 	useEffect(() => {
-		executeRefresh();
+		if (inView) {
+			executeRefresh();
+		} else if (items.length === 0) {
+			executeRefresh();
+		}
 	}, [inView]);
 
 	return (
