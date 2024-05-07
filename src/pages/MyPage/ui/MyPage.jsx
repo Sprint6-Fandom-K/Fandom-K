@@ -155,7 +155,7 @@ const MyPage = () => {
 
 //레이아웃
 const Container = styled.div`
-	background-color: #02000e;
+	color: var(--black1);
 	min-height: 100vh;
 `;
 
@@ -182,7 +182,7 @@ const CarouselContainer = styled.div`
 	width: calc(100% + 126px);
 	margin-left: -63px;
 	max-width: calc(100vw - 48px);
-	@media screen and (max-width: 1374px) {
+	@media only screen and (max-width: 1374px) {
 		width: 100%;
 		margin-left: 0;
 	}
@@ -202,7 +202,10 @@ const Arrow = styled.button`
 	border-radius: 4px;
 	opacity: 0.8;
 	border: 0;
+	background-color: var(--black3);
 `;
+
+
 
 //추가하기 버튼
 const Button = styled.button`
@@ -217,6 +220,7 @@ const Button = styled.button`
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	background: linear-gradient(to right, #f77063, #fe5790);
 `;
 
 //추가하기 버튼의 +아이콘
@@ -262,11 +266,11 @@ const IdolList = styled.ul`
 	grid-template-columns: repeat(8, 1fr);
 	padding: 0 34px;
 	gap: 31px 22px;
-	/* @media {
+	@media {
 		padding: 0 27px;
 		gap: 24px;
 		grid-template-columns: repeat(6, 1fr);
-	} */
+	}
 `;
 
 const InterestIdolList = styled.ul`
