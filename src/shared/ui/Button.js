@@ -1,6 +1,6 @@
 import { css, styled } from "styled-components";
 
-const buttonStyle = css`
+export const buttonStyle = css`
 	color: white;
 	&:hover {
 		cursor: pointer;
@@ -23,13 +23,13 @@ export const PinkButton = styled.button.attrs({
 `;
 
 export const MenuButton = styled.button`
-	background-color: ${({ $isactive }) =>
-		$isactive == "true" ? "#FFFFFF1A" : "inherit"};
+	background-color: ${({ $isActive }) =>
+		$isActive == true ? "#FFFFFF1A" : "inherit"};
 	height: 42px;
 	padding: 12px;
 	width: 100%;
 	border: 0;
-	border-bottom: ${({ $isactive }) =>
-		$isactive == "true" ? "1px solid white" : null};
+	border-bottom: ${({ $isActive }) =>
+		$isActive == true ? "1px solid white" : null};
 	${buttonStyle};
 `;

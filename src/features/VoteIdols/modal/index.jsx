@@ -11,12 +11,6 @@ import { useGetData } from "@/shared/hooks/useGetData";
 import { getCharts } from "@/shared/api/api";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import RefreshIcon from "@/shared/assets/icons/RefreshIcon";
-import { rotate } from "@/shared/styles/keyframes";
-
-const RotateIcon = styled(RefreshIcon)`
-	animation: ${rotate} 2s ease-in-out infinite;
-`;
 
 const VoteContainer = styled.form`
 	background-color: var(--black2);
@@ -59,7 +53,7 @@ const ModalContentContainer = styled(FlexContainer)`
 	position: relative;
 	overflow: auto;
 	@media (width<=767px) {
-		margin-top: 43px;
+		padding-block: 43px 106px;
 		flex: 1;
 	}
 `;
@@ -73,45 +67,34 @@ const CreditHighLight = styled.span`
 	color: var(--orange);
 `;
 
-const RefreshSection = styled.div`
-	height: 78px;
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-
 export default function VoteModal({ onCancel, gender }) {
 	const [cursor, setCursor] = useState(0);
 	const [items, setItems] = useState([]);
 	const [pageLimit, setPageLimit] = useState(10);
 	const [select, setSelect] = useState(false);
-	const lastCardRef = useRef(null);
-	const isNoMoreItems = useMemo(
-		() => cursor === null && pageLimit >= items.length,
-		[cursor, pageLimit, items],
-	);
+	const rootRef = useRef(null);
 	const handleSubmit = useCallback((e) => {
 		e.preventDefault();
 	}, []);
 
 	const [status, wrappedFunction] = useGetData(getCharts);
 	const { ref, inView } = useInView({
-		threshold: 1,
-		root: lastCardRef.current,
+		threshold: 0,
+		root: rootRef.current,
 	});
 
+	async function executeRefresh() {
+		const { idols, nextCursor } = await wrappedFunction({
+			gender,
+			cursor,
+		});
+		if (!idols) return;
+		setCursor(nextCursor);
+		setItems([...items, ...idols]);
+		setPageLimit(pageLimit + 10);
+	}
+
 	useEffect(() => {
-		async function executeRefresh() {
-			const { idols, nextCursor } = await wrappedFunction({
-				gender,
-				cursor,
-			});
-			if (!idols) return;
-			setCursor(nextCursor);
-			setItems([...items, ...idols]);
-			setPageLimit(pageLimit + 10);
-		}
 		if (inView) {
 			executeRefresh();
 		} else if (items.length === 0) {
@@ -131,19 +114,13 @@ export default function VoteModal({ onCancel, gender }) {
 								item={v}
 								index={index}
 								onSelect={setSelect}
+								ref={ref}
 							/>
 						))}
 						{status.isLoading &&
 							Array.from(Array(10)).map((_, index) => (
 								<IdolVoteCardSkeleton key={index} />
 							))}
-						{!status.isLoading && !isNoMoreItems ? (
-							<RefreshSection ref={ref}>
-								<RotateIcon />
-							</RefreshSection>
-						) : (
-							<RefreshSection></RefreshSection>
-						)}
 					</ModalContentContainer>
 					<VoteBottom>
 						<PinkButton type="submit" height="42px" disabled={!select}>

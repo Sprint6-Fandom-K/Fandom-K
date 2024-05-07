@@ -1,13 +1,14 @@
 @import url("https://cdn.jsdelivr.net/npm/reset-css/reset.min.css");
 
-*
-{
+* {
 	box-sizing: border-box;
+}
+
+#root {
 	transition: all 250ms ease-in-out;
 }
 
-:root
-{
+:root {
 	font-family: Pretendard;
 	--orange: #f96d69;
 	--black1: #02000e;
@@ -20,39 +21,33 @@
 	--pink: #fe5493;
 }
 
-::-webkit-scrollbar
-{
+::-webkit-scrollbar {
 	width: 0px;
 }
 
-html, body, #root, #root > *
-{
+html,
+body,
+#root {
 	width: 100%;
 	user-select: none;
 	touch-action: none;
 }
 
 /* desktop */
-@media screen and (1200px <= width)
-{
-	.hide-on-pc
-	{
+@media screen and (1200px <= width) {
+	.hide-on-pc {
 		display: none !important;
 	}
 }
 /* tablet */
-@media screen and (768px <= width < 1200px)
-{
-	.hide-on-tablet
-	{
+@media screen and (768px <= width < 1200px) {
+	.hide-on-tablet {
 		display: none !important;
 	}
 }
 /* mobile */
-@media screen and (375px <= width < 768px)
-{
-	.hide-on-mobile
-	{
+@media screen and (375px <= width < 768px) {
+	.hide-on-mobile {
 		display: none !important;
 	}
 }

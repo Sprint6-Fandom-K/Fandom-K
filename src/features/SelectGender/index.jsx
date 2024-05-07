@@ -11,7 +11,7 @@ export const MenuButtonDescription = styled.span`
 	letter-spacing: -0.16500002145767212px;
 `;
 
-export default function SelectGender({ onChange, gender, isfemale }) {
+export default function SelectGender({ onChange, gender, isActive }) {
 	const handleMenuClick = (e) => {
 		if (gender === e.currentTarget.name) return;
 		onChange(e.currentTarget.name);
@@ -22,17 +22,13 @@ export default function SelectGender({ onChange, gender, isfemale }) {
 				<MenuButton
 					name="female"
 					onClick={handleMenuClick}
-					$isactive={`${!isfemale}`}
+					$isActive={isActive}
 				>
 					<MenuButtonDescription>이달의 여자 아이돌</MenuButtonDescription>
 				</MenuButton>
 			</FlexItemContainer>
 			<FlexItemContainer $flex="1">
-				<MenuButton
-					name="male"
-					onClick={handleMenuClick}
-					$isactive={`${isfemale}`}
-				>
+				<MenuButton name="male" onClick={handleMenuClick} $isActive={!isActive}>
 					<MenuButtonDescription>이달의 남자 아이돌</MenuButtonDescription>
 				</MenuButton>
 			</FlexItemContainer>

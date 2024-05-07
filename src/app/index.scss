@@ -1,11 +1,10 @@
-#root
-{
+#root {
 	position: relative;
-	background-color: #02000E;
+	background-color: #02000e;
 
-	&::before
-	{
+	&::before {
 		content: "";
+		pointer-events: none;
 		top: -250px;
 		left: -250px;
 		width: 500px;
@@ -13,6 +12,6 @@
 		opacity: 25%;
 		display: block;
 		position: absolute;
-		background-image: radial-gradient(circle, #14C3FE 0%, transparent 50%);
+		background-image: radial-gradient(circle, #14c3fe 0%, transparent 50%);
 	}
 }

@@ -6,7 +6,8 @@ import {
 } from "@/shared/styles/typo";
 
 import styled from "styled-components";
-import { formatNumber } from "@/shared/utils/format";
+import { formatNumber } from "@/shared/utilities/format";
+import { forwardRef } from "react";
 
 export const IdolVoteCardContainer = styled(FlexContainer)`
 	border-bottom: 1px solid #ffffff1a;
@@ -32,18 +33,19 @@ const Input = styled.input`
 	appearance: none;
 `;
 
-export default function IdolVoteCard({ item, index, onSelect }) {
+export default forwardRef(function IdolVoteCard(
+	{ item, index, onSelect },
+	ref,
+) {
 	const { group, name, profilePicture, totalVotes } = item;
 
-	const handleChange = (e) => {
-		onSelect(e.target.id);
-	};
 	return (
 		<IdolVoteCardContainer
 			as="label"
 			htmlFor={item.id}
 			$jc="space-between"
 			$ai="center"
+			ref={ref}
 		>
 			<FlexContainer $gap="12px" $ai="center">
 				<ImageContainer src={profilePicture} />
@@ -53,7 +55,7 @@ export default function IdolVoteCard({ item, index, onSelect }) {
 					<VoteDescription>{`${formatNumber(totalVotes)}표`}</VoteDescription>
 				</FlexContainer>
 			</FlexContainer>
-			<Input type="radio" id={item.id} name="vote" onChange={handleChange} />
+			<Input type="radio" id={item.id} name="vote" onChange={onSelect} />
 		</IdolVoteCardContainer>
 	);
-}
+});

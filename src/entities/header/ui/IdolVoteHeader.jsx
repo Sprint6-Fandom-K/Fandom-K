@@ -15,6 +15,8 @@ const VoteHeaderContainer = styled.div`
 	justify-content: space-between;
 	@media (width<=767px) {
 		background-color: #02000ecc;
+		justify-content: space-between;
+		padding-inline: 24px;
 		position: fixed;
 		left: 0;
 		right: 0;
