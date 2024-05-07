@@ -266,7 +266,7 @@ const IdolList = styled.ul`
 	grid-template-columns: repeat(8, 1fr);
 	padding: 0 34px;
 	gap: 31px 22px;
-	@media {
+	@media only screen and (max-width: 1374px) {
 		padding: 0 27px;
 		gap: 24px;
 		grid-template-columns: repeat(6, 1fr);
