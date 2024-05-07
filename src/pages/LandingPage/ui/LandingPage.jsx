@@ -1,35 +1,58 @@
 import styled from 'styled-components';
 import LogoImage from "@/shared/assets/images/HeaderLogo.svg";
-import ContentImage1 from "@/shared/assets/images/MainContent_1.svg";
-import ContentImage2 from "@/shared/assets/images/MainContent_2.svg";
-import ContentImage3 from "@/shared/assets/images/MainContent_3.svg";
-import HeaderBackgroundImage from "@/shared/assets/images/HeaderBackground.svg";
-import MainBackgroundImage1 from "@/shared/assets/images/MainBackground_1.svg";
-import MainBackgroundImage2 from "@/shared/assets/images/MainBackground_2.svg";
-import MainBackgroundImage3 from "@/shared/assets/images/MainBackground_3.svg";
+import ContentImage1 from "@/shared/assets/images/MainContent_1.png";
+import ContentImage2 from "@/shared/assets/images/MainContent_2.png";
+import ContentImage3 from "@/shared/assets/images/MainContent_3.png";
+import HeaderBackgroundImage from "@/shared/assets/images/HeaderBackground.png";
+import MainBackgroundImage1 from "@/shared/assets/images/MainBackground_1.png";
+import MainBackgroundImage2 from "@/shared/assets/images/MainBackground_2.png";
+import MainBackgroundImage3 from "@/shared/assets/images/MainBackground_3.png";
 import { useNavigate } from 'react-router-dom';
-
-const Container = styled.div`
-  background-color: #02000e;
-`;
 
 const Header = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   height: 1080px;
-  background-image: radial-gradient(
-    50% 50% at 50% 50%,
-    rgba(2, 0, 14, 0.01) 10%,
-    #02000E 100%
-    ),url(${props => props.imgurl});
+	position: relative;
+	isolation: isolate;
+  background-image: url(${props => props.$imgurl});
   background-repeat: no-repeat;
 	background-position: center;
+
+	&::before
+	{
+		content: "";
+		top: -250px;
+		left: -250px;
+		width: 500px;
+		height: 500px;
+		opacity: 25%;
+		display: block;
+		position: absolute;
+		background-image: radial-gradient(circle, #14C3FE 0%, transparent 50%);
+	}
+
+
+	&::after{
+		content: "";
+		position: absolute;
+		background-image: radial-gradient(circle, rgba(2, 0, 14, 0.5) 35%, #02000E 45%);
+		z-index: -1;
+		inset: 0;
+	}
 
   @media only screen and (max-width: 744px){
     height: 1200px;
     background-size: 714px 598px;
+
+		&::after{
+		content: "";
+		position: absolute;
+		background-image: radial-gradient(circle, rgba(2, 0, 14, 0.5) 35%, #02000E 45%);
+		z-index: -1;
+		inset: 0;
+	}
   }
 
   @media only screen and (max-width: 375px){
@@ -38,18 +61,18 @@ const Header = styled.div`
   }
 `;
 
-const HeaderGradient = styled.div`
-  position: absolute;
-  top: -100px;
-  left: -100px;
-  width: 199px;
-  height: 273px;
-  background: radial-gradient(
-    50% 50%,
-    rgb(20, 195, 254, 0.16),
-    rgb(255, 255, 255, 0)
-    );
-`;
+// const HeaderGradient = styled.div`
+//   position: absolute;
+//   top: -100px;
+//   left: -100px;
+//   width: 199px;
+//   height: 273px;
+//   background: radial-gradient(
+//     50% 50%,
+//     rgb(20, 195, 254, 0.16),
+//     rgb(255, 255, 255, 0)
+//     );
+// `;
 
 const HeaderTitle = styled.div`
   margin-top: 140px;
@@ -164,7 +187,7 @@ const MainContent = styled.div`
   position: relative;
   width: 320px;
   height: 694px;
-  background-image: url(${props => props.imgurl});
+  background-image: url(${props => props.$imgurl});
 
 
   @media only screen and (max-width: 744px){
@@ -220,16 +243,16 @@ const MainGradient = styled.div`
 `;
 
 const MainSection = styled.div`
-  width: 100%;
+  width: 1200px;
   height: 1200px;
   background-image:
   radial-gradient(
     50% 50% at 50% 50%,
-    rgba(2, 0, 14, 0) 10%,
-    rgba(2, 0, 14, 0.180099) 20%,
-    rgba(2, 0, 14, 0.5) 20%,
-    #02000E 100%
-    ), url(${props => props.imgurl});
+    rgba(2, 0, 14, 0) 5%,
+    rgba(2, 0, 14, 0.180099) 5%,
+    rgba(2, 0, 14, 0.5) 5%,
+    #02000E 90%
+    ), url(${props => props.$imgurl});
   background-repeat: no-repeat;
   background-position: center;
   background-size: 1200px 1200px;
@@ -253,13 +276,16 @@ const Main = styled.div`
   position: relative;
 `;
 
+// const mainContentImages = [ContentImage1, ContentImage2, ContentImage3];
+const mainBackgroundImages = [MainBackgroundImage1, MainBackgroundImage2, MainBackgroundImage3];
+
 
 export default function LandingPage() {
 	const navigate = useNavigate();
 	return (
-		<Container>
-			<Header imgurl={HeaderBackgroundImage}>
-				<HeaderGradient />
+		<>
+			<Header $imgurl={HeaderBackgroundImage}>
+				{/* <HeaderGradient /> */}
 				<HeaderTitle>
 					내가 좋아하는 아이돌을<br></br>
 					가장 <span>쉽게 덕질</span> 하는 방법
@@ -269,7 +295,7 @@ export default function LandingPage() {
 			</Header>
 			<Main>
 				<MainGradient>
-					<MainContent imgurl={ContentImage1}>
+					<MainContent $imgurl={ContentImage1}>
 						<ContentText>
 							<h1>후원하기</h1>
 							<p>
@@ -278,7 +304,7 @@ export default function LandingPage() {
 							</p>
 						</ContentText>
 					</MainContent>
-					<MainContent imgurl={ContentImage2}>
+					<MainContent $imgurl={ContentImage2}>
 						<ContentText>
 							<h1>이달의 아티스트</h1>
 							<p>
@@ -287,7 +313,7 @@ export default function LandingPage() {
 							</p>
 						</ContentText>
 					</MainContent>
-					<MainContent imgurl={ContentImage3}>
+					<MainContent $imgurl={ContentImage3}>
 						<ContentText>
 							<h1>나만의 아티스트</h1>
 							<p>
@@ -297,10 +323,12 @@ export default function LandingPage() {
 						</ContentText>
 					</MainContent>
 				</MainGradient>
-				<MainSection imgurl={MainBackgroundImage1} />
-				<MainSection imgurl={MainBackgroundImage2} />
-				<MainSection imgurl={MainBackgroundImage3} />
+
+				{mainBackgroundImages.map((image, index) => (
+					<MainSection key={index} $imgurl={image} />
+				))}
+
 			</Main>
-		</Container>
+		</>
 	);
 }
