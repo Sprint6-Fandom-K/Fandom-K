@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -27,12 +27,11 @@ const getLocalStorage = () => {
 export const SelectContext = createContext();
 
 const MyPage = () => {
-	//ref
-	const swiperRef = useRef(null);
 	//state
-	const [firstSwiperState, setFirstSwiperState] = useState(true);
+	const [swiperRef, setSwiperRef] = useState(null);
+	const [swiperIndex, setSwiperIndex] = useState(0);
+	const [nextCursor, setNextCursor] = useState(0);
 	const [idolPageData, setIdolPageData] = useState([]); // swiper 돌릴 데이터
-	const [idolList, setIdolList] = useState([]); // 아이돌 목록 state
 	const [interestIdols, setInterestIdols] = useState(getLocalStorage()); // 관심있는 아이돌 목록 state
 	const [localStorageData, setLocalStorageData] = useState(getLocalStorage()); // localStorage 데이터
 	const [isAddingMode, setIsAddingMode] = useState(true); // 추가하기 모드 상태
@@ -76,24 +75,34 @@ const MyPage = () => {
 	// 아이돌 목록 불러오기
 	const getIdolList = async () => {
 		const lists = await getIdols();
-		const { list } = lists;
-		setIdolList(list);
-		// setIdolPageData([list]);
-
-		setIdolPageData((prev) => {
-			return [...prev, list];
-		});
+		const nextCursor = lists.nextCursor;
+		setNextCursor(nextCursor);
+		setIdolPageData([lists]);
 	};
 
 	// 스와이퍼 다음 페이지 불러오기
 	const getIdolPageData = async () => {
-		const lists = await getIdols(nextcursor);
-		const { list } = lists;
+		if (idolPageData.length === swiperIndex + 1) {
+			const prevCursor = idolPageData[idolPageData.length - 1].nextCursor;
+			if (!prevCursor) {
+			} else {
+				const lists = await getIdols(16, prevCursor);
 
-		setIdolPageData((prev) => {
-			return [...prev, list];
-		});
+				const nextCursor = lists.nextCursor;
+				setNextCursor(nextCursor);
+
+				setIdolPageData((prev) => {
+					return [...prev, lists];
+				});
+			}
+		} else {
+			if (swiperRef) {
+				swiperRef.slideNext();
+			}
+		}
 	};
+
+	console.log(nextCursor);
 
 	useEffect(() => {
 		getIdolList();
@@ -141,8 +150,14 @@ const MyPage = () => {
 							<Title>관심 있는 아이돌을 추가해보세요.</Title>
 
 							<SwiperContainer>
-								{firstSwiperState && (
-									<LeftArrow>
+								{Boolean(swiperIndex) && (
+									<LeftArrow
+										onClick={() => {
+											if (swiperRef) {
+												swiperRef.slidePrev();
+											}
+										}}
+									>
 										<img src={leftArrow} alt="이전" />
 									</LeftArrow>
 								)}
@@ -151,19 +166,18 @@ const MyPage = () => {
 									observer
 									observeParents
 									onSwiper={(swiper) => {
-										swiperRef.current = swiper;
-										setFirstSwiperState(Boolean(swiper.activeIndex));
+										setSwiperRef(swiper);
+										setSwiperIndex(swiper.activeIndex);
 									}}
 									onSlideChange={(swiper) => {
-										console.log(swiper.isBeginning);
-										setFirstSwiperState(Boolean(swiper.activeIndex));
+										setSwiperIndex(swiper.activeIndex);
 									}}
 								>
 									{idolPageData.map((slideData, slideIndex) => {
 										return (
 											<SwiperSlide key={slideIndex}>
 												<IdolList>
-													{slideData.map((idol) => {
+													{slideData.list.map((idol) => {
 														return (
 															<IdolCard
 																key={idol.id}
@@ -178,9 +192,11 @@ const MyPage = () => {
 										);
 									})}
 								</Swiper>
-								<RightArrow>
-									<img src={rightArrow} alt="다음" />
-								</RightArrow>
+								{nextCursor && (
+									<RightArrow onClick={getIdolPageData}>
+										<img src={rightArrow} alt="다음" />
+									</RightArrow>
+								)}
 							</SwiperContainer>
 						</IdolSection>
 
@@ -224,7 +240,7 @@ const SwiperContainer = styled.div`
 	position: relative;
 	width: 100%;
 
-	@media only screen and (max-width: 1322px) {
+	@media only screen and (max-width: 1370px) {
 		display: flex;
 	}
 `;
@@ -238,7 +254,7 @@ const Page = styled.div`
 const Arrow = styled.button`
 	position: absolute;
 	top: 50%;
-	z-index: 1;
+	z-index: 10;
 	min-width: 29px;
 	height: 135px;
 	border-radius: 4px;
@@ -247,14 +263,14 @@ const Arrow = styled.button`
 	background-color: var(--black3);
 	transform: translateY(-50%);
 
-	@media only screen and (max-width: 1322px) {
+	@media only screen and (max-width: 1370px) {
 	}
 `;
 
 const LeftArrow = styled(Arrow)`
 	left: -61px;
 
-	@media only screen and (max-width: 1322px) {
+	@media only screen and (max-width: 1370px) {
 		left: 0;
 	}
 `;
@@ -262,7 +278,7 @@ const LeftArrow = styled(Arrow)`
 const RightArrow = styled(Arrow)`
 	right: -61px;
 
-	@media only screen and (max-width: 1322px) {
+	@media only screen and (max-width: 1370px) {
 		right: 0;
 	}
 `;
@@ -330,7 +346,7 @@ const IdolList = styled.div`
 	grid-template-columns: repeat(8, 1fr);
 	/* padding: 0 34px; */
 	gap: 31px 22px;
-	@media only screen and (max-width: 1322px) {
+	@media only screen and (max-width: 1370px) {
 		padding: 0 56px;
 		gap: 24px;
 		grid-template-columns: repeat(6, 1fr);
