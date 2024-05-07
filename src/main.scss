@@ -2,7 +2,6 @@
 
 * {
 	box-sizing: border-box;
-	transition: all 250ms ease-in-out;
 }
 
 :root {
@@ -29,6 +28,10 @@ body,
 	width: 100%;
 	user-select: none;
 	touch-action: none;
+}
+
+#root * {
+	transition: all 250ms ease-in-out;
 }
 
 button {

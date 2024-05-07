@@ -68,6 +68,7 @@ const MyPage = () => {
 	const getIdolList = async () => {
 		const lists = await getIdols();
 		const { list } = lists;
+		console.log(lists, "list");
 		setIdolList(list);
 	};
 
