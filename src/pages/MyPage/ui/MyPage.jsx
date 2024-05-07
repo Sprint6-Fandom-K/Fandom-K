@@ -1,15 +1,16 @@
 import React, { createContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
 
 // 이미지
-import logoImg from "../../../shared/assets/icons/logo.svg";
-import myLogo from "../../../shared/assets/icons/my_logo.svg";
-import leftArrow from "../../../shared/assets/icons/left_arrow.svg";
-import rightArrow from "../../../shared/assets/icons/right_arrow.svg";
-import plusIcon from "../../../shared/assets/icons/Ic_plus_24px.svg";
+import logoImg from "@/shared/assets/icons/logo.svg";
+import myLogo from "@/shared/assets/icons/my_logo.svg";
+import leftArrow from "@/shared/assets/icons/left_arrow.svg";
+import rightArrow from "@/shared/assets/icons/right_arrow.svg";
+import plusIcon from "@/shared/assets/icons/Ic_plus_24px.svg";
+import frameLine from "@/shared/assets/icons/Frame.svg";
 import { Link } from "react-router-dom";
 
 const LOCAL_STORAGE_KEY = "interest";
@@ -95,7 +96,7 @@ const MyPage = () => {
 					<Page>
 						{/* 관심있는 아이돌 */}
 						<IdolSection>
-							<Title>내가 관심있는 아이돌</Title>
+							<Title isInterest={true}>내가 관심있는 아이돌</Title>
 							<InterestIdolList>
 								{localStorageData.map((idol) => {
 									return (
@@ -115,8 +116,11 @@ const MyPage = () => {
 						<Hr />
 
 						{/* 아이돌 목록 */}
-						<IdolSection>
-							<Title>관심 있는 아이돌을 추가해보세요.</Title>
+						<IdolSection isInterest={false}>
+							<Frame>
+								<img src={frameLine} alt="구분선" />
+							</Frame>
+							<Title isInterest={false}>관심 있는 아이돌을 추가해보세요.</Title>
 
 							<CarouselContainer>
 								<Arrow>
@@ -153,10 +157,20 @@ const MyPage = () => {
 	);
 };
 
+
 //레이아웃
 const Container = styled.div`
 	color: var(--black1);
 	min-height: 100vh;
+
+	@media only screen and (max-width: 744px){
+		display: flex;
+
+	}
+
+	@media only screen and (max-width: 375px){
+		display: flex;
+	}
 `;
 
 //inner
@@ -168,12 +182,43 @@ const Inner = styled.div`
 	background-color: #02000e;
 `;
 
+
+
+
 //헤더
 const Header = styled.header`
 	padding: 23px 0;
 	display: flex;
 	align-items: center;
+	background-repeat: no-repeat;
+	background-position: center;
+
+    @media only screen and (max-width: 744px){
+		height: 81px;
+		}
+
+		@media only screen and (max-width: 375px){
+		height: 88px;
+		}
 `;
+
+
+const Frame = styled.div`
+    max-width: 1200px;
+    height: 1px;
+
+
+    @media only screen and (max-width: 744px){
+		max-width: 696px;
+		height: 1px;
+	}
+
+	@media only screen and (max-width: 375px){
+		max-width: 327px;
+		height: 8px;
+	}
+`;
+
 
 //아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
 const CarouselContainer = styled.div`
@@ -182,10 +227,12 @@ const CarouselContainer = styled.div`
 	width: calc(100% + 126px);
 	margin-left: -63px;
 	max-width: calc(100vw - 48px);
+
 	@media only screen and (max-width: 1374px) {
 		width: 100%;
 		margin-left: 0;
 	}
+
 `;
 
 //마이페이지
@@ -193,6 +240,7 @@ const Page = styled.div`
 	padding: 75px 0 80px;
 	display: grid;
 	gap: 40px;
+
 `;
 
 //arrow
@@ -203,6 +251,14 @@ const Arrow = styled.button`
 	opacity: 0.8;
 	border: 0;
 	background-color: var(--black3);
+
+	@media only screen and (max-width: 744px){
+		display: block;
+	}
+
+	@media only screen and (max-width: 375px){
+		display: none;
+	}
 `;
 
 
@@ -221,6 +277,16 @@ const Button = styled.button`
 	align-items: center;
 	gap: 8px;
 	background: var(--brand);
+
+    @media only screen and (max-width: 744px){
+		height: 48px;
+		margin: 0 auto;
+	}
+	@media only screen and (max-width: 375px){
+		height: 48px;
+		margin: 0 auto;
+		margin-top: 24px;
+	}
 `;
 
 //추가하기 버튼의 +아이콘
@@ -246,6 +312,18 @@ const Title = styled.h1`
 	font-weight: 700;
 	font-size: 24px;
 	line-height: 1.08;
+
+	${({ isInterest }) => isInterest ? css`
+	@media only screen and (max-width: 375px) {
+		display: none;
+	}
+	` : css`
+
+	@media only screen and (max-width: 375px) {
+		font-size: 24px;
+	}
+	`}
+
 `;
 
 //hr
@@ -259,24 +337,35 @@ const IdolSection = styled.section`
 	gap: 32px;
 `;
 
-//idol-list ,미디어쿼리 idol-list
+//idol-list ,미디어쿼리 idol-list '관심있는 아이돌을 추가해보세요' 부분
 const IdolList = styled.ul`
 	display: grid;
 	grid-template-rows: repeat(2, 1fr);
 	grid-template-columns: repeat(8, 1fr);
 	padding: 0 34px;
 	gap: 31px 22px;
+
 	@media only screen and (max-width: 1374px) {
 		padding: 0 27px;
-		gap: 24px;
+		gap: 4px;
 		grid-template-columns: repeat(6, 1fr);
 	}
+
 `;
 
+//'내가 관심있는 아이돌' 부분
 const InterestIdolList = styled.ul`
 	display: flex;
 	overflow-x: scroll;
 	gap: 22px;
+
+	@media only screen and (max-width: 375px) {
+		width: 98px
+		heigh: 123px
+		padding: 0 27px;
+		gap: 24px;
+		grid-template-columns: repeat(6, 1fr);
+	}
 `;
 
 export default MyPage;
