@@ -157,7 +157,7 @@ export const MainGradient = styled.div`
       ${ContentText}{
         left: -70px;
         text-align: end;
-				padding-left: 120px;
+				padding-left: 130px;
       }
     }
   }

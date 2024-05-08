@@ -37,8 +37,6 @@ export const ContentText = styled.div`
   @media only screen and (max-width: 375px){
     p{
 			padding: 0;
-      font-size: 20px;
-      line-height: 24px;
     }
   }
 `;
