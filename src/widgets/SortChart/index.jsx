@@ -1,5 +1,5 @@
 import IdolChartCard from "@/entities/card/ui/IdolChartCard";
-import { getCharts } from "@/shared/api/api";
+import { getChart} from "@/shared/api/api";
 import { useGetData } from "@/shared/hooks/useGetData";
 import IdolChartCardSkeleton from "@/entities/card/skeletons/IdolChartCardSkeleton";
 import { useEffect, useState, useRef } from "react";
@@ -22,7 +22,7 @@ export default function SortChart({ gender, isactive }) {
 	const rootRef = useRef(null);
 	const [items, setItems] = useState([]);
 	const [cursor, setCursor] = useState(0);
-	const [status, wrappedFunction] = useGetData(getCharts);
+	const [status, wrappedFunction] = useGetData(getChart);
 	const { ref, inView } = useInView({
 		threshold: 0,
 		root: rootRef.current,

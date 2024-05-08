@@ -1,6 +1,6 @@
 import { BASE_URL } from "../constant/constant";
 
-export async function getCharts({ gender, cursor }) {
+export async function getChart({ gender, cursor }) {
 	if (cursor == null) {
 		return;
 	}

@@ -8,6 +8,7 @@ import MainBackgroundImage1 from "@/shared/assets/images/MainBackground_1.png";
 import MainBackgroundImage2 from "@/shared/assets/images/MainBackground_2.png";
 import MainBackgroundImage3 from "@/shared/assets/images/MainBackground_3.png";
 import { useNavigate } from 'react-router-dom';
+import { PinkButton } from '@/shared/ui/Button';
 
 const Header = styled.div`
   display: flex;
@@ -117,7 +118,7 @@ const HeaderLogo = styled.img`
   }
 `;
 
-const HeaderButton = styled.button`
+const HeaderButton = styled(PinkButton)`
   margin-top: 584px;
   width: 477px;
   height: 48px;
