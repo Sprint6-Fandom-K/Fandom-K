@@ -68,7 +68,7 @@ export default function ChargeCredit() {
 			</FlexContainer>
 			<CreditButton
 				onClick={() => {
-					Modal.open(<RadioModal options={ChargeOptions} />);
+					Modal.open(<RadioModal options={ChargeOptions} />, Modal.shake);
 				}}
 			>
 				충전하기

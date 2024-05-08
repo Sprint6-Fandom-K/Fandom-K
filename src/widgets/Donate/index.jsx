@@ -55,7 +55,7 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 	return (
 		<section ref={self} { ...widget("Donate", props) } data-is-loading={props.donation === null}>
 			<div className="portrait" style={{ backgroundImage: ["linear-gradient(180deg, rgba(0, 0, 0, 0) 58.9%, #000000 100%)", `url("${props.donation?.idol.profilePicture}")`].join(",") }}>
-				<div className="button skeleton" onClick={() => Modal.open(<Donate.Modal donation={props.donation}></Donate.Modal>)}>
+				<div className="button skeleton" onClick={() => Modal.open(<Donate.Modal donation={props.donation}></Donate.Modal>, Modal.shake)}>
 					후원하기
 				</div>
 			</div>

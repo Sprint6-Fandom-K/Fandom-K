@@ -6,14 +6,6 @@ export default function App()
 {
 	const [modal, set_modal] = useState(null);
 
-	function onClickOutSide(event)
-	{
-		if (event.target === event.currentTarget)
-		{
-			Modal.close();
-		}
-	}
-
 	useEffect(() =>
 	{
 		Modal.addEventListener((event) =>
@@ -27,7 +19,18 @@ export default function App()
 		<>
 			<Outlet></Outlet>
 
-			<section id="modal" onClick={onClickOutSide}>
+			<section id="modal"
+				//
+				// events
+				//
+				onClick={(event) =>
+				{
+					if (event.target === event.currentTarget)
+					{
+						modal?.["onClickOutSide"]?.();
+					}
+				}}
+			>
 			{
 				modal?.["element"]
 			}
@@ -38,16 +41,25 @@ export default function App()
 
 export class Modal
 {
-	static #self = new EventTarget();
+	static #self = new EventTarget(); static #timeout = null;
 
-	static open(element)
+	static open(element, onClickOutSide)
 	{
-		Modal.#self.dispatchEvent(new CustomEvent(Modal.name, { detail: { ["element"]: element } }));
+		Modal.#self.dispatchEvent(new CustomEvent(Modal.name, { detail: { ["element"]: element, ["onClickOutSide"]: onClickOutSide } }));
 	}
 
 	static close()
 	{
-		Modal.#self.dispatchEvent(new CustomEvent(Modal.name, { detail: { ["element"]: null } }));
+		Modal.#self.dispatchEvent(new CustomEvent(Modal.name, { detail: { ["element"]: null, ["onClickOutSide"]: null } }));
+	}
+
+	static shake()
+	{
+		Modal.#timeout = clearTimeout(Modal.#timeout);
+
+		document.getElementById("modal").classList.add("shake");
+
+		Modal.#timeout = setTimeout(() => document.getElementById("modal").classList.remove("shake"), 1000);
 	}
 
 	static addEventListener(callback)
