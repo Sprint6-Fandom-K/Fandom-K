@@ -10,15 +10,14 @@ import ListPage from "./pages/ListPage";
 import MyPage from "./pages/MyPage/ui/MyPage";
 import LandingPage from "./pages/LandingPage/ui/LandingPage";
 
-
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<Routes>
-				<Route path="/" element={<App/>}>
-					<Route index element={<LandingPage/>}/>
-					<Route path="/list" element={<ListPage/>}/>
-					<Route path="/mypage" element={<MyPage/>}/>
+				<Route path="/" element={<App />}>
+					<Route index element={<LandingPage />} />
+					<Route path="/list" element={<ListPage />} />
+					<Route path="/mypage" element={<MyPage />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

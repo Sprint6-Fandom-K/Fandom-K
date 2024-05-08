@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 
 /** @see https://usehooks-ts.com/react-hook/use-media-query */
 export default function useMediaQuery(query)

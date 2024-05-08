@@ -8,9 +8,11 @@ import { PinkButton } from "@/shared/ui/Button";
 import { modalDescription } from "@/shared/styles/typo";
 import { CREDIT_FOR_ONE_VOTE } from "@/shared/constant/constant";
 import { useGetData } from "@/shared/hooks/useGetData";
-import { getCharts } from "@/shared/api/api";
+import { getChart } from "@/shared/api/api";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { Modal } from "@/app";
+import useLocalStorage from "@/shared/hooks/useLocalStorage";
 
 const VoteContainer = styled.form`
 	background-color: var(--black2);
@@ -67,7 +69,8 @@ const CreditHighLight = styled.span`
 	color: var(--orange);
 `;
 
-export default function VoteModal({ onCancel, gender }) {
+export default function VoteModal({ gender }) {
+	const [credit, setCredit] = useLocalStorage("credit", 0);
 	const [cursor, setCursor] = useState(0);
 	const [items, setItems] = useState([]);
 	const [pageLimit, setPageLimit] = useState(10);
@@ -77,11 +80,15 @@ export default function VoteModal({ onCancel, gender }) {
 		e.preventDefault();
 	}, []);
 
-	const [status, wrappedFunction] = useGetData(getCharts);
+	const [status, wrappedFunction] = useGetData(getChart);
 	const { ref, inView } = useInView({
 		threshold: 0,
 		root: rootRef.current,
 	});
+
+	const handleClick = () => {
+		setCredit(credit - 1000);
+	};
 
 	async function executeRefresh() {
 		const { idols, nextCursor } = await wrappedFunction({
@@ -106,7 +113,7 @@ export default function VoteModal({ onCancel, gender }) {
 		<>
 			<VoteContainer onSubmit={handleSubmit}>
 				<FlexContainer $fd="column" $gap="20px">
-					<ModalHeader gender={gender} onCancel={onCancel} />
+					<ModalHeader gender={gender} onCancel={() => Modal.close()} />
 					<ModalContentContainer $fd="column" $gap="8px">
 						{items.map((v, index) => (
 							<IdolVoteCard
@@ -123,7 +130,12 @@ export default function VoteModal({ onCancel, gender }) {
 							))}
 					</ModalContentContainer>
 					<VoteBottom>
-						<PinkButton type="submit" height="42px" disabled={!select}>
+						<PinkButton
+							type="submit"
+							height="42px"
+							disabled={!select}
+							onClick={handleClick}
+						>
 							투표하기
 						</PinkButton>
 						<VoteBottomDescription>

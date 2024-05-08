@@ -1,8 +1,11 @@
+import { Modal } from "@/app";
 import CreditIcon from "@/shared/assets/icons/CreditIcon";
+import useLocalStorage from "@/shared/hooks/useLocalStorage";
 import { buttonStyle } from "@/shared/ui/Button";
 import { FlexContainer } from "@/shared/ui/Container";
 import { formatNumber } from "@/shared/utilities/format";
 import styled from "styled-components";
+import RadioModal from "../Modal/Modals";
 
 const CreditContainer = styled(FlexContainer)`
 	border-radius: 8px;
@@ -50,18 +53,26 @@ const MyCredit = styled(FlexContainer)`
 	text-align: left;
 `;
 
+const ChargeOptions = [100, 500, 1000];
+
 export default function ChargeCredit() {
+	const [credit, setCredit] = useLocalStorage("credit", 0);
 	return (
 		<CreditContainer $jc="space-between" $ai="center">
 			<FlexContainer $fd="column" $gap="14px">
 				<CreditDescription>내 크레딧</CreditDescription>
 				<MyCredit $ai="center">
-					{/* {formatNumber(localStorage.getItem("credit"))} */}
 					<CreditIcon />
-					<span>36,000</span>
+					<span>{formatNumber(credit)}</span>
 				</MyCredit>
 			</FlexContainer>
-			<CreditButton>충전하기</CreditButton>
+			<CreditButton
+				onClick={() => {
+					Modal.open(<RadioModal options={ChargeOptions} />);
+				}}
+			>
+				충전하기
+			</CreditButton>
 		</CreditContainer>
 	);
 }
