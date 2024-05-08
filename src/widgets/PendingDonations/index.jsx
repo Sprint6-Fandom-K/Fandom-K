@@ -15,29 +15,22 @@ export default function PendingDonations()
 {
 	const { isDesktop, isTablet, isMobile } = useViewport();
 
+	function get_columns()
+	{
+		return isDesktop ? 4 : isTablet ? 3 : isMobile ? 3 : 0;
+	}
+
 	const [idols, set_idols] = useState([]);
 	const [cursor, set_cursor] = useState(null);
-	const [columns, set_columns] = useState(null);
+	const [columns, set_columns] = useState(get_columns());
 
 	const last_child = useRef();
 
 	useEffect(() =>
 	{
-		if (isDesktop) set_columns(4);
+		set_columns(get_columns());
 	},
-	[isDesktop]);
-
-	useEffect(() =>
-	{
-		if (isTablet) set_columns(3);
-	},
-	[isTablet]);
-
-	useEffect(() =>
-	{
-		if (isMobile) set_columns(3);
-	},
-	[isMobile]);
+	[isDesktop, isTablet, isMobile]);
 
 	useEffect(() =>
 	{
@@ -87,7 +80,7 @@ export default function PendingDonations()
 				</Carousel.Button>
 				<Carousel.Slider gap={25}>
 				{
-					[...idols, ...new Array(cursor ? columns : 0).fill(null)].map((idol, index, array) =>
+					[...idols, ...new Array(cursor ? columns : idols.length ? 0 : columns).fill(null)].map((idol, index, array) =>
 					{
 						return (
 							<Carousel.Item key={index} ref={index === array.length - 1 ? last_child : null}>
