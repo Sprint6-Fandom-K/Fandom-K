@@ -1,11 +1,8 @@
-#root
-{
-	overflow: hidden;
+#root {
 	position: relative;
-	background-color: #02000E;
+	background-color: #02000e;
 
-	&::before
-	{
+	&::before {
 		content: "";
 		top: -250px;
 		left: -250px;
@@ -15,12 +12,11 @@
 		display: block;
 		position: absolute;
 		pointer-events: none;
-		background-image: radial-gradient(circle, #14C3FE 0%, transparent 50%);
+		background-image: radial-gradient(circle, #14c3fe 0%, transparent 50%);
 	}
 }
 
-#modal
-{
+#modal {
 	position: absolute;
 	inset: 0px;
 	width: 100%;
@@ -31,18 +27,15 @@
 	justify-content: center;
 	background-color: rgba(0, 0, 0, 0.75);
 
-	&:has(*)
-	{
+	&:has(*) {
 		opacity: 100%;
 		pointer-events: all;
 	}
-	&:not(:has(*))
-	{
+	&:not(:has(*)) {
 		opacity: 0%;
 		pointer-events: none;
 	}
-	> *
-	{
+	> * {
 		box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.75);
 	}
 }
