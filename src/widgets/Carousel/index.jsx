@@ -9,6 +9,8 @@ export default function Carousel(props = { /* html */ id: null, class: [], style
 	const [count, set_count] = useState(0);
 	const [index, set_index] = useState(0);
 
+	const [min, max] = [0, count >= props.columns ? count - props.columns : 0];
+
 	return (
 		<Context.Provider value={
 		{
@@ -20,8 +22,8 @@ export default function Carousel(props = { /* html */ id: null, class: [], style
 			},
 			data:
 			{
-				index_min: 0,
-				index_max: count - props.columns,
+				index_min: min,
+				index_max: max,
 			},
 			state:
 			{
@@ -44,8 +46,6 @@ export default function Carousel(props = { /* html */ id: null, class: [], style
 					},
 					set(value)
 					{
-						const [min, max] = [0, count - props.columns];
-
 						set_index((value < min) ? min : ((max < value) ? max : value));
 					},
 				}),
@@ -226,7 +226,7 @@ Carousel.Slider = forwardRef(function Container(props = { /* html */ id: null, c
 			//
 			onMouseDown={() => handle_down(event.clientX)} onTouchStart={(event) => handle_down(event.touches[0].clientX)} onTouchMove={(event) => handle_move(event.changedTouches[0].clientX)} onTouchEnd={(event) => handle_up(event.changedTouches[0].clientX)}
 		>
-			<div ref={container} class="container" style={{ "gap": props.gap, "transform": CSS.transform(0) }}>
+			<div ref={container} className="container" style={{ "gap": props.gap, "transform": CSS.transform(0) }}>
 			{
 				Children.toArray(props.children).filter((child) => child.type === Carousel.Item).map((child) =>
 				{

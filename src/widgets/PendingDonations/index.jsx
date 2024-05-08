@@ -43,7 +43,7 @@ export default function PendingDonations()
 	{
 		if (columns)
 		{
-			API["{team_name}/idols"].GET(undefined, { page_size: columns }).then((response) =>
+			API["{team_name}/donations"].GET(undefined, { page_size: columns }).then((response) =>
 			{
 				set_idols(response.list); set_cursor(response.nextCursor);
 			});
@@ -61,7 +61,7 @@ export default function PendingDonations()
 				{
 					if (entry.isIntersecting)
 					{
-						API["{team_name}/idols"].GET(undefined, { page_size: columns, cursor: cursor }).then((response) =>
+						API["{team_name}/donations"].GET(undefined, { page_size: columns, cursor: cursor }).then((response) =>
 						{
 							set_idols((idols) => [...idols, ...response.list]); set_cursor(response.list.length >= columns ? response.nextCursor : null);
 						});
@@ -87,11 +87,11 @@ export default function PendingDonations()
 				</Carousel.Button>
 				<Carousel.Slider gap={25}>
 				{
-					(idols ? idols : new Array(columns).fill(null)).map((idol, index, array) =>
+					[...idols, ...new Array(cursor ? columns : 0).fill(null)].map((idol, index, array) =>
 					{
 						return (
 							<Carousel.Item key={index} ref={index === array.length - 1 ? last_child : null}>
-								<Donate idol={idol}></Donate>
+								<Donate donation={idol}></Donate>
 							</Carousel.Item>
 						);
 					})
