@@ -122,7 +122,7 @@ export default function RadioModal({ options }) {
 	};
 
 	const handleCharge = () => {
-		setCredit(credit + selectedOption);
+		setCredit((credit) => credit + selectedOption);
 		Modal.open(
 			<div style={{ color: "white" }}>
 				{selectedOption}크레딧이 충전되었습니다! 2초 뒤에 자동으로 닫힙니다.
