@@ -1,3 +1,4 @@
+import { PinkButton } from "@/shared/ui/Button";
 import { FlexContainer } from "@/shared/ui/Container";
 import styled from "styled-components";
 
@@ -46,4 +47,16 @@ export const PendingDonationsSection = styled.div`
 	@media screen and (width<=767px) {
 		margin-top: 40px;
 	}
+`;
+
+export const ButtonDescription = styled.span`
+	color: white;
+	word-break: keep-all;
+	width: 72px;
+	height: 26px;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 26px;
+	letter-spacing: 0.02em;
+	text-align: left;
 `;
