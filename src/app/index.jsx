@@ -45,11 +45,17 @@ export class Modal
 
 	static open(element, onClickOutSide)
 	{
+		// prevent scroll
+		document.body.style.setProperty("overflow", "hidden");
+
 		Modal.#self.dispatchEvent(new CustomEvent(Modal.name, { detail: { ["element"]: element, ["onClickOutSide"]: onClickOutSide } }));
 	}
 
 	static close()
 	{
+		// allow scroll
+		document.body.style.setProperty("overflow", "unset");
+
 		Modal.#self.dispatchEvent(new CustomEvent(Modal.name, { detail: { ["element"]: null, ["onClickOutSide"]: null } }));
 	}
 
