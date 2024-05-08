@@ -96,6 +96,7 @@ const MyPage = () => {
 		}
 	};
 
+	// swiper change - api 불러오기, 다음 페이지 이동
 	const handleSlideChange = async (swiper) => {
 		const currentIndex = swiper.activeIndex;
 		const totalSlides = swiper.slides.length;
@@ -105,7 +106,7 @@ const MyPage = () => {
 			// setIsLoading(false);
 			console.log(1);
 
-			if (totalSlides === currentIndex + 1) {
+			if (currentIndex === totalSlides - 1) {
 				const prevCursor = idolPageData[idolPageData.length - 1].nextCursor;
 
 				if (!prevCursor) {
@@ -116,9 +117,7 @@ const MyPage = () => {
 					const lists = await getIdols(16, prevCursor);
 					const nextCursor = lists.nextCursor;
 
-					if (!nextCursor) {
-						setNextCursor((prev) => prev);
-					}
+					setNextCursor((prev) => prev);
 					console.log(3);
 
 					// setIsLoading(false);
@@ -126,8 +125,9 @@ const MyPage = () => {
 						return [...prev, lists];
 					});
 				}
-			} else if (totalSlides === currentIndex) {
-				setNextCursor(nextCursor);
+			} else {
+				const currentCursor = idolPageData[currentIndex].nextCursor;
+				setNextCursor(currentCursor);
 			}
 		} catch (error) {
 			console.error("Error fetching idols:", error);
@@ -203,7 +203,9 @@ const MyPage = () => {
 									modules={[Navigation]}
 								>
 									{idolPageData.length === 0 || isLoading ? (
-										<IdolListCardSkeleton />
+										<SwiperSlide>
+											<IdolListCardSkeleton />
+										</SwiperSlide>
 									) : (
 										idolPageData.map((slideData, slideIndex) => {
 											return (
@@ -229,7 +231,6 @@ const MyPage = () => {
 									<LeftArrow
 										className="swiper-button-prev"
 										onClick={prevPageData}
-										// onClick={prevPageData}
 									>
 										<img src={leftArrow} alt="이전" />
 									</LeftArrow>
