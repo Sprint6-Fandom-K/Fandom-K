@@ -1,5 +1,5 @@
 import PendingDonations from "@/widgets/PendingDonations";
-import SortChart from "@/widgets/SortChart";
+import MonthChartList from "@/widgets/MonthChartList";
 import SelectGender from "@/features/SelectGender";
 import VoteModalButton from "@/features/VoteIdols";
 import { useMemo, useState } from "react";
@@ -40,8 +40,8 @@ export default function ListPage() {
 						gender={gender}
 						isActive={isFemale}
 					/>
-					<SortChart gender="female" isactive={isFemale} />
-					<SortChart gender="male" isactive={!isFemale} />
+					<MonthChartList gender="female" isactive={isFemale} />
+					<MonthChartList gender="male" isactive={!isFemale} />
 				</ChartSection>
 			</Content>
 		</PageBody>

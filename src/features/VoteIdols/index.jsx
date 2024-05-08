@@ -23,7 +23,7 @@ const NewPinkButton = styled(PinkButton)`
 	gap: 4px;
 `;
 
-export default forwardRef(function VoteModalButton({ gender, ref }) {
+export default function VoteModalButton({ gender }) {
 	const handleClick = () => {
 		Modal.open(<VoteIdols gender={gender} />);
 	};
@@ -34,4 +34,4 @@ export default forwardRef(function VoteModalButton({ gender, ref }) {
 			<ButtonDescription>차트 투표하기</ButtonDescription>
 		</NewPinkButton>
 	);
-});
+}

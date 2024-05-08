@@ -13,6 +13,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Modal } from "@/app";
 import useLocalStorage from "@/shared/hooks/useLocalStorage";
+import useInfiniteScroll from "@/shared/hooks/useInfiniteScroll";
 
 const VoteContainer = styled.form`
 	background-color: var(--black2);
@@ -70,44 +71,19 @@ const CreditHighLight = styled.span`
 `;
 
 export default function VoteModal({ gender }) {
-	const [credit, setCredit] = useLocalStorage("credit", 0);
-	const [cursor, setCursor] = useState(0);
-	const [items, setItems] = useState([]);
-	const [pageLimit, setPageLimit] = useState(10);
 	const [select, setSelect] = useState(false);
-	const rootRef = useRef(null);
+	const [credit, setCredit] = useLocalStorage("credit", 0);
+	const { items, ref, status } = useInfiniteScroll(getChart, {
+		gender,
+	});
+
 	const handleSubmit = useCallback((e) => {
 		e.preventDefault();
 	}, []);
 
-	const [status, wrappedFunction] = useGetData(getChart);
-	const { ref, inView } = useInView({
-		threshold: 0,
-		root: rootRef.current,
-	});
-
 	const handleClick = () => {
 		setCredit(credit - 1000);
 	};
-
-	async function executeRefresh() {
-		const { idols, nextCursor } = await wrappedFunction({
-			gender,
-			cursor,
-		});
-		if (!idols) return;
-		setCursor(nextCursor);
-		setItems([...items, ...idols]);
-		setPageLimit(pageLimit + 10);
-	}
-
-	useEffect(() => {
-		if (inView) {
-			executeRefresh();
-		} else if (items.length === 0) {
-			executeRefresh();
-		}
-	}, [inView]);
 
 	return (
 		<>
