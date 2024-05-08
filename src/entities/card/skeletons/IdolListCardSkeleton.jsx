@@ -47,6 +47,9 @@ const ImgArea = styled.div`
 	overflow: hidden;
 	aspect-ratio: 1 / 1;
 	${skeletonStyle};
+	&::after {
+		top: 0;
+	}
 `;
 
 const TextArea = styled.div`
@@ -66,6 +69,9 @@ const NameText = styled.div`
 	height: 100%;
 	border-radius: 7px;
 	${skeletonStyle};
+	&::after {
+		top: 0;
+	}
 `;
 
 const Group = styled.div`
@@ -74,6 +80,9 @@ const Group = styled.div`
 	margin: 0 auto;
 	border-radius: 5px;
 	${skeletonStyle};
+	&::after {
+		top: 0;
+	}
 `;
 
 export default IdolListCardSkeleton;

@@ -154,20 +154,21 @@ const MyPage = () => {
 						{/* 관심있는 아이돌 */}
 						<IdolSection>
 							<Title>내가 관심있는 아이돌</Title>
-							<InterestIdolList>
+							<Swiper slidesPerView={10} slidesPerGroup={5} spaceBetween={24}>
 								{localStorageData.map((idol) => {
 									return (
-										<IdolCard
-											key={idol.id}
-											info={idol}
-											padding="7.14"
-											width="98"
-											remove={true}
-											deleteIdol={() => deleteIdol(idol)}
-										/>
+										<SwiperSlide key={idol.id}>
+											<IdolCard
+												info={idol}
+												padding="7.14"
+												width="98"
+												remove={true}
+												deleteIdol={() => deleteIdol(idol)}
+											/>
+										</SwiperSlide>
 									);
 								})}
-							</InterestIdolList>
+							</Swiper>
 						</IdolSection>
 
 						<Hr />
@@ -378,12 +379,6 @@ const IdolList = styled.div`
 		gap: 24px;
 		grid-template-columns: repeat(6, 1fr);
 	}
-`;
-
-const InterestIdolList = styled.div`
-	display: flex;
-	overflow-x: scroll;
-	gap: 22px;
 `;
 
 export default MyPage;
