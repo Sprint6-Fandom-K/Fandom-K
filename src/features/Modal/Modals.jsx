@@ -1,8 +1,9 @@
-import { createPortal } from "react-dom";
 import { useState } from "react";
-import Credit from "@/shared/assets/icons/Credit.svg";
 import Close from "@/shared/assets/icons/CloseX.svg";
 import styled from "styled-components";
+import { Modal } from "@/app";
+import useLocalStorage from "@/shared/hooks/useLocalStorage";
+import CreditIcon from "@/shared/assets/icons/CreditIcon";
 
 const CloseButton = styled.button`
 	position: absolute;
@@ -111,99 +112,48 @@ const ChargeModal = styled.div`
 	}
 `;
 
-const Overlay = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(49, 49, 49, 0.8);
-`;
-
-const RadioModal = ({ options, onClose, onSelect }) => {
+export default function RadioModal({ options }) {
+	const [credit, setCredit] = useLocalStorage("credit", 0);
 	// 크레딧 충전하는 모달 컴포넌트
 	const [selectedOption, setSelectedOption] = useState(null);
 
 	const handleOptionChange = (option) => {
 		setSelectedOption(option);
-		onSelect(option);
 	};
 
 	const handleCharge = () => {
-		onClose(false);
-		console.log("모달창 닫고 크레딧 충전");
-		console.log(selectedOption);
+		setCredit(credit + selectedOption);
+		Modal.open(
+			<div style={{ color: "white" }}>
+				{selectedOption}크레딧이 충전되었습니다! 2초 뒤에 자동으로 닫힙니다.
+			</div>,
+		);
+		setTimeout(Modal.close, 2000);
 	};
 
 	return (
-		<Overlay>
-			<ChargeModal>
-				<Text>크레딧 충전하기</Text>
-				<CloseButton onClick={onClose}>
-					<img src={Close} alt="닫기" />
-				</CloseButton>
-				<RadioWrapper>
-					{options.map((option, index) => (
-						<RadioLabel key={index}>
-							<ValueWrapper>
-								<img src={Credit} alt="크레딧" />
-								{option.label}
-							</ValueWrapper>
-							<CustomRadio
-								type="radio"
-								value={option.value}
-								checked={selectedOption === option.value}
-								onChange={() => handleOptionChange(option.value)}
-							/>
-						</RadioLabel>
-					))}
-				</RadioWrapper>
-				<CommonButton onClick={handleCharge}>충전하기</CommonButton>
-			</ChargeModal>
-		</Overlay>
-	);
-};
-
-export default function Modals() {
-	// ListPage 라고 가정
-
-	const options = [
-		{ label: "100", value: 100 },
-		{ label: "500", value: 500 },
-		{ label: "1000", value: 1000 },
-	];
-
-	const [selectedOption, setSelectedOption] = useState(null);
-	const [showModal, setShowModal] = useState(false);
-
-	const openModal = () => {
-		setShowModal(true);
-	};
-
-	const closeModal = () => {
-		setShowModal(false);
-	};
-
-	const handleSelectOption = (option) => {
-		setSelectedOption(option);
-		console.log(`선택한 값 : ${option}`);
-	};
-
-	return (
-		<>
-			<button onClick={openModal}>크레딧 충전하기</button>
-
-			{showModal &&
-				createPortal(
-					<RadioModal
-						options={options}
-						onClose={closeModal}
-						onSelect={handleSelectOption}
-					/>,
-					document.body,
-				)}
-		</>
+		<ChargeModal>
+			<Text>크레딧 충전하기</Text>
+			<CloseButton onClick={() => Modal.close()}>
+				<img src={Close} alt="닫기" />
+			</CloseButton>
+			<RadioWrapper>
+				{options.map((option, index) => (
+					<RadioLabel key={index}>
+						<ValueWrapper>
+							<CreditIcon />
+							{option}
+						</ValueWrapper>
+						<CustomRadio
+							type="radio"
+							value={option}
+							checked={selectedOption === option}
+							onChange={() => handleOptionChange(option)}
+						/>
+					</RadioLabel>
+				))}
+			</RadioWrapper>
+			<CommonButton onClick={handleCharge}>충전하기</CommonButton>
+		</ChargeModal>
 	);
 }

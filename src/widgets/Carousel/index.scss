@@ -24,6 +24,8 @@
 	{
 		width: 100%;
 		display: flex;
+		transition: transform 250ms ease-in-out;
+		will-change: transform;
 
 		> [data-widget="Carousel.Item"]
 		{

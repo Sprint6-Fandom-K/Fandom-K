@@ -1,4 +1,4 @@
-import useMediaQuery from "@/shared/hooks/useMediaQuery";
+import useMediaQuery from "./useMediaQuery";
 
 export default function useViewport()
 {

@@ -1,8 +1,8 @@
 export default function ArrowLeft({
 	/* html */ id,
+	/* props */ color = "white",
 	width = 13,
 	height = 24,
-	color = "white" /* props */,
 }) {
 	return (
 		<svg
