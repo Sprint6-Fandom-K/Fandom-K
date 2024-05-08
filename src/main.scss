@@ -59,5 +59,6 @@ button {
 @media screen and (375px <= width < 768px) {
 	.hide-on-mobile {
 		display: none !important;
+		border-radius: 24PX;
 	}
 }
