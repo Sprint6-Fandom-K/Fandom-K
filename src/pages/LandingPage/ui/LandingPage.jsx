@@ -8,6 +8,7 @@ import MainBackgroundImage1 from "@/shared/assets/images/MainBackground_1.png";
 import MainBackgroundImage2 from "@/shared/assets/images/MainBackground_2.png";
 import MainBackgroundImage3 from "@/shared/assets/images/MainBackground_3.png";
 import { useNavigate } from 'react-router-dom';
+import { PinkButton } from "@/shared/ui/Button";
 
 const Header = styled.div`
   display: flex;
@@ -61,19 +62,6 @@ const Header = styled.div`
   }
 `;
 
-// const HeaderGradient = styled.div`
-//   position: absolute;
-//   top: -100px;
-//   left: -100px;
-//   width: 199px;
-//   height: 273px;
-//   background: radial-gradient(
-//     50% 50%,
-//     rgb(20, 195, 254, 0.16),
-//     rgb(255, 255, 255, 0)
-//     );
-// `;
-
 const HeaderTitle = styled.div`
   margin-top: 140px;
   color: #fff;
@@ -117,14 +105,8 @@ const HeaderLogo = styled.img`
   }
 `;
 
-const HeaderButton = styled.button`
+const HeaderButton = styled(PinkButton)`
   margin-top: 584px;
-  width: 477px;
-  height: 48px;
-  border-radius: 3px;
-  border: none;
-  background: linear-gradient(90deg, #f86f65 0%, #fe5493 100%);
-  color: #fff;
   font-size: 14px;
   font-weight: 700;
 
@@ -141,7 +123,6 @@ const HeaderButton = styled.button`
     font-weight: 400;
   }
 `;
-
 
 const ContentText = styled.div`
   position: absolute;
@@ -268,7 +249,6 @@ const MainSection = styled.div`
   }
 `;
 
-
 const Main = styled.div`
   display: flex;
   flex-direction: column;
@@ -276,7 +256,6 @@ const Main = styled.div`
   position: relative;
 `;
 
-// const mainContentImages = [ContentImage1, ContentImage2, ContentImage3];
 const mainBackgroundImages = [MainBackgroundImage1, MainBackgroundImage2, MainBackgroundImage3];
 
 
@@ -285,16 +264,16 @@ export default function LandingPage() {
 	return (
 		<>
 			<Header $imgurl={HeaderBackgroundImage}>
-				{/* <HeaderGradient /> */}
 				<HeaderTitle>
 					내가 좋아하는 아이돌을<br></br>
 					가장 <span>쉽게 덕질</span> 하는 방법
 				</HeaderTitle>
 				<HeaderLogo src={LogoImage} alt='헤더로고' />
-				<HeaderButton onClick={() => navigate("/list")}>지금 시작하기</HeaderButton>
+				<HeaderButton onClick={() => navigate("/list")} height="48px" width="477px">지금 시작하기</HeaderButton>
 			</Header>
 			<Main>
 				<MainGradient>
+
 					<MainContent $imgurl={ContentImage1}>
 						<ContentText>
 							<h1>후원하기</h1>
@@ -304,6 +283,7 @@ export default function LandingPage() {
 							</p>
 						</ContentText>
 					</MainContent>
+
 					<MainContent $imgurl={ContentImage2}>
 						<ContentText>
 							<h1>이달의 아티스트</h1>
@@ -313,6 +293,7 @@ export default function LandingPage() {
 							</p>
 						</ContentText>
 					</MainContent>
+
 					<MainContent $imgurl={ContentImage3}>
 						<ContentText>
 							<h1>나만의 아티스트</h1>
@@ -322,6 +303,7 @@ export default function LandingPage() {
 							</p>
 						</ContentText>
 					</MainContent>
+
 				</MainGradient>
 
 				{mainBackgroundImages.map((image, index) => (
