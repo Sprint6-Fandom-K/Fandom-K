@@ -2,7 +2,9 @@ import React, { createContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 import "swiper/css";
+import "swiper/css/navigation";
 
 import styled from "styled-components";
 
@@ -94,16 +96,22 @@ const MyPage = () => {
 		}
 	};
 
-	// 스와이퍼 다음 페이지 불러오기
-	const nextPageData = async () => {
-		try {
-			setIsLoading(true);
+	const handleSlideChange = async (swiper) => {
+		const currentIndex = swiper.activeIndex;
+		const totalSlides = swiper.slides.length;
+		console.log(currentIndex, "current", totalSlides, "total");
 
-			if (idolPageData.length === swiperIndex + 2) {
+		try {
+			// setIsLoading(false);
+			console.log(1);
+
+			if (totalSlides === currentIndex + 1) {
 				const prevCursor = idolPageData[idolPageData.length - 1].nextCursor;
+
 				if (!prevCursor) {
 					setNextCursor(null);
-					setIsLoading(false);
+					// setIsLoading(false);
+					console.log(2);
 				} else {
 					const lists = await getIdols(16, prevCursor);
 					const nextCursor = lists.nextCursor;
@@ -111,23 +119,20 @@ const MyPage = () => {
 					if (!nextCursor) {
 						setNextCursor((prev) => prev);
 					}
+					console.log(3);
 
-					setIsLoading(false);
+					// setIsLoading(false);
 					setIdolPageData((prev) => {
 						return [...prev, lists];
 					});
 				}
-			} else if (idolPageData.length === swiperIndex + 1) {
+			} else if (totalSlides === currentIndex) {
 				setNextCursor(nextCursor);
-			}
-
-			if (swiperRef) {
-				swiperRef.slideNext();
-				setIsLoading(false);
 			}
 		} catch (error) {
 			console.error("Error fetching idols:", error);
-			setIsLoading(true);
+			console.log(4);
+			// setIsLoading(true);
 		}
 	};
 
@@ -178,11 +183,6 @@ const MyPage = () => {
 							<Title>관심 있는 아이돌을 추가해보세요.</Title>
 
 							<SwiperContainer>
-								{Boolean(swiperIndex) && (
-									<LeftArrow onClick={prevPageData}>
-										<img src={leftArrow} alt="이전" />
-									</LeftArrow>
-								)}
 								<Swiper
 									slidesPerView={1}
 									spaceBetween={22}
@@ -194,7 +194,13 @@ const MyPage = () => {
 									}}
 									onSlideChange={(swiper) => {
 										setSwiperIndex(swiper.activeIndex);
+										handleSlideChange(swiper);
 									}}
+									navigation={{
+										prevEl: ".swiper-button-prev",
+										nextEl: ".swiper-button-next",
+									}}
+									modules={[Navigation]}
 								>
 									{idolPageData.length === 0 || isLoading ? (
 										<IdolListCardSkeleton />
@@ -219,8 +225,21 @@ const MyPage = () => {
 										})
 									)}
 								</Swiper>
+								{Boolean(swiperIndex) && (
+									<LeftArrow
+										className="swiper-button-prev"
+										onClick={prevPageData}
+										// onClick={prevPageData}
+									>
+										<img src={leftArrow} alt="이전" />
+									</LeftArrow>
+								)}
 								{nextCursor && (
-									<RightArrow onClick={nextPageData}>
+									<RightArrow
+										className="swiper-button-next"
+										onClick={() => swiperRef.slideNext()}
+										// onClick={nextPageData}
+									>
 										<img src={rightArrow} alt="다음" />
 									</RightArrow>
 								)}
@@ -297,6 +316,10 @@ const Arrow = styled.button`
 const LeftArrow = styled(Arrow)`
 	left: -61px;
 
+	&::after {
+		content: "";
+	}
+
 	@media only screen and (max-width: 1370px) {
 		left: 0;
 	}
@@ -304,6 +327,10 @@ const LeftArrow = styled(Arrow)`
 
 const RightArrow = styled(Arrow)`
 	right: -61px;
+
+	&::after {
+		content: "";
+	}
 
 	@media only screen and (max-width: 1370px) {
 		right: 0;
