@@ -36,6 +36,7 @@ const MyPage = () => {
 	const [interestIdols, setInterestIdols] = useState(getLocalStorage()); // 관심있는 아이돌 목록 state
 	const [localStorageData, setLocalStorageData] = useState(getLocalStorage()); // localStorage 데이터
 	const [isAddingMode, setIsAddingMode] = useState(true); // 추가하기 모드 상태
+	const [isLoading, setIsLoading] = useState(false);
 
 	// 관심있는 아이돌 localStorage 업데이트
 	const setLocalStorage = (data) => {
@@ -75,39 +76,60 @@ const MyPage = () => {
 
 	// 아이돌 목록 불러오기
 	const getIdolList = async () => {
-		const lists = await getIdols();
-		const nextCursor = lists.nextCursor;
-		setNextCursor(nextCursor);
-		setIdolPageData([lists]);
+		const list = await getIdols();
+		const nextCursor = list.nextCursor;
+
+		const secondList = await getIdols(16, nextCursor);
+
+		setNextCursor(secondList.nextCursor);
+		setIdolPageData([list, secondList]);
 	};
 
-	// 스와이퍼 다음 페이지 불러오기
-	const getIdolPageData = async () => {
-		if (idolPageData.length === swiperIndex + 1) {
-			const prevCursor = idolPageData[idolPageData.length - 1].nextCursor;
-			if (!prevCursor) {
-				console.log("이건가");
-			} else {
-				console.log("이거..?");
-				const lists = await getIdols(16, prevCursor);
-				console.log(idolPageData, "li9sts");
+	// 스와이퍼 이전 페이지 불러오기
+	const prevPageData = () => {
+		setNextCursor(true);
 
-				const nextCursor = lists.nextCursor;
-				setNextCursor(nextCursor);
-
-				setIdolPageData((prev) => {
-					return [...prev, lists];
-				});
-			}
-		} else {
-			if (swiperRef) {
-				console.log("이거다");
-				swiperRef.slideNext();
-			}
+		if (swiperRef) {
+			swiperRef.slidePrev();
 		}
 	};
 
-	console.log(nextCursor);
+	// 스와이퍼 다음 페이지 불러오기
+	const nextPageData = async () => {
+		try {
+			setIsLoading(true);
+
+			if (idolPageData.length === swiperIndex + 2) {
+				const prevCursor = idolPageData[idolPageData.length - 1].nextCursor;
+				if (!prevCursor) {
+					setNextCursor(null);
+					setIsLoading(false);
+				} else {
+					const lists = await getIdols(16, prevCursor);
+					const nextCursor = lists.nextCursor;
+
+					if (!nextCursor) {
+						setNextCursor((prev) => prev);
+					}
+
+					setIsLoading(false);
+					setIdolPageData((prev) => {
+						return [...prev, lists];
+					});
+				}
+			} else if (idolPageData.length === swiperIndex + 1) {
+				setNextCursor(nextCursor);
+			}
+
+			if (swiperRef) {
+				swiperRef.slideNext();
+				setIsLoading(false);
+			}
+		} catch (error) {
+			console.error("Error fetching idols:", error);
+			setIsLoading(true);
+		}
+	};
 
 	useEffect(() => {
 		getIdolList();
@@ -156,13 +178,7 @@ const MyPage = () => {
 
 							<SwiperContainer>
 								{Boolean(swiperIndex) && (
-									<LeftArrow
-										onClick={() => {
-											if (swiperRef) {
-												swiperRef.slidePrev();
-											}
-										}}
-									>
+									<LeftArrow onClick={prevPageData}>
 										<img src={leftArrow} alt="이전" />
 									</LeftArrow>
 								)}
@@ -179,7 +195,7 @@ const MyPage = () => {
 										setSwiperIndex(swiper.activeIndex);
 									}}
 								>
-									{idolPageData.length === 0 ? (
+									{idolPageData.length === 0 || isLoading ? (
 										<IdolListCardSkeleton />
 									) : (
 										idolPageData.map((slideData, slideIndex) => {
@@ -203,7 +219,7 @@ const MyPage = () => {
 									)}
 								</Swiper>
 								{nextCursor && (
-									<RightArrow onClick={getIdolPageData}>
+									<RightArrow onClick={nextPageData}>
 										<img src={rightArrow} alt="다음" />
 									</RightArrow>
 								)}
