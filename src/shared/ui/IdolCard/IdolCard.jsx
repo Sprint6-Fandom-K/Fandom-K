@@ -90,8 +90,6 @@ const Check = styled.div`
 	border-radius: 50%;
 `;
 
-const CheckIconBox = styled.div``;
-
 const DeleteButton = styled.button`
 	position: absolute;
 	top: 0;
@@ -103,6 +101,12 @@ const DeleteButton = styled.button`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	@media only screen and (max-width: 480px) {
+		> img {
+			width: 8px;
+		}
+	}
 `;
 
 const Img = styled.img`
