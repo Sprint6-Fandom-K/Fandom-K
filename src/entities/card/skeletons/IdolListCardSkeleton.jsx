@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import skeletonStyle from "@/shared/styles/skeletonStyle";
 
-const IdolListCardSkeleton = () => {
+const IdolListCardSkeleton = ({ count = 16 }) => {
 	return (
 		<IdolList>
-			{Array.from({ length: 16 }).map((_, index) => {
+			{Array.from({ length: count }).map((_, index) => {
 				return (
 					<Card key={index}>
 						<ImgArea />

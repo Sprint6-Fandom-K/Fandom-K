@@ -27,6 +27,19 @@ const getLocalStorage = () => {
 	return list && list.length > 0 ? list : [];
 };
 
+// 반응형 체크
+const changeDataCount = (innerWidth) => {
+	if (innerWidth < 481) {
+		return 6;
+	} else if (innerWidth < 745) {
+		return 8;
+	} else if (innerWidth < 1281) {
+		return 12;
+	} else {
+		return 16;
+	}
+};
+
 export const SelectContext = createContext();
 
 const MyPage = () => {
@@ -39,26 +52,34 @@ const MyPage = () => {
 	const [localStorageData, setLocalStorageData] = useState(getLocalStorage()); // localStorage 데이터
 	const [isAddingMode, setIsAddingMode] = useState(true); // 추가하기 모드 상태
 	const [isLoading, setIsLoading] = useState(true);
+	const [dataCount, setDataCount] = useState(
+		changeDataCount(window.innerWidth),
+	);
 
-	// 반응형에서 보이는 아이템 수 변경하는 함수
+	// 보이는 아이템 수 변경하는 함수
 	const flattenArray = () => {
 		if (idolPageData.length > 0) {
 			const result = [];
 			const newArr = idolPageData?.reduce((prev, next) => {
 				return prev.concat(next.list);
 			}, []);
-			const count = 16;
-			const page = Math.ceil(newArr.length / count);
+			const page = Math.ceil(newArr.length / dataCount);
 			for (let i = 0; i < page; i++) {
 				const list = [];
-				for (let j = 0; j < count; j++) {
-					if (newArr[count * i + j]) {
-						list.push(newArr[count * i + j]);
+				for (let j = 0; j < dataCount; j++) {
+					if (newArr[dataCount * i + j]) {
+						list.push(newArr[dataCount * i + j]);
 					}
 				}
-				const nextCursor = list[list.length - 1].id;
+				let nextCursor;
+				if (list.length < dataCount) {
+					nextCursor = null;
+				} else {
+					nextCursor = list[list.length - 1].id;
+				}
 				result.push({ list, nextCursor });
 			}
+			return result;
 		}
 	};
 
@@ -101,9 +122,9 @@ const MyPage = () => {
 	// 아이돌 목록 불러오기
 	const getIdolList = async () => {
 		try {
-			const list = await getIdols();
+			const list = await getIdols(dataCount);
 			const nextCursor = list.nextCursor;
-			const secondList = await getIdols(16, nextCursor);
+			const secondList = await getIdols(dataCount, nextCursor);
 
 			setNextCursor(secondList.nextCursor);
 			setIdolPageData([list, secondList]);
@@ -135,7 +156,7 @@ const MyPage = () => {
 				if (!prevCursor) {
 					setNextCursor(null);
 				} else {
-					const lists = await getIdols(16, prevCursor);
+					const lists = await getIdols(dataCount, prevCursor);
 
 					setNextCursor((prev) => prev);
 
@@ -154,11 +175,29 @@ const MyPage = () => {
 	};
 
 	useEffect(() => {
-		flattenArray();
-	}, [idolPageData]);
+		const data = flattenArray();
+		let a = JSON.stringify(idolPageData);
+		let b = JSON.stringify(data);
+
+		if (data && a.split("").sort().join("") !== b.split("").sort().join("")) {
+			setIdolPageData(data);
+		}
+	}, [idolPageData, dataCount]);
 
 	useEffect(() => {
 		getIdolList();
+	}, [dataCount]);
+
+	useEffect(() => {
+		const event = (e) => {
+			const showCount = changeDataCount(e.target.innerWidth);
+			setDataCount(showCount);
+		};
+
+		window.addEventListener("resize", event);
+		return () => {
+			window.removeEventListener("resize", event);
+		};
 	}, []);
 
 	return (
@@ -183,7 +222,14 @@ const MyPage = () => {
 						{/* 관심있는 아이돌 */}
 						<IdolSection>
 							<Title>내가 관심있는 아이돌</Title>
-							<Swiper slidesPerView={10} slidesPerGroup={5} spaceBetween={24}>
+							<Swiper
+								slidesPerView={10}
+								slidesPerGroup={5}
+								spaceBetween={24}
+								observer={true}
+								observeParents={true}
+								observeSlideChildren={true}
+							>
 								{localStorageData.map((idol) => {
 									return (
 										<SwiperSlide key={idol.id}>
@@ -210,8 +256,9 @@ const MyPage = () => {
 								<Swiper
 									slidesPerView={1}
 									spaceBetween={22}
-									observer
-									observeParents
+									observer={true}
+									observeParents={true}
+									observeSlideChildren={true}
 									onSwiper={(swiper) => {
 										setSwiperRef(swiper);
 										setSwiperIndex(swiper.activeIndex);
@@ -228,33 +275,35 @@ const MyPage = () => {
 								>
 									{idolPageData.length === 0 || isLoading ? (
 										<SwiperSlide>
-											<IdolListCardSkeleton />
+											<IdolListCardSkeleton count={dataCount} />
 										</SwiperSlide>
 									) : (
-										idolPageData?.map((slideData, slideIndex) => {
-											return (
-												<SwiperSlide key={slideIndex}>
-													<IdolList>
-														{slideData.list.map((idol) => {
-															return (
-																<IdolCard
-																	key={idol.id}
-																	info={idol}
-																	padding="6.48"
-																	chooseIdol={() => handleClickIdolList(idol)}
-																/>
-															);
-														})}
-													</IdolList>
+										<>
+											{idolPageData?.map((slideData, slideIndex) => {
+												return (
+													<SwiperSlide key={slideIndex}>
+														<IdolList>
+															{slideData.list.map((idol) => {
+																return (
+																	<IdolCard
+																		key={idol.id}
+																		info={idol}
+																		padding="6.48"
+																		chooseIdol={() => handleClickIdolList(idol)}
+																	/>
+																);
+															})}
+														</IdolList>
+													</SwiperSlide>
+												);
+											})}
+											{isLoading ?? (
+												<SwiperSlide>
+													<IdolListCardSkeleton count={dataCount} />
 												</SwiperSlide>
-											);
-										})
+											)}
+										</>
 									)}
-									{/* {isLoading ?? (
-										<SwiperSlide>
-											<IdolListCardSkeleton />
-										</SwiperSlide>
-									)} */}
 								</Swiper>
 								{Boolean(swiperIndex) && (
 									<LeftArrow
