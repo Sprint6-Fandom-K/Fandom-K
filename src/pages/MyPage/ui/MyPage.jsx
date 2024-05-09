@@ -10,6 +10,7 @@ import styled from "styled-components";
 
 import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
+import IdolListCardSkeleton from "@/entities/card/skeletons/IdolListCardSkeleton";
 
 // 이미지
 import logoImg from "../../../shared/assets/icons/logo.svg";
@@ -17,7 +18,6 @@ import myLogo from "../../../shared/assets/icons/my_logo.svg";
 import leftArrow from "../../../shared/assets/icons/left_arrow.svg";
 import rightArrow from "../../../shared/assets/icons/right_arrow.svg";
 import plusIcon from "../../../shared/assets/icons/Ic_plus_24px.svg";
-import IdolListCardSkeleton from "@/entities/card/skeletons/IdolListCardSkeleton";
 
 const LOCAL_STORAGE_KEY = "interest";
 
@@ -38,7 +38,29 @@ const MyPage = () => {
 	const [interestIdols, setInterestIdols] = useState(getLocalStorage()); // 관심있는 아이돌 목록 state
 	const [localStorageData, setLocalStorageData] = useState(getLocalStorage()); // localStorage 데이터
 	const [isAddingMode, setIsAddingMode] = useState(true); // 추가하기 모드 상태
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
+
+	// 반응형에서 보이는 아이템 수 변경하는 함수
+	const flattenArray = () => {
+		if (idolPageData.length > 0) {
+			const result = [];
+			const newArr = idolPageData?.reduce((prev, next) => {
+				return prev.concat(next.list);
+			}, []);
+			const count = 16;
+			const page = Math.ceil(newArr.length / count);
+			for (let i = 0; i < page; i++) {
+				const list = [];
+				for (let j = 0; j < count; j++) {
+					if (newArr[count * i + j]) {
+						list.push(newArr[count * i + j]);
+					}
+				}
+				const nextCursor = list[list.length - 1].id;
+				result.push({ list, nextCursor });
+			}
+		}
+	};
 
 	// 관심있는 아이돌 localStorage 업데이트
 	const setLocalStorage = (data) => {
@@ -78,13 +100,17 @@ const MyPage = () => {
 
 	// 아이돌 목록 불러오기
 	const getIdolList = async () => {
-		const list = await getIdols();
-		const nextCursor = list.nextCursor;
+		try {
+			const list = await getIdols();
+			const nextCursor = list.nextCursor;
+			const secondList = await getIdols(16, nextCursor);
 
-		const secondList = await getIdols(16, nextCursor);
-
-		setNextCursor(secondList.nextCursor);
-		setIdolPageData([list, secondList]);
+			setNextCursor(secondList.nextCursor);
+			setIdolPageData([list, secondList]);
+			setIsLoading(false);
+		} catch (error) {
+			console.error("Error fetching idols:", error);
+		}
 	};
 
 	// 스와이퍼 이전 페이지 불러오기
@@ -100,30 +126,23 @@ const MyPage = () => {
 	const handleSlideChange = async (swiper) => {
 		const currentIndex = swiper.activeIndex;
 		const totalSlides = swiper.slides.length;
-		console.log(currentIndex, "current", totalSlides, "total");
 
 		try {
-			// setIsLoading(false);
-			console.log(1);
-
 			if (currentIndex === totalSlides - 1) {
+				// setIsLoading(true);
 				const prevCursor = idolPageData[idolPageData.length - 1].nextCursor;
 
 				if (!prevCursor) {
 					setNextCursor(null);
-					// setIsLoading(false);
-					console.log(2);
 				} else {
 					const lists = await getIdols(16, prevCursor);
-					const nextCursor = lists.nextCursor;
 
 					setNextCursor((prev) => prev);
-					console.log(3);
 
-					// setIsLoading(false);
 					setIdolPageData((prev) => {
 						return [...prev, lists];
 					});
+					// setIsLoading(false);
 				}
 			} else {
 				const currentCursor = idolPageData[currentIndex].nextCursor;
@@ -131,10 +150,12 @@ const MyPage = () => {
 			}
 		} catch (error) {
 			console.error("Error fetching idols:", error);
-			console.log(4);
-			// setIsLoading(true);
 		}
 	};
+
+	useEffect(() => {
+		flattenArray();
+	}, [idolPageData]);
 
 	useEffect(() => {
 		getIdolList();
@@ -144,15 +165,18 @@ const MyPage = () => {
 		<Container>
 			<Inner>
 				<Header>
+					<Box></Box>
 					<Box>
 						<Link to="/">
 							<img src={logoImg} alt="FANDOM-K" />
 						</Link>
 					</Box>
 
-					<Link href="/mypage">
-						<img src={myLogo} alt="마이페이지" />
-					</Link>
+					<Box right="right">
+						<Link href="/mypage">
+							<img src={myLogo} alt="마이페이지" />
+						</Link>
+					</Box>
 				</Header>
 				<SelectContext.Provider value={isAddingMode}>
 					<Page>
@@ -207,7 +231,7 @@ const MyPage = () => {
 											<IdolListCardSkeleton />
 										</SwiperSlide>
 									) : (
-										idolPageData.map((slideData, slideIndex) => {
+										idolPageData?.map((slideData, slideIndex) => {
 											return (
 												<SwiperSlide key={slideIndex}>
 													<IdolList>
@@ -226,6 +250,11 @@ const MyPage = () => {
 											);
 										})
 									)}
+									{/* {isLoading ?? (
+										<SwiperSlide>
+											<IdolListCardSkeleton />
+										</SwiperSlide>
+									)} */}
 								</Swiper>
 								{Boolean(swiperIndex) && (
 									<LeftArrow
@@ -368,8 +397,11 @@ const Span = styled.span`
 //logo-box
 const Box = styled.div`
 	flex: 1;
-	margin-left: 32px;
-	text-align: center;
+	text-align: ${({ right }) => (right ? right : "center")};
+
+	> a {
+		display: inline-block;
+	}
 `;
 
 //h1
