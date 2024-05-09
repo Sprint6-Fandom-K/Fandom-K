@@ -57,7 +57,6 @@ const Card = styled.div`
 	position: relative;
 	display: grid;
 	gap: 8px;
-	background-color: #02000e;
 	width: ${({ width }) => (width ? width + "px" : "auto")};
 	flex: 0 0 auto;
 `;

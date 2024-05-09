@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useLayoutEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // Import Swiper React components
 import  { Swiper, SwiperSlide } from "swiper/react";
@@ -201,6 +201,11 @@ const MyPage = () => {
 		};
 	}, []);
 
+	useLayoutEffect(()=>{
+		const showCount = changeDataCount(window.innerWidth);
+		setDataCount(showCount);
+	}, [])
+
 	return (
 		<Container>
 			<Inner>
@@ -363,6 +368,8 @@ const Inner = styled.div`
 `;
 //헤더
 const Header = styled.header`
+	position: relative;
+	z-index: 1;
 	padding: 23px 0;
 	display: flex;
 	align-items: center;
