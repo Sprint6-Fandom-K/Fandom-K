@@ -207,13 +207,13 @@ const MyPage = () => {
 					<Box></Box>
 					<Box>
 						<Link to="/">
-							<Logo src={logoImg} alt="FANDOM-K" />
+							<img src={logoImg} alt="FANDOM-K" />
 						</Link>
 					</Box>
 
 					<Box right="right">
 						<Link href="/MyPage">
-							<Logo src={myLogo} alt="마이페이지" />
+							<img src={myLogo} alt="마이페이지" />
 						</Link>
 					</Box>
 				</Header>
@@ -247,8 +247,8 @@ const MyPage = () => {
 						</IdolSection>
 						<Hr />
 						{/* 아이돌 목록 */}
-						<IdolSection isInterest={false}>
-							<Title isInterest={false}>관심 있는 아이돌을 추가해보세요.</Title>
+						<IdolSection>
+							<Title>관심 있는 아이돌을 추가해보세요.</Title>
 
 							<SwiperContainer>
 								<Swiper
@@ -341,76 +341,22 @@ const MyPage = () => {
 //레이아웃
 const Container = styled.div`
 	color: var(--black1);
-	width: 1920px;
-	height: 1080px;
-
-	/* tablet */
-	@media only screen and (768px <= width < 1200px){
-		height: 1133px;
-	}
-	/* mobile */
-	@media only screen and (375px <= width < 768px){
-
-		height: 812px;
-		margin-top: 152px;
-		border-radius: 24px;
-	}
+	min-height: 100vh;
 `;
-
 //inner
 const Inner = styled.div`
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: 0 24px;
 	box-sizing: content-box;
-	background-color: var(--black1);
-	height: 1080px;
-
-
-	@media only screen and (768px <= width < 1200px){
-		max-width: 696px;
-		margin: 0 auto;
-	}
-
-	@media only screen and (375px <= width < 768px){
-		width: 327px;
-		margin: 0 auto;
-		border-radius: 24px;
-	}
+	background-color: #02000e;
 `;
-
-
-const Logo = styled.img`
-    height: 32px;
-
-    @media only screen and (768px <= width < 1200px){
-	height: 22.87px;
-	}
-
-	@media only screen and (375px <= width < 768px){
-	height: 20.58px;
-	margin-top: 62px;
-    }
-`;
-
 //헤더
 const Header = styled.header`
 	padding: 23px 0;
 	display: flex;
 	align-items: center;
-	background-repeat: no-repeat;
-	background-position: center;
-
-    @media only screen and (768px <= width < 1200px){
-		height: 81px;
-		}
-
-		@media only screen and (375px <= width < 768px){
-		height: 88px;
-		}
 `;
-
-
 //아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
 const SwiperContainer = styled.div`
 	position: relative;
@@ -418,29 +364,15 @@ const SwiperContainer = styled.div`
 	@media only screen and (max-width: 1370px) {
 		display: flex;
 	}
-
-	@media only screen and (768px <= width < 1200px){
-		max-width: 584px;
-		height: 390px;
-		gap: 24px;
-		margin: 0 auto;
-	}
 `;
-
-//마이페이지 _'내가 관심있는 아이돌' 부분
+//마이페이지
 const Page = styled.div`
 	padding: 75px 0 80px;
-	display: grid;
-	gap: 40px;
 
-	@media only screen and (375px <= width < 768px){
-		max-width: 404px;
-		height: 123px;
-		gap: 4px;
-		margin-left:24px;
+	@media only screen and (max-width: 744px) {
+		padding: 15px 0 210px;
 	}
 `;
-
 //arrow
 const Arrow = styled.button`
 	position: absolute;
@@ -453,42 +385,28 @@ const Arrow = styled.button`
 	border: 0;
 	background-color: var(--black3);
 	transform: translateY(-50%);
-
-	@media only screen and (768px <= width < 1200px){
-		display: block;
-	}
-
-	@media only screen and (375px <= width < 768px){
+	@media only screen and (max-width: 480px) {
 		display: none;
 	}
 `;
-
 const LeftArrow = styled(Arrow)`
-left: -61px;
-
-&::after {
-	content: "";
-}
-
-@media only screen and (max-width: 1370px) {
-	left: 0;
-}
+	left: -61px;
+	&::after {
+		content: "";
+	}
+	@media only screen and (max-width: 1370px) {
+		left: 0;
+	}
 `;
-
 const RightArrow = styled(Arrow)`
-right: -61px;
-
-&::after {
-	content: "";
-}
-
-@media only screen and (max-width: 1370px) {
-	right: 0;
-}
+	right: -61px;
+	&::after {
+		content: "";
+	}
+	@media only screen and (max-width: 1370px) {
+		right: 0;
+	}
 `;
-
-
-
 //추가하기 버튼
 const Button = styled.button`
 	padding: 11px 83px;
@@ -501,95 +419,58 @@ const Button = styled.button`
 	line-height: 1.6;
 	display: flex;
 	align-items: center;
-	background: var(--brand);
-
-    @media only screen and (768px <= width < 1200px){
-		height: 48px;
-		margin: 0 auto;
-	}
-	@media only screen and (375px <= width < 768px){
-		height: 48px;
-/*아이돌카드변경되면 위치 내려갈 것, 안내려갈수도있으니 확인. 마진적용하면 됨 */
-		margin-top: 24px;
-		margin-left: 20px;
-	}
+	gap: 8px;
+	background: linear-gradient(to right, #f77063, #fe5790);
 `;
-
 //추가하기 버튼의 +아이콘
 const Icon = styled.div`
 	width: 24px;
 	height: 24px;
 `;
-
 //추가하기 버튼의 span
 const Span = styled.span`
 	font-weight: 700;
 `;
-
 //logo-box
 const Box = styled.div`
 	flex: 1;
-	margin-left: 32px;
-	text-align: center;
 	text-align: ${({ right }) => (right ? right : "center")};
-
 	> a {
 		display: inline-block;
 	}
 `;
-
 //h1
 const Title = styled.h1`
-	color: var(--white3);
+	color: #f6f6f8;
 	font-weight: 700;
 	font-size: 24px;
 	line-height: 1.08;
 	margin-bottom: 32px;
 
-	@media only screen and (768px <= width < 1200px){
+	@media only screen and (max-width: 744px) {
 		font-size: 20px;
-
+		margin-bottom: 25px;
+		line-height: 1.3;
 	}
-
-	${({ isInterest }) => isInterest ? css`
-	@media only screen and (375px <= width < 768px) {
-		display: none;
-	}
-	` : css`
-
-	@media only screen and (375px <= width < 768px) {
-		font-size: 16px;
-
-	}
-	`}
 `;
-
-//hr 구분선
+//hr
 const Hr = styled.hr`
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	margin: 40px 0;
-	width: 1200px;
 
-	@media only screen and (768px <= width < 1200px){
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		width: 696px;
-	}
-
-	@media only screen and (375px <= width < 768px){
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		width: 327px;
+	@media only screen and (max-width: 744px) {
+		margin: 33px 0;
 	}
 `;
-
-//idol-section 스와이퍼 있는 곳
+//idol-section
 const IdolSection = styled.section`
+	/* margin-bottom: 40px; */
 	/* display: grid;
 	gap: 32px; */
 `;
-
 //idol-list ,미디어쿼리 idol-list
 const IdolList = styled.div`
-width: 100%;
+	width: 100%;
 	display: grid;
 	grid-template-rows: repeat(2, 1fr);
 	grid-template-columns: repeat(8, 1fr);
@@ -600,45 +481,14 @@ width: 100%;
 		gap: 24px;
 		grid-template-columns: repeat(6, 1fr);
 	}
-	/* 이 부분 은빈님 api작업하시면 반응형 fix
-    /*테블릿 모바일에 따른 아이돌카드 행과 열 정열*/
-		/* @media only screen and (768px <= width < 1200px){
-		grid-template-rows: repeat(2, 1fr);
-		grid-template-columns: repeat(8, 1fr);
-	}
-
-	@media only screen and (375px <= width < 768px){
-		grid-template-rows: repeat(2, 1fr);
-		grid-template-columns: repeat(3, 1fr);
-		overflow-x: scroll;
-	} */
 	@media only screen and (max-width: 744px) {
-		padding: 0 56px;
-		gap: 24px;
 		grid-template-columns: repeat(4, 1fr);
 	}
-
 	@media only screen and (max-width: 480px) {
-		padding: 0 56px;
-		gap: 24px;
+		padding: 0;
+		gap: 17px 24px;
 		grid-template-columns: repeat(3, 1fr);
 	}
 `;
-
-/*스와이퍼 들어가면서 삭제 InterestIdolList 부분에 SwiperSlide 들어감
-//'내가 관심있는 아이돌' 동그란 카드 부분
-const InterestIdolList = styled.ul`
-	display: flex;
-	overflow-x: scroll;
-	gap: 22px;
-//모바일부분만 카드 크기 작게 변화됨
-	@media only screen and (375px <= width < 768px) {
-		width: 70px
-		heigh: 70px
-		padding: 0 27px;
-		gap: 24px;
-		overflow-x: scroll;
-	}
-`;*/
 
 export default MyPage;
