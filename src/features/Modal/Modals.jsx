@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Close from "@/shared/assets/icons/CloseX.svg";
 import styled from "styled-components";
 import { Modal } from "@/app";
@@ -85,16 +85,13 @@ const CustomRadio = styled.input.attrs({ type: "radio" })`
 `;
 
 const ChargeModal = styled.div`
-	position: absolute;
-	top: 45%;
-	left: 50%;
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 31px;
 	width: 327px;
 	height: 372px;
-	transform: translate(-50%, -50%);
 	border-radius: 8px;
 	background-color: #181d26;
 
@@ -112,23 +109,69 @@ const ChargeModal = styled.div`
 	}
 `;
 
-export default function RadioModal({ options }) {
+// -------------------------------------------------------
+
+const TestModal = styled.div`
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	padding: 32px 16px;
+	width: 327px;
+	height: 372px;
+	border-radius: 8px;
+	background-color: #181d26;
+
+	${CloseButton} {
+		right: 16px;
+	}
+`;
+
+const TestWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
+const TestCreditWrapper = styled.div`
+	width: 100%;
+	height: 150px;
+	background-color: aquamarine;
+`;
+
+export default function RadioModal({ options, openModal }) {
 	const [credit, setCredit] = useLocalStorage("credit", 0);
-	// 크레딧 충전하는 모달 컴포넌트
+
 	const [selectedOption, setSelectedOption] = useState(null);
 
 	const handleOptionChange = (option) => {
 		setSelectedOption(option);
 	};
 
+	const handleReCharge = () => {
+		Modal.close;
+		openModal();
+		console.log("충전모달 다시 열기");
+	};
+
 	const handleCharge = () => {
-		setCredit(credit + selectedOption);
+		setCredit((credit) => credit + selectedOption);
 		Modal.open(
-			<div style={{ color: "white" }}>
-				{selectedOption}크레딧이 충전되었습니다! 2초 뒤에 자동으로 닫힙니다.
-			</div>,
+			<TestModal>
+				<CloseButton onClick={() => Modal.close()}>
+					<img src={Close} alt="닫기" />
+				</CloseButton>
+				<CreditIcon />
+				<Text>
+					<span>{selectedOption}</span>크레딧이 충전되었습니다!
+				</Text>
+				<Text>3초 뒤에 자동으로 닫힙니다</Text>
+				<CommonButton onClick={handleReCharge}>MoreCharge?</CommonButton>
+			</TestModal>,
 		);
-		setTimeout(Modal.close, 2000);
+		// setTimeout(Modal.close, 2000);
+		// 2초 뒤에 모달이 닫히는 함수
 	};
 
 	return (

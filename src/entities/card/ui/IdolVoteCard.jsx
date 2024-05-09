@@ -33,10 +33,7 @@ const Input = styled.input`
 	appearance: none;
 `;
 
-export default forwardRef(function IdolVoteCard(
-	{ item, index, onSelect },
-	ref,
-) {
+export default forwardRef(function IdolVoteCard({ item, index, onClick }, ref) {
 	const { group, name, profilePicture, totalVotes } = item;
 
 	return (
@@ -47,7 +44,7 @@ export default forwardRef(function IdolVoteCard(
 			$ai="center"
 			ref={ref}
 		>
-			<FlexContainer $gap="12px" $ai="center">
+			<FlexContainer value={item.id} $gap="12px" $ai="center">
 				<ImageContainer src={profilePicture} />
 				<VoteIndex>{index + 1}</VoteIndex>
 				<FlexContainer $fd="column" $gap="4px">
@@ -55,7 +52,7 @@ export default forwardRef(function IdolVoteCard(
 					<VoteDescription>{`${formatNumber(totalVotes)}표`}</VoteDescription>
 				</FlexContainer>
 			</FlexContainer>
-			<Input type="radio" id={item.id} name="vote" onChange={onSelect} />
+			<Input type="radio" id={item.id} name="vote" onClick={onClick} />
 		</IdolVoteCardContainer>
 	);
 });

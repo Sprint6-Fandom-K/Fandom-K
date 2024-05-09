@@ -53,10 +53,17 @@ const MyCredit = styled(FlexContainer)`
 	text-align: left;
 `;
 
-const ChargeOptions = [100, 500, 1000];
+const ChargeOptions = [100, 500, 1000]; // 초기값 설정
 
 export default function ChargeCredit() {
-	const [credit, setCredit] = useLocalStorage("credit", 0);
+	const [credit, setCredit] = useLocalStorage("credit", 0); // hook을 따로 설정
+
+	const handleOpenChargeModal = () => {
+		Modal.open(
+			<RadioModal options={ChargeOptions} openModal={handleOpenChargeModal} />,
+		);
+	};
+
 	return (
 		<CreditContainer $jc="space-between" $ai="center">
 			<FlexContainer $fd="column" $gap="14px">
@@ -66,13 +73,7 @@ export default function ChargeCredit() {
 					<span>{formatNumber(credit)}</span>
 				</MyCredit>
 			</FlexContainer>
-			<CreditButton
-				onClick={() => {
-					Modal.open(<RadioModal options={ChargeOptions} />);
-				}}
-			>
-				충전하기
-			</CreditButton>
+			<CreditButton onClick={handleOpenChargeModal}>충전하기</CreditButton>
 		</CreditContainer>
 	);
 }

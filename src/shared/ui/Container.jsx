@@ -33,3 +33,21 @@ export const FlexContainer = styled.div`
 export const FlexItemContainer = styled.div`
 	flex: ${({ $flex }) => $flex};
 `;
+
+export const Row = styled.div`
+	display: flex;
+	flex-direction: "column";
+	justify-content: ${({ $jc }) => $jc};
+	align-items: ${({ $ai }) => $ai};
+	flex-direction: ${({ $fd }) => $fd};
+	gap: ${({ $gap }) => $gap};
+`;
+
+export const Column = styled(FlexContainer)`
+	display: flex;
+	flex-direction: "row";
+	justify-content: ${({ $jc }) => $jc};
+	align-items: ${({ $ai }) => $ai};
+	flex-direction: ${({ $fd }) => $fd};
+	gap: ${({ $gap }) => $gap};
+`;
