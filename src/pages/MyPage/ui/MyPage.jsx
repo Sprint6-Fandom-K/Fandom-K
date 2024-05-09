@@ -1,4 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+
 import styled, { css } from "styled-components";
 
 import getIdols from "@/shared/api/idols";
@@ -10,7 +17,7 @@ import myLogo from "@/shared/assets/icons/my_logo.svg";
 import leftArrow from "@/shared/assets/icons/left_arrow.svg";
 import rightArrow from "@/shared/assets/icons/right_arrow.svg";
 import plusIcon from "@/shared/assets/icons/Ic_plus_24px.svg";
-import { Link } from "react-router-dom";
+
 
 const LOCAL_STORAGE_KEY = "interest";
 
@@ -85,32 +92,31 @@ const MyPage = () => {
 							<Logo src={logoImg} alt="FANDOM-K" />
 						</Link>
 					</Box>
-
 					<Link href="/MyPage">
 						<Logo src={myLogo} alt="마이페이지" />
 					</Link>
 				</Header>
-
 				<SelectContext.Provider value={isAddingMode}>
 					<Page>
 						{/* 관심있는 아이돌 */}
 						<IdolSection>
 							<Title isInterest={true}>내가 관심있는 아이돌</Title>
-							<InterestIdolList>
+							<Swiper slidesPerView={10} slidesPerGroup={5} spaceBetween={24}>
 								{localStorageData.map((idol) => {
 									return (
+									< SwiperSlide key={idol.id}>
 										<IdolCard
-											key={idol.id}
-											info={idol}
-											padding="7.14"
-											width="98"
-											remove={true}
-											deleteIdol={() => deleteIdol(idol)}
-										/>
-									);
-								})}
-							</InterestIdolList>
-						</IdolSection>
+										info={idol}
+										padding="7.14"
+										width="98"
+										remove={true}
+										deleteIdol={() => deleteIdol(idol)}
+									/>
+								</SwiperSlide>
+							);
+						})}
+						</Swiper>
+					</IdolSection>
 
 						<Hr />
 
