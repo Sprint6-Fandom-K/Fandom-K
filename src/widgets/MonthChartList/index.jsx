@@ -1,5 +1,5 @@
 import IdolChartCard from "@/entities/card/ui/IdolChartCard";
-import { getChart } from "@/shared/api/api";
+import { getCharts } from "@/shared/api/api";
 import IdolChartCardSkeleton from "@/entities/card/skeletons/IdolChartCardSkeleton";
 import styled from "styled-components";
 
@@ -17,7 +17,7 @@ const ChartList = styled.ul`
 `;
 
 export default function MonthChartList({ gender, isactive }) {
-	const { items, ref, status, rootRef } = useInfiniteScroll(getChart, {
+	const { items, ref, status, rootRef } = useInfiniteScroll(getCharts, {
 		gender,
 	});
 

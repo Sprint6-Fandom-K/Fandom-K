@@ -7,13 +7,12 @@ import { FlexContainer } from "@/shared/ui/Container";
 import { PinkButton } from "@/shared/ui/Button";
 import { modalDescription } from "@/shared/styles/typo";
 import { CREDIT_FOR_ONE_VOTE } from "@/shared/constant/constant";
-import { useGetData } from "@/shared/hooks/useGetData";
-import { getChart } from "@/shared/api/api";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
+import { getCharts, postVotes } from "@/shared/api/api";
+import { useCallback, useEffect, useState } from "react";
 import { Modal } from "@/app";
 import useLocalStorage from "@/shared/hooks/useLocalStorage";
 import useInfiniteScroll from "@/shared/hooks/useInfiniteScroll";
+import { useGetData } from "@/shared/hooks/useGetData";
 
 const VoteContainer = styled.form`
 	background-color: var(--black2);
@@ -51,6 +50,8 @@ const VoteBottom = styled(FlexContainer)`
 	}
 `;
 
+const VoteButton = styled(PinkButton)``;
+
 const ModalContentContainer = styled(FlexContainer)`
 	height: 514px;
 	position: relative;
@@ -70,33 +71,41 @@ const CreditHighLight = styled.span`
 	color: var(--orange);
 `;
 
-export default function VoteModal({ gender }) {
-	const [select, setSelect] = useState(false);
+export default function VoteIdol({ gender }) {
+	const [id, setId] = useState(false);
 	const [credit, setCredit] = useLocalStorage("credit", 0);
-	const { items, ref, status } = useInfiniteScroll(getChart, {
+	const { items, ref, status } = useInfiniteScroll(getCharts, {
 		gender,
 	});
+	const [fetchStatus, wrappedFunction] = useGetData(postVotes);
+	let idolId;
 
-	const handleSubmit = useCallback((e) => {
-		e.preventDefault();
-	}, []);
-
-	const handleClick = () => {
+	const handleClick = (e) => {
+		if (!idolId) return;
 		setCredit(credit - 1000);
+		wrappedFunction(idolId);
 	};
+
+	useEffect(() => {
+		if (id !== false) {
+			idolId = id;
+		}
+	}, [id]);
 
 	return (
 		<>
-			<VoteContainer onSubmit={handleSubmit}>
+			<VoteContainer>
 				<FlexContainer $fd="column" $gap="20px">
 					<ModalHeader gender={gender} onCancel={() => Modal.close()} />
 					<ModalContentContainer $fd="column" $gap="8px">
 						{items.map((v, index) => (
 							<IdolVoteCard
 								key={v.id}
+								onClick={(e) => {
+									setId(e.target.id);
+								}}
 								item={v}
 								index={index}
-								onSelect={setSelect}
 								ref={ref}
 							/>
 						))}
@@ -106,14 +115,9 @@ export default function VoteModal({ gender }) {
 							))}
 					</ModalContentContainer>
 					<VoteBottom>
-						<PinkButton
-							type="submit"
-							height="42px"
-							disabled={!select}
-							onClick={handleClick}
-						>
+						<VoteButton height="42px" disabled={!id} onClick={handleClick}>
 							투표하기
-						</PinkButton>
+						</VoteButton>
 						<VoteBottomDescription>
 							투표하는 데{" "}
 							<CreditHighLight>{CREDIT_FOR_ONE_VOTE}</CreditHighLight> 크레딧이

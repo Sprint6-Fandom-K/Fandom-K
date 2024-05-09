@@ -1,4 +1,3 @@
-import { PinkButton } from "@/shared/ui/Button";
 import { FlexContainer } from "@/shared/ui/Container";
 import styled from "styled-components";
 
