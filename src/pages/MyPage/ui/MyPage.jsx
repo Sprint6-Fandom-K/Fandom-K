@@ -1,12 +1,13 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import  { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import 'swiper/css/autoplay';
 import "swiper/css";
 import "swiper/css/navigation";
 
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
@@ -211,7 +212,7 @@ const MyPage = () => {
 						</Logo>
 					</Box>
 
-					<Box align="right">
+					<Box right="right">
 						<Link href="/MyPage">
 							<img src={myLogo} alt="마이페이지" />
 						</Link>
@@ -223,12 +224,15 @@ const MyPage = () => {
 						<IdolSection>
 							<Title>내가 관심있는 아이돌</Title>
 							<Swiper
+								modules={[Autoplay]}
 								slidesPerView='auto'
 								slidesPerGroup={1}
 								spaceBetween={4}
 								observer={true}
 								observeParents={true}
 								observeSlideChildren={true}
+								loop={true}
+								autoplay={{ delay: 6000 }}
 
 								breakpoints={{
 									480: {

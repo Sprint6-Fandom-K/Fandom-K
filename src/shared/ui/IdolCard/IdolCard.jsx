@@ -34,9 +34,9 @@ const IdolCard = (props) => {
 				<Img src={profilePicture} />
 				{isSelected && isAddingMode && (
 					<Check padding={padding}>
-						<CheckIconBox>
+						<div>
 							<img src={checkIcon} />
-						</CheckIconBox>
+						</div>
 					</Check>
 				)}
 			</ImgArea>
