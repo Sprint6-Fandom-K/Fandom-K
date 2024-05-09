@@ -35,12 +35,12 @@ export const FlexItemContainer = styled.div`
 `;
 
 export const MainContainer = styled.main`
-	background-color: #02000e;
+	background-color: var(--black1);
 	display: flex;
 `;
 
 export const MainContentContainer = styled.div`
-	background-color: #02000e;
+	background-color: var(--black1);
 	margin-inline: auto;
 	margin-bottom: 243px;
 	width: 1200px;
@@ -51,5 +51,6 @@ export const MainContentContainer = styled.div`
 	@media (width<=767px) {
 		margin-bottom: 59px;
 		margin-inline: 24px;
+
 	}
 `;
