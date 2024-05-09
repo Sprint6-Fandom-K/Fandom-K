@@ -92,9 +92,13 @@ const MyPage = () => {
 							<Logo src={logoImg} alt="FANDOM-K" />
 						</Link>
 					</Box>
-					<Link href="/MyPage">
-						<Logo src={myLogo} alt="마이페이지" />
-					</Link>
+
+					<Box right="right">
+						<Link href="/MyPage">
+							<Logo src={myLogo} alt="마이페이지" />
+						</Link>
+					</Box>
+
 				</Header>
 				<SelectContext.Provider value={isAddingMode}>
 					<Page>
@@ -111,15 +115,13 @@ const MyPage = () => {
 										width="98"
 										remove={true}
 										deleteIdol={() => deleteIdol(idol)}
-									/>
-								</SwiperSlide>
-							);
-						})}
-						</Swiper>
-					</IdolSection>
-
+										/>
+									</SwiperSlide>
+									);
+								})}
+							</Swiper>
+						</IdolSection>
 						<Hr />
-
 						{/* 아이돌 목록 */}
 						<IdolSection isInterest={false}>
 							<Title isInterest={false}>관심 있는 아이돌을 추가해보세요.</Title>
@@ -158,6 +160,7 @@ const MyPage = () => {
 		</Container>
 	);
 };
+
 
 
 //레이아웃
@@ -230,22 +233,6 @@ const Header = styled.header`
 		@media only screen and (375px <= width < 768px){
 		height: 88px;
 		}
-`;
-
-//구분선 관심있는아이돌과는 떨어진 상태
-const Frame = styled.div`
-    max-width: 1200px;
-    height: 1px;
-
-    @media only screen and (768px <= width < 1200px){
-		max-width: 696px;
-		height: 1px;
-	}
-
-	@media only screen and (375px <= width < 768px){
-		max-width: 327px;
-		height: 1px;
-	}
 `;
 
 
@@ -346,6 +333,7 @@ const Box = styled.div`
 	flex: 1;
 	margin-left: 32px;
 	text-align: center;
+
 `;
 
 //h1
@@ -390,10 +378,11 @@ const Hr = styled.hr`
 	}
 `;
 
-//idol-section
+//idol-section 스와이퍼 있는 곳
 const IdolSection = styled.section`
 	display: grid;
 	gap: 32px;
+
 `;
 
 
@@ -428,6 +417,7 @@ const IdolList = styled.ul`
 	}
 `;
 
+/*스와이퍼 들어가면서 삭제 InterestIdolList 부분에 SwiperSlide 들어감
 //'내가 관심있는 아이돌' 동그란 카드 부분
 const InterestIdolList = styled.ul`
 	display: flex;
@@ -441,6 +431,8 @@ const InterestIdolList = styled.ul`
 		gap: 24px;
 		overflow-x: scroll;
 	}
-`;
+`;*/
+
+
 
 export default MyPage;
