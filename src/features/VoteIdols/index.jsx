@@ -25,7 +25,7 @@ const NewPinkButton = styled(PinkButton)`
 
 export default function VoteModalButton({ gender }) {
 	const handleClick = () => {
-		Modal.open(<VoteIdols gender={gender} />);
+		Modal.open(<VoteIdols gender={gender} />, Modal.shake);
 	};
 
 	return (
