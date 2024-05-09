@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 				<Route path="/" element={<App/>}>
 					<Route index element={<LandingPage/>}/>
 					<Route path="/list" element={<ListPage/>}/>
-					<Route path="/mypage" element={<MyPage/>}/>
+					<Route path="/MyPage" element={<MyPage/>}/>
 				</Route>
 			</Routes>
 		</BrowserRouter>
