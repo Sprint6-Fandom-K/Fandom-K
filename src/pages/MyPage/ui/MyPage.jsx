@@ -207,13 +207,13 @@ const MyPage = () => {
 					<Box></Box>
 					<Box>
 						<Link to="/">
-							<img src={logoImg} alt="FANDOM-K" />
+							<Logo src={logoImg} alt="FANDOM-K" />
 						</Link>
 					</Box>
 
 					<Box right="right">
 						<Link href="/MyPage">
-							<img src={myLogo} alt="마이페이지" />
+							<Logo src={myLogo} alt="마이페이지" />
 						</Link>
 					</Box>
 				</Header>
@@ -337,25 +337,67 @@ const MyPage = () => {
 };
 
 
-
+//넓이높이보단 패딩으로 맞추기. 744는 테블릿 . 테블릿부터 만지자
 //레이아웃
 const Container = styled.div`
 	color: var(--black1);
 	min-height: 100vh;
+
+	/* tablet */
+	@media only screen and (max-width: 744px) {
+		height: 1133px;
+	}
+
+	/* mobile */
+	@media only screen and (max-width: 375px){
+		border-radius: 24px;
+	}
+
 `;
+
 //inner
 const Inner = styled.div`
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: 0 24px;
 	box-sizing: content-box;
-	background-color: #02000e;
+	background-color: var(--black1);
+
+	/* tablet */
+	@media only screen and (max-width: 744px) {
+		margin: 0 auto;
+	}
 `;
+
+const Logo = styled.img`
+    /* tablet */
+    @media only screen and (max-width: 744px){
+	height: 22.87px;
+	}
+
+    /* mobile */
+	@media only screen and (max-width: 375px){
+	height: 20.58px;
+	margin-top: 62px;
+    }
+`;
+
 //헤더
 const Header = styled.header`
 	padding: 23px 0;
 	display: flex;
 	align-items: center;
+	background-repeat: no-repeat;
+	background-position: center;
+
+	/* tablet */
+	@media only screen and (max-width: 744px) {
+		margin: 0 auto;
+	}
+
+
+
+
 `;
 //아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
 const SwiperContainer = styled.div`
@@ -385,6 +427,7 @@ const Arrow = styled.button`
 	border: 0;
 	background-color: var(--black3);
 	transform: translateY(-50%);
+
 	@media only screen and (max-width: 480px) {
 		display: none;
 	}
@@ -394,6 +437,7 @@ const LeftArrow = styled(Arrow)`
 	&::after {
 		content: "";
 	}
+
 	@media only screen and (max-width: 1370px) {
 		left: 0;
 	}
@@ -452,6 +496,12 @@ const Title = styled.h1`
 		margin-bottom: 25px;
 		line-height: 1.3;
 	}
+
+	@media only screen and (max-width: 375px) {
+		font-size: 16px;
+		margin-bottom: 25px;
+		line-height: 1.3;
+	}
 `;
 //hr
 const Hr = styled.hr`
@@ -467,6 +517,8 @@ const IdolSection = styled.section`
 	/* margin-bottom: 40px; */
 	/* display: grid;
 	gap: 32px; */
+
+
 `;
 //idol-list ,미디어쿼리 idol-list
 const IdolList = styled.div`
