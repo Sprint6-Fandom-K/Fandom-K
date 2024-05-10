@@ -226,7 +226,7 @@ const MyPage = () => {
 						{/* 관심있는 아이돌 */}
 						<section>
 							<Title>내가 관심있는 아이돌</Title>
-							{localStorageData.length > 0 ? <Swiper
+							{localStorageData.length > 0 ? <WideSwiper
 								modules={[Autoplay]}
 								slidesPerView='auto'
 								slidesPerGroup={1}
@@ -255,8 +255,7 @@ const MyPage = () => {
 										</CustomSlide>
 									);
 								})}
-							</Swiper> : <Text>관심있는 아이돌 목록에 추가해 보세요!</Text>}
-
+							</WideSwiper> : <Text>관심있는 아이돌 목록에 추가해 보세요!</Text>}
 						</section>
 						<Hr />
 						{/* 아이돌 목록 */}
@@ -445,6 +444,12 @@ const Text = styled.p`
 	color: #fff;
 	opacity: 0.6;
 	word-break: keep-all;
+`;
+
+const WideSwiper = styled(Swiper)`
+	@media only screen and (max-width: 480px) {
+		width: 100vw;
+	}
 `;
 
 //hr
