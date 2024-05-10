@@ -69,6 +69,10 @@ const ImgArea = styled.div`
 	aspect-ratio: 1 / 1;
 	position: relative;
 	pointer-events: ${({ pointerEvents }) => pointerEvents ?? "auto"};
+
+	@media only screen and (max-width: 480px) {
+		padding: 5px;
+	}
 `;
 
 const Check = styled.div`

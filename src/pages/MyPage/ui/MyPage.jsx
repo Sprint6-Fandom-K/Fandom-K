@@ -362,6 +362,7 @@ const Inner = styled.div`
 	padding: 0 24px;
 	box-sizing: content-box;
 	background-color: #02000e;
+	overflow: hidden;
 `;
 
 //헤더
@@ -504,7 +505,7 @@ const IdolList = styled.div`
 
 	@media only screen and (max-width: 480px) {
 		padding: 0;
-		gap: 17px 24px;
+		gap: 24px 17px;
 		grid-template-columns: repeat(3, 1fr);
 	}
 `;
