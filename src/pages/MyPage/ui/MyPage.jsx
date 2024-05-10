@@ -1,12 +1,13 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useLayoutEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import  { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import 'swiper/css/autoplay';
 import "swiper/css";
 import "swiper/css/navigation";
 
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
@@ -150,7 +151,6 @@ const MyPage = () => {
 
 		try {
 			if (currentIndex === totalSlides - 1) {
-				// setIsLoading(true);
 				const prevCursor = idolPageData[idolPageData.length - 1].nextCursor;
 
 				if (!prevCursor) {
@@ -163,7 +163,6 @@ const MyPage = () => {
 					setIdolPageData((prev) => {
 						return [...prev, lists];
 					});
-					// setIsLoading(false);
 				}
 			} else {
 				const currentCursor = idolPageData[currentIndex].nextCursor;
@@ -200,54 +199,68 @@ const MyPage = () => {
 		};
 	}, []);
 
+	useLayoutEffect(()=>{
+		const showCount = changeDataCount(window.innerWidth);
+		setDataCount(showCount);
+	}, [])
+
 	return (
 		<Container>
 			<Inner>
 				<Header>
 					<Box></Box>
 					<Box>
-						<Link to="/">
-							<Logo src={logoImg} alt="FANDOM-K" />
-						</Link>
+						<Logo to="/">
+							<CustomImg src={logoImg} alt="FANDOM-K" />
+						</Logo>
 					</Box>
 
 					<Box right="right">
 						<Link href="/MyPage">
-							<Logo src={myLogo} alt="마이페이지" />
+							<img src={myLogo} alt="마이페이지" />
 						</Link>
 					</Box>
 				</Header>
 				<SelectContext.Provider value={isAddingMode}>
 					<Page>
 						{/* 관심있는 아이돌 */}
-						<IdolSection>
+						<section>
 							<Title>내가 관심있는 아이돌</Title>
-							<Swiper
-								slidesPerView={10}
-								slidesPerGroup={5}
-								spaceBetween={24}
+							{localStorageData.length > 0 ? <Swiper
+								modules={[Autoplay]}
+								slidesPerView='auto'
+								slidesPerGroup={1}
+								spaceBetween={4}
 								observer={true}
 								observeParents={true}
 								observeSlideChildren={true}
+								loop={true}
+								autoplay={{ delay: 6000 }}
+
+								breakpoints={{
+									480: {
+										spaceBetween: 24
+									}
+								}}
 							>
 								{localStorageData.map((idol) => {
 									return (
-										<SwiperSlide key={idol.id}>
+										<CustomSlide key={idol.id}>
 											<IdolCard
 												info={idol}
 												padding="7.14"
-												width="98"
 												remove={true}
 												deleteIdol={() => deleteIdol(idol)}
 											/>
-										</SwiperSlide>
+										</CustomSlide>
 									);
 								})}
-							</Swiper>
-						</IdolSection>
+							</Swiper> : <Text>관심있는 아이돌 목록에 추가해 보세요!</Text>}
+
+						</section>
 						<Hr />
 						{/* 아이돌 목록 */}
-						<IdolSection>
+						<section>
 							<Title>관심 있는 아이돌을 추가해보세요.</Title>
 
 							<SwiperContainer>
@@ -315,13 +328,12 @@ const MyPage = () => {
 									<RightArrow
 										className="swiper-button-next"
 										onClick={() => swiperRef.slideNext()}
-										// onClick={nextPageData}
 									>
 										<img src={rightArrow} alt="다음" />
 									</RightArrow>
 								)}
 							</SwiperContainer>
-						</IdolSection>
+						</section>
 
 						<Button onClick={() => setLocalStorage(interestIdols)}>
 							<Icon>
@@ -337,22 +349,11 @@ const MyPage = () => {
 };
 
 
-//넓이높이보단 패딩으로 맞추기. 744는 테블릿 . 테블릿부터 만지자
+
 //레이아웃
 const Container = styled.div`
 	color: var(--black1);
 	min-height: 100vh;
-
-	/* tablet */
-	@media only screen and (max-width: 744px) {
-		height: 1133px;
-	}
-
-	/* mobile */
-	@media only screen and (max-width: 375px){
-		border-radius: 24px;
-	}
-
 `;
 
 //inner
@@ -361,52 +362,42 @@ const Inner = styled.div`
 	margin: 0 auto;
 	padding: 0 24px;
 	box-sizing: content-box;
-	background-color: var(--black1);
-
-	/* tablet */
-	@media only screen and (max-width: 744px) {
-		margin: 0 auto;
-	}
-`;
-
-const Logo = styled.img`
-    /* tablet */
-    @media only screen and (max-width: 744px){
-	height: 22.87px;
-	}
-
-    /* mobile */
-	@media only screen and (max-width: 375px){
-	height: 20.58px;
-	margin-top: 62px;
-    }
+	background-color: #02000e;
 `;
 
 //헤더
 const Header = styled.header`
+	position: relative;
+	z-index: 1;
 	padding: 23px 0;
 	display: flex;
 	align-items: center;
-	background-repeat: no-repeat;
-	background-position: center;
 
-	/* tablet */
+	@media only screen and (max-width: 480px) {
+		padding: 12px 0;
+	}
+`;
+
+//logo-box
+const Box = styled.div`
+	flex: 1;
+	text-align: ${({ right }) => (right ? right : "center")};
+
+	> a {
+		display: inline-block;
+	}
+`;
+
+const Logo = styled(Link)`
 	@media only screen and (max-width: 744px) {
-		margin: 0 auto;
+		width: 120px;
 	}
 
-
-
-
-`;
-//아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
-const SwiperContainer = styled.div`
-	position: relative;
-	width: 100%;
-	@media only screen and (max-width: 1370px) {
-		display: flex;
+	@media only screen and (max-width: 480px) {
+		width: 108px;
 	}
 `;
+
 //마이페이지
 const Page = styled.div`
 	padding: 75px 0 80px;
@@ -414,7 +405,105 @@ const Page = styled.div`
 	@media only screen and (max-width: 744px) {
 		padding: 15px 0 210px;
 	}
+
+	@media only screen and (max-width: 480px) {
+		padding: 25px 0 40px;
+	}
 `;
+
+//h1
+const Title = styled.h1`
+	color: #f6f6f8;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 1.08;
+	margin-bottom: 32px;
+
+	@media only screen and (max-width: 744px) {
+		font-size: 20px;
+		margin-bottom: 25px;
+		line-height: 1.3;
+	}
+
+	@media only screen and (max-width: 480px) {
+		font-size: 16px;
+		margin-bottom: 15px;
+		line-height: 1.6;
+	}
+`;
+
+const CustomImg = styled.img`
+	width: 100%;
+`;
+
+const Text = styled.p`
+	padding: 35px 0 30px;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.2;
+	text-align: center;
+	color: #fff;
+	opacity: 0.6;
+	word-break: keep-all;
+`;
+
+//hr
+const Hr = styled.hr`
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	margin: 40px 0;
+
+	@media only screen and (max-width: 744px) {
+		margin: 32px 0;
+	}
+`;
+
+//아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
+const SwiperContainer = styled.div`
+	position: relative;
+	width: 100%;
+
+	@media only screen and (max-width: 1370px) {
+		display: flex;
+	}
+`;
+
+const CustomSlide = styled(SwiperSlide)`
+	width: 98px;
+
+	@media only screen and (max-width: 480px) {
+		padding: 0 14px;
+	}
+`;
+
+//idol-list ,미디어쿼리 idol-list
+const IdolList = styled.div`
+	width: 100%;
+	display: grid;
+	grid-template-rows: repeat(2, 1fr);
+	grid-template-columns: repeat(8, 1fr);
+	gap: 31px 22px;
+
+	@media only screen and (max-width: 1370px) {
+		padding: 0 56px;
+	}
+
+	@media only screen and (max-width: 1280px) {
+		padding: 0 56px;
+		gap: 24px;
+		grid-template-columns: repeat(6, 1fr);
+	}
+
+	@media only screen and (max-width: 744px) {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	@media only screen and (max-width: 480px) {
+		padding: 0;
+		gap: 17px 24px;
+		grid-template-columns: repeat(3, 1fr);
+	}
+`;
+
 //arrow
 const Arrow = styled.button`
 	position: absolute;
@@ -432,16 +521,17 @@ const Arrow = styled.button`
 		display: none;
 	}
 `;
+
 const LeftArrow = styled(Arrow)`
 	left: -61px;
 	&::after {
 		content: "";
 	}
-
 	@media only screen and (max-width: 1370px) {
 		left: 0;
 	}
 `;
+
 const RightArrow = styled(Arrow)`
 	right: -61px;
 	&::after {
@@ -451,9 +541,12 @@ const RightArrow = styled(Arrow)`
 		right: 0;
 	}
 `;
+
 //추가하기 버튼
 const Button = styled.button`
-	padding: 11px 83px;
+	max-width: 100%;
+	width: 255px;
+	padding: 11px 0;
 	margin: 40px auto 0;
 	border-radius: 24px;
 	border: none;
@@ -462,85 +555,20 @@ const Button = styled.button`
 	font-weight: 700;
 	line-height: 1.6;
 	display: flex;
-	align-items: center;
+	justify-content: center;
 	gap: 8px;
 	background: linear-gradient(to right, #f77063, #fe5790);
 `;
+
 //추가하기 버튼의 +아이콘
 const Icon = styled.div`
 	width: 24px;
 	height: 24px;
 `;
+
 //추가하기 버튼의 span
 const Span = styled.span`
 	font-weight: 700;
-`;
-//logo-box
-const Box = styled.div`
-	flex: 1;
-	text-align: ${({ right }) => (right ? right : "center")};
-	> a {
-		display: inline-block;
-	}
-`;
-//h1
-const Title = styled.h1`
-	color: #f6f6f8;
-	font-weight: 700;
-	font-size: 24px;
-	line-height: 1.08;
-	margin-bottom: 32px;
-
-	@media only screen and (max-width: 744px) {
-		font-size: 20px;
-		margin-bottom: 25px;
-		line-height: 1.3;
-	}
-
-	@media only screen and (max-width: 375px) {
-		font-size: 16px;
-		margin-bottom: 25px;
-		line-height: 1.3;
-	}
-`;
-//hr
-const Hr = styled.hr`
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	margin: 40px 0;
-
-	@media only screen and (max-width: 744px) {
-		margin: 33px 0;
-	}
-`;
-//idol-section
-const IdolSection = styled.section`
-	/* margin-bottom: 40px; */
-	/* display: grid;
-	gap: 32px; */
-
-
-`;
-//idol-list ,미디어쿼리 idol-list
-const IdolList = styled.div`
-	width: 100%;
-	display: grid;
-	grid-template-rows: repeat(2, 1fr);
-	grid-template-columns: repeat(8, 1fr);
-	/* padding: 0 34px; */
-	gap: 31px 22px;
-	@media only screen and (max-width: 1280px) {
-		padding: 0 56px;
-		gap: 24px;
-		grid-template-columns: repeat(6, 1fr);
-	}
-	@media only screen and (max-width: 744px) {
-		grid-template-columns: repeat(4, 1fr);
-	}
-	@media only screen and (max-width: 480px) {
-		padding: 0;
-		gap: 17px 24px;
-		grid-template-columns: repeat(3, 1fr);
-	}
 `;
 
 export default MyPage;

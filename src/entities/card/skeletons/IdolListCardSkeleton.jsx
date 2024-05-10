@@ -27,12 +27,19 @@ const IdolList = styled.div`
 	display: grid;
 	grid-template-rows: repeat(2, 1fr);
 	grid-template-columns: repeat(8, 1fr);
-	/* padding: 0 34px; */
 	gap: 31px 22px;
-	@media only screen and (max-width: 1370px) {
+	@media only screen and (max-width: 1280px) {
 		padding: 0 56px;
 		gap: 24px;
 		grid-template-columns: repeat(6, 1fr);
+	}
+	@media only screen and (max-width: 744px) {
+		grid-template-columns: repeat(4, 1fr);
+	}
+	@media only screen and (max-width: 480px) {
+		padding: 0;
+		gap: 17px 24px;
+		grid-template-columns: repeat(3, 1fr);
 	}
 `;
 

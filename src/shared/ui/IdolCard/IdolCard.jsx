@@ -6,7 +6,7 @@ import checkIcon from "../../assets/icons/Checkmark.svg";
 import deleteIcon from "@/shared/assets/icons/DeleteIcon.svg";
 
 const IdolCard = (props) => {
-	const { info, padding, width, chooseIdol, remove, deleteIdol } = props;
+	const { info, padding, chooseIdol, remove, deleteIdol } = props;
 	const isAddingMode = useContext(SelectContext);
 	const { profilePicture, name, group } = info;
 	const [isSelected, setIsSelected] = useState(false);
@@ -25,7 +25,7 @@ const IdolCard = (props) => {
 	};
 
 	return (
-		<Card width={width}>
+		<Card>
 			<ImgArea
 				padding={padding}
 				pointerEvents={typeof chooseIdol === "function" ? "auto" : "none"}
@@ -34,9 +34,9 @@ const IdolCard = (props) => {
 				<Img src={profilePicture} />
 				{isSelected && isAddingMode && (
 					<Check padding={padding}>
-						<CheckIconBox>
+						<div>
 							<img src={checkIcon} />
-						</CheckIconBox>
+						</div>
 					</Check>
 				)}
 			</ImgArea>
@@ -57,8 +57,6 @@ const Card = styled.div`
 	position: relative;
 	display: grid;
 	gap: 8px;
-	background-color: #02000e;
-	width: ${({ width }) => (width ? width + "px" : "auto")};
 	flex: 0 0 auto;
 `;
 
@@ -90,8 +88,6 @@ const Check = styled.div`
 	border-radius: 50%;
 `;
 
-const CheckIconBox = styled.div``;
-
 const DeleteButton = styled.button`
 	position: absolute;
 	top: 0;
@@ -103,6 +99,12 @@ const DeleteButton = styled.button`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	@media only screen and (max-width: 480px) {
+		> img {
+			width: 8px;
+		}
+	}
 `;
 
 const Img = styled.img`
