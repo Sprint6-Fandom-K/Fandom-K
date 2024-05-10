@@ -34,9 +34,9 @@ const IdolCard = (props) => {
 				<Img src={profilePicture} />
 				{isSelected && isAddingMode && (
 					<Check padding={padding}>
-						<div>
+						<CheckIcon>
 							<img src={checkIcon} />
-						</div>
+						</CheckIcon>
 					</Check>
 				)}
 			</ImgArea>
@@ -90,6 +90,21 @@ const Check = styled.div`
 	justify-content: center;
 	align-items: center;
 	border-radius: 50%;
+
+	@media only screen and (max-width: 480px) {
+		width: calc(100% - 5px * 2);
+		height: calc(100% - 5px * 2);
+		top: 5px;
+		left: 5px;
+	}
+`;
+
+const CheckIcon = styled.div`
+	@media only screen and (max-width: 480px) {
+		width: 40px;
+		height: 40px;
+		display: flex;
+	}
 `;
 
 const DeleteButton = styled.button`
