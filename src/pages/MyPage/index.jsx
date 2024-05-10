@@ -353,7 +353,10 @@ const Inner = styled.div`
 	padding: 0 24px;
 	box-sizing: content-box;
 	background-color: #02000e;
-	overflow: hidden;
+
+	@media only screen and (max-width: 480px) {
+		overflow: hidden;
+	}
 `;
 
 //마이페이지
