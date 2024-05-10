@@ -393,10 +393,6 @@ const Title = styled.h1`
 	}
 `;
 
-const CustomImg = styled.img`
-	width: 100%;
-`;
-
 const Text = styled.p`
 	padding: 35px 0 30px;
 	font-size: 14px;

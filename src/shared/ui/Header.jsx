@@ -47,6 +47,10 @@ const Box = styled.div`
 `;
 
 const Logo = styled(Link)`
+	> svg {
+		width: 100%;
+	}
+
 	@media only screen and (max-width: 744px) {
 		width: 120px;
 	}
