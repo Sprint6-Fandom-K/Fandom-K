@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { SelectContext } from "@/pages/MyPage/ui/MyPage";
+import { SelectContext } from "@/pages/MyPage";
 
 import checkIcon from "../../assets/icons/Checkmark.svg";
 import deleteIcon from "@/shared/assets/icons/DeleteIcon.svg";

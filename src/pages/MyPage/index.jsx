@@ -1,24 +1,27 @@
-import React, { createContext, useEffect, useLayoutEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, {
+	createContext,
+	useEffect,
+	useLayoutEffect,
+	useState,
+} from "react";
 // Import Swiper React components
-import  { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-import 'swiper/css/autoplay';
+import "swiper/css/autoplay";
 import "swiper/css";
 import "swiper/css/navigation";
 
 import styled from "styled-components";
 
-import getIdols from "@/shared/api/idols";
 import IdolCard from "@/shared/ui/IdolCard/IdolCard";
 import IdolListCardSkeleton from "@/entities/card/skeletons/IdolListCardSkeleton";
 
 // 이미지
-import logoImg from "@/shared/assets/icons/logo.svg";
-import myLogo from "@/shared/assets/icons/my_logo.svg";
 import leftArrow from "@/shared/assets/icons/left_arrow.svg";
 import rightArrow from "@/shared/assets/icons/right_arrow.svg";
 import plusIcon from "@/shared/assets/icons/Ic_plus_24px.svg";
+import Header from "@/shared/ui/Header";
+import { getIdols } from "@/shared/api/api";
 
 const LOCAL_STORAGE_KEY = "interest";
 
@@ -199,63 +202,53 @@ const MyPage = () => {
 		};
 	}, []);
 
-	useLayoutEffect(()=>{
+	useLayoutEffect(() => {
 		const showCount = changeDataCount(window.innerWidth);
 		setDataCount(showCount);
-	}, [])
+	}, []);
 
 	return (
 		<Container>
 			<Inner>
-				<Header>
-					<Box></Box>
-					<Box>
-						<Logo to="/">
-							<CustomImg src={logoImg} alt="FANDOM-K" />
-						</Logo>
-					</Box>
-
-					<Box right="right">
-						<Link href="/MyPage">
-							<img src={myLogo} alt="마이페이지" />
-						</Link>
-					</Box>
-				</Header>
+				<Header />
 				<SelectContext.Provider value={isAddingMode}>
 					<Page>
 						{/* 관심있는 아이돌 */}
 						<section>
 							<Title>내가 관심있는 아이돌</Title>
-							{localStorageData.length > 0 ? <WideSwiper
-								modules={[Autoplay]}
-								slidesPerView='auto'
-								slidesPerGroup={1}
-								spaceBetween={4}
-								observer={true}
-								observeParents={true}
-								observeSlideChildren={true}
-								loop={true}
-								autoplay={{ delay: 6000 }}
-
-								breakpoints={{
-									480: {
-										spaceBetween: 24
-									}
-								}}
-							>
-								{localStorageData.map((idol) => {
-									return (
-										<CustomSlide key={idol.id}>
-											<IdolCard
-												info={idol}
-												padding="7.14"
-												remove={true}
-												deleteIdol={() => deleteIdol(idol)}
-											/>
-										</CustomSlide>
-									);
-								})}
-							</WideSwiper> : <Text>관심있는 아이돌 목록에 추가해 보세요!</Text>}
+							{localStorageData.length > 0 ? (
+								<WideSwiper
+									modules={[Autoplay]}
+									slidesPerView="auto"
+									slidesPerGroup={1}
+									spaceBetween={4}
+									observer={true}
+									observeParents={true}
+									observeSlideChildren={true}
+									loop={true}
+									autoplay={{ delay: 6000 }}
+									breakpoints={{
+										480: {
+											spaceBetween: 24,
+										},
+									}}
+								>
+									{localStorageData.map((idol) => {
+										return (
+											<CustomSlide key={idol.id}>
+												<IdolCard
+													info={idol}
+													padding="7.14"
+													remove={true}
+													deleteIdol={() => deleteIdol(idol)}
+												/>
+											</CustomSlide>
+										);
+									})}
+								</WideSwiper>
+							) : (
+								<Text>관심있는 아이돌 목록에 추가해 보세요!</Text>
+							)}
 						</section>
 						<Hr />
 						{/* 아이돌 목록 */}
@@ -347,8 +340,6 @@ const MyPage = () => {
 	);
 };
 
-
-
 //레이아웃
 const Container = styled.div`
 	color: var(--black1);
@@ -363,39 +354,6 @@ const Inner = styled.div`
 	box-sizing: content-box;
 	background-color: #02000e;
 	overflow: hidden;
-`;
-
-//헤더
-const Header = styled.header`
-	position: relative;
-	z-index: 1;
-	padding: 23px 0;
-	display: flex;
-	align-items: center;
-
-	@media only screen and (max-width: 480px) {
-		padding: 12px 0;
-	}
-`;
-
-//logo-box
-const Box = styled.div`
-	flex: 1;
-	text-align: ${({ right }) => (right ? right : "center")};
-
-	> a {
-		display: inline-block;
-	}
-`;
-
-const Logo = styled(Link)`
-	@media only screen and (max-width: 744px) {
-		width: 120px;
-	}
-
-	@media only screen and (max-width: 480px) {
-		width: 108px;
-	}
 `;
 
 //마이페이지

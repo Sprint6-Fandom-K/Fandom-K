@@ -7,7 +7,7 @@ import ReactDOM from "react-dom/client";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ListPage from "./pages/ListPage";
-import MyPage from "./pages/MyPage/ui/MyPage";
+import MyPage from "./pages/MyPage";
 import LandingPage from "./pages/LandingPage/ui/LandingPage";
 
 ReactDOM.createRoot(document.getElementById("root")).render(

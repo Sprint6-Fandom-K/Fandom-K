@@ -1,6 +1,6 @@
 import IdolVoteCard from "@/entities/card/ui/IdolVoteCard";
 import IdolVoteCardSkeleton from "@/entities/card/skeletons/IdolVoteCardSkeleton";
-import ModalHeader from "@/entities/header/ui/IdolVoteHeader";
+import ModalHeader from "@/pages/ListPage/ui/IdolVoteHeader";
 import styled from "styled-components";
 import backgroundBlueSomething from "@/shared/assets/images/backgroundBlueSomething.svg";
 import { Column, FlexContainer } from "@/shared/ui/Container";

@@ -8,11 +8,12 @@ import ChartButton from "@/shared/assets/icons/ChartButton";
 import { Modal } from "@/app";
 
 import ChargeCredit from "@/features/ChargeCredit/ChargeCredit";
-import Header from "@/widgets/Header";
+
 import { Heading } from "@/shared/ui/Heading";
 import { headingTitle } from "@/shared/styles/typo";
 import styled from "styled-components";
 import { FlexContainer } from "@/shared/ui/Container";
+import Header from "@/shared/ui/Header";
 
 export default function ListPage() {
 	const [gender, setGender] = useState("female");
