@@ -3,16 +3,21 @@ import IdolVoteCardSkeleton from "@/entities/card/skeletons/IdolVoteCardSkeleton
 import ModalHeader from "@/entities/header/ui/IdolVoteHeader";
 import styled from "styled-components";
 import backgroundBlueSomething from "@/shared/assets/images/backgroundBlueSomething.svg";
-import { FlexContainer } from "@/shared/ui/Container";
+import { Column, FlexContainer } from "@/shared/ui/Container";
 import { PinkButton } from "@/shared/ui/Button";
 import { modalDescription } from "@/shared/styles/typo";
-import { CREDIT_FOR_ONE_VOTE } from "@/shared/constant/constant";
+import {
+	CHARGE_OPTIONS,
+	CREDIT_FOR_ONE_VOTE,
+} from "@/shared/constant/constant";
 import { getCharts, postVotes } from "@/shared/api/api";
 import { useCallback, useEffect, useState } from "react";
 import { Modal } from "@/app";
 import useLocalStorage from "@/shared/hooks/useLocalStorage";
 import useInfiniteScroll from "@/shared/hooks/useInfiniteScroll";
 import { useGetData } from "@/shared/hooks/useGetData";
+import ReOpenModal, { Text } from "./ReOpenModal";
+import RadioModal from "./Modals";
 
 const VoteContainer = styled.form`
 	background-color: var(--black2);
@@ -71,7 +76,7 @@ const CreditHighLight = styled.span`
 	color: var(--orange);
 `;
 
-export default function VoteIdol({ gender }) {
+export default function VoteModal({ gender, onReVote }) {
 	const [id, setId] = useState(false);
 	const [credit, setCredit] = useLocalStorage("credit", 0);
 	const { items, ref, status } = useInfiniteScroll(getCharts, {
@@ -82,8 +87,29 @@ export default function VoteIdol({ gender }) {
 
 	const handleClick = (e) => {
 		if (!idolId) return;
-		setCredit(credit - 1000);
-		wrappedFunction(idolId);
+		if (credit < 1000) {
+			Modal.open(
+				<ReOpenModal
+					buttonDescription="충전하러 가기"
+					handleReOpen={() => {
+						Modal.close();
+					}}
+				>
+					<Text>크레딧이 부족합니다.</Text>
+				</ReOpenModal>,
+			);
+		} else {
+			setCredit(credit - 1000);
+			wrappedFunction(idolId);
+			Modal.open(
+				<ReOpenModal
+					buttonDescription="투표 한번 더 하기"
+					handleReOpen={onReVote}
+				>
+					<Text>투표를 완료하였습니다!</Text>
+				</ReOpenModal>,
+			);
+		}
 	};
 
 	useEffect(() => {
@@ -95,7 +121,7 @@ export default function VoteIdol({ gender }) {
 	return (
 		<>
 			<VoteContainer>
-				<FlexContainer $fd="column" $gap="20px">
+				<Column $fd="column" $gap="20px">
 					<ModalHeader gender={gender} onCancel={() => Modal.close()} />
 					<ModalContentContainer $fd="column" $gap="8px">
 						{items.map((v, index) => (
@@ -124,7 +150,7 @@ export default function VoteIdol({ gender }) {
 							소모됩니다.
 						</VoteBottomDescription>
 					</VoteBottom>
-				</FlexContainer>
+				</Column>
 			</VoteContainer>
 		</>
 	);

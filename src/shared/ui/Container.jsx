@@ -30,24 +30,14 @@ export const FlexContainer = styled.div`
 	gap: ${({ $gap }) => $gap};
 `;
 
-export const FlexItemContainer = styled.div`
+export const Spacer = styled.div`
 	flex: ${({ $flex }) => $flex};
 `;
 
-export const Row = styled.div`
-	display: flex;
-	flex-direction: "column";
-	justify-content: ${({ $jc }) => $jc};
-	align-items: ${({ $ai }) => $ai};
-	flex-direction: ${({ $fd }) => $fd};
-	gap: ${({ $gap }) => $gap};
+export const Row = styled(FlexContainer)`
+	flex-direction: "row";
 `;
 
 export const Column = styled(FlexContainer)`
-	display: flex;
-	flex-direction: "row";
-	justify-content: ${({ $jc }) => $jc};
-	align-items: ${({ $ai }) => $ai};
-	flex-direction: ${({ $fd }) => $fd};
-	gap: ${({ $gap }) => $gap};
+	flex-direction: "column";
 `;
