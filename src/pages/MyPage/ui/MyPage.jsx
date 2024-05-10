@@ -151,7 +151,6 @@ const MyPage = () => {
 
 		try {
 			if (currentIndex === totalSlides - 1) {
-				// setIsLoading(true);
 				const prevCursor = idolPageData[idolPageData.length - 1].nextCursor;
 
 				if (!prevCursor) {
@@ -164,7 +163,6 @@ const MyPage = () => {
 					setIdolPageData((prev) => {
 						return [...prev, lists];
 					});
-					// setIsLoading(false);
 				}
 			} else {
 				const currentCursor = idolPageData[currentIndex].nextCursor;
@@ -174,8 +172,6 @@ const MyPage = () => {
 			console.error("Error fetching idols:", error);
 		}
 	};
-
-	console.log(dataCount)
 
 	useEffect(() => {
 		const data = flattenArray();
@@ -228,7 +224,7 @@ const MyPage = () => {
 				<SelectContext.Provider value={isAddingMode}>
 					<Page>
 						{/* 관심있는 아이돌 */}
-						<IdolSection>
+						<section>
 							<Title>내가 관심있는 아이돌</Title>
 							{localStorageData.length > 0 ? <Swiper
 								modules={[Autoplay]}
@@ -253,7 +249,6 @@ const MyPage = () => {
 											<IdolCard
 												info={idol}
 												padding="7.14"
-												// width="98"
 												remove={true}
 												deleteIdol={() => deleteIdol(idol)}
 											/>
@@ -262,10 +257,10 @@ const MyPage = () => {
 								})}
 							</Swiper> : <Text>관심있는 아이돌 목록에 추가해 보세요!</Text>}
 
-						</IdolSection>
+						</section>
 						<Hr />
 						{/* 아이돌 목록 */}
-						<IdolSection>
+						<section>
 							<Title>관심 있는 아이돌을 추가해보세요.</Title>
 
 							<SwiperContainer>
@@ -333,13 +328,12 @@ const MyPage = () => {
 									<RightArrow
 										className="swiper-button-next"
 										onClick={() => swiperRef.slideNext()}
-										// onClick={nextPageData}
 									>
 										<img src={rightArrow} alt="다음" />
 									</RightArrow>
 								)}
 							</SwiperContainer>
-						</IdolSection>
+						</section>
 
 						<Button onClick={() => setLocalStorage(interestIdols)}>
 							<Icon>
@@ -388,6 +382,7 @@ const Header = styled.header`
 const Box = styled.div`
 	flex: 1;
 	text-align: ${({ right }) => (right ? right : "center")};
+
 	> a {
 		display: inline-block;
 	}
@@ -400,29 +395,6 @@ const Logo = styled(Link)`
 
 	@media only screen and (max-width: 480px) {
 		width: 108px;
-	}
-`;
-
-const CustomImg = styled.img`
-	width: 100%;
-`;
-
-const Text = styled.p`
-	padding: 35px 0 30px;
-	font-size: 14px;
-	font-weight: 400;
-	line-height: 1.2;
-	text-align: center;
-	color: #fff;
-	opacity: 0.6;
-`;
-
-//아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
-const SwiperContainer = styled.div`
-	position: relative;
-	width: 100%;
-	@media only screen and (max-width: 1370px) {
-		display: flex;
 	}
 `;
 
@@ -439,6 +411,99 @@ const Page = styled.div`
 	}
 `;
 
+//h1
+const Title = styled.h1`
+	color: #f6f6f8;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 1.08;
+	margin-bottom: 32px;
+
+	@media only screen and (max-width: 744px) {
+		font-size: 20px;
+		margin-bottom: 25px;
+		line-height: 1.3;
+	}
+
+	@media only screen and (max-width: 480px) {
+		font-size: 16px;
+		margin-bottom: 15px;
+		line-height: 1.6;
+	}
+`;
+
+const CustomImg = styled.img`
+	width: 100%;
+`;
+
+const Text = styled.p`
+	padding: 35px 0 30px;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.2;
+	text-align: center;
+	color: #fff;
+	opacity: 0.6;
+	word-break: keep-all;
+`;
+
+//hr
+const Hr = styled.hr`
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	margin: 40px 0;
+
+	@media only screen and (max-width: 744px) {
+		margin: 32px 0;
+	}
+`;
+
+//아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
+const SwiperContainer = styled.div`
+	position: relative;
+	width: 100%;
+
+	@media only screen and (max-width: 1370px) {
+		display: flex;
+	}
+`;
+
+const CustomSlide = styled(SwiperSlide)`
+	width: 98px;
+
+	@media only screen and (max-width: 480px) {
+		padding: 0 14px;
+	}
+`;
+
+//idol-list ,미디어쿼리 idol-list
+const IdolList = styled.div`
+	width: 100%;
+	display: grid;
+	grid-template-rows: repeat(2, 1fr);
+	grid-template-columns: repeat(8, 1fr);
+	gap: 31px 22px;
+
+	@media only screen and (max-width: 1370px) {
+		padding: 0 56px;
+	}
+
+	@media only screen and (max-width: 1280px) {
+		padding: 0 56px;
+		gap: 24px;
+		grid-template-columns: repeat(6, 1fr);
+	}
+
+	@media only screen and (max-width: 744px) {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	@media only screen and (max-width: 480px) {
+		padding: 0;
+		gap: 17px 24px;
+		grid-template-columns: repeat(3, 1fr);
+	}
+`;
+
 //arrow
 const Arrow = styled.button`
 	position: absolute;
@@ -451,6 +516,7 @@ const Arrow = styled.button`
 	border: 0;
 	background-color: var(--black3);
 	transform: translateY(-50%);
+
 	@media only screen and (max-width: 480px) {
 		display: none;
 	}
@@ -503,80 +569,6 @@ const Icon = styled.div`
 //추가하기 버튼의 span
 const Span = styled.span`
 	font-weight: 700;
-`;
-
-//h1
-const Title = styled.h1`
-	color: #f6f6f8;
-	font-weight: 700;
-	font-size: 24px;
-	line-height: 1.08;
-	margin-bottom: 32px;
-
-	@media only screen and (max-width: 744px) {
-		font-size: 20px;
-		margin-bottom: 25px;
-		line-height: 1.3;
-	}
-
-	@media only screen and (max-width: 480px) {
-		font-size: 16px;
-		margin-bottom: 15px;
-		line-height: 1.6;
-	}
-`;
-
-//hr
-const Hr = styled.hr`
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	margin: 40px 0;
-
-	@media only screen and (max-width: 744px) {
-		margin: 32px 0;
-	}
-`;
-
-//idol-section
-const IdolSection = styled.section`
-	/* margin-bottom: 40px; */
-	/* display: grid;
-	gap: 32px; */
-`;
-
-const CustomSlide = styled(SwiperSlide)`
-	width: 98px;
-
-	@media only screen and (max-width: 480px) {
-		padding: 0 14px;
-	}
-`;
-
-//idol-list ,미디어쿼리 idol-list
-const IdolList = styled.div`
-	width: 100%;
-	display: grid;
-	grid-template-rows: repeat(2, 1fr);
-	grid-template-columns: repeat(8, 1fr);
-	/* padding: 0 34px; */
-	gap: 31px 22px;
-	@media only screen and (max-width: 1370px) {
-		padding: 0 56px;
-		/* gap: 24px;
-		grid-template-columns: repeat(6, 1fr); */
-	}
-	@media only screen and (max-width: 1280px) {
-		padding: 0 56px;
-		gap: 24px;
-		grid-template-columns: repeat(6, 1fr);
-	}
-	@media only screen and (max-width: 744px) {
-		grid-template-columns: repeat(4, 1fr);
-	}
-	@media only screen and (max-width: 480px) {
-		padding: 0;
-		gap: 17px 24px;
-		grid-template-columns: repeat(3, 1fr);
-	}
 `;
 
 export default MyPage;
