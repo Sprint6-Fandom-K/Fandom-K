@@ -175,6 +175,8 @@ const MyPage = () => {
 		}
 	};
 
+	console.log(dataCount)
+
 	useEffect(() => {
 		const data = flattenArray();
 		let a = JSON.stringify(idolPageData);
@@ -228,7 +230,7 @@ const MyPage = () => {
 						{/* 관심있는 아이돌 */}
 						<IdolSection>
 							<Title>내가 관심있는 아이돌</Title>
-							<Swiper
+							{localStorageData.length > 0 ? <Swiper
 								modules={[Autoplay]}
 								slidesPerView='auto'
 								slidesPerGroup={1}
@@ -258,7 +260,8 @@ const MyPage = () => {
 										</CustomSlide>
 									);
 								})}
-							</Swiper>
+							</Swiper> : <Text>관심있는 아이돌 목록에 추가해 보세요!</Text>}
+
 						</IdolSection>
 						<Hr />
 						{/* 아이돌 목록 */}
@@ -358,6 +361,7 @@ const Container = styled.div`
 	color: var(--black1);
 	min-height: 100vh;
 `;
+
 //inner
 const Inner = styled.div`
 	max-width: 1200px;
@@ -366,6 +370,7 @@ const Inner = styled.div`
 	box-sizing: content-box;
 	background-color: #02000e;
 `;
+
 //헤더
 const Header = styled.header`
 	position: relative;
@@ -378,6 +383,7 @@ const Header = styled.header`
 		padding: 12px 0;
 	}
 `;
+
 //logo-box
 const Box = styled.div`
 	flex: 1;
@@ -386,6 +392,7 @@ const Box = styled.div`
 		display: inline-block;
 	}
 `;
+
 const Logo = styled(Link)`
 	@media only screen and (max-width: 744px) {
 		width: 120px;
@@ -395,9 +402,21 @@ const Logo = styled(Link)`
 		width: 108px;
 	}
 `;
+
 const CustomImg = styled.img`
 	width: 100%;
 `;
+
+const Text = styled.p`
+	padding: 35px 0 30px;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.2;
+	text-align: center;
+	color: #fff;
+	opacity: 0.6;
+`;
+
 //아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
 const SwiperContainer = styled.div`
 	position: relative;
@@ -406,6 +425,7 @@ const SwiperContainer = styled.div`
 		display: flex;
 	}
 `;
+
 //마이페이지
 const Page = styled.div`
 	padding: 75px 0 80px;
@@ -418,6 +438,7 @@ const Page = styled.div`
 		padding: 25px 0 40px;
 	}
 `;
+
 //arrow
 const Arrow = styled.button`
 	position: absolute;
@@ -434,6 +455,7 @@ const Arrow = styled.button`
 		display: none;
 	}
 `;
+
 const LeftArrow = styled(Arrow)`
 	left: -61px;
 	&::after {
@@ -443,6 +465,7 @@ const LeftArrow = styled(Arrow)`
 		left: 0;
 	}
 `;
+
 const RightArrow = styled(Arrow)`
 	right: -61px;
 	&::after {
@@ -452,6 +475,7 @@ const RightArrow = styled(Arrow)`
 		right: 0;
 	}
 `;
+
 //추가하기 버튼
 const Button = styled.button`
 	max-width: 100%;
@@ -469,11 +493,13 @@ const Button = styled.button`
 	gap: 8px;
 	background: linear-gradient(to right, #f77063, #fe5790);
 `;
+
 //추가하기 버튼의 +아이콘
 const Icon = styled.div`
 	width: 24px;
 	height: 24px;
 `;
+
 //추가하기 버튼의 span
 const Span = styled.span`
 	font-weight: 700;
@@ -499,6 +525,7 @@ const Title = styled.h1`
 		line-height: 1.6;
 	}
 `;
+
 //hr
 const Hr = styled.hr`
 	border: 1px solid rgba(255, 255, 255, 0.1);
@@ -508,6 +535,7 @@ const Hr = styled.hr`
 		margin: 32px 0;
 	}
 `;
+
 //idol-section
 const IdolSection = styled.section`
 	/* margin-bottom: 40px; */
