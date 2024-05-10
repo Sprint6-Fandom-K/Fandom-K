@@ -1,7 +1,8 @@
-import { FlexContainer } from "@/shared/ui/Container";
+import { Column, FlexContainer, Row } from "@/shared/ui/Container";
 import skeletonStyle from "@/shared/styles/skeletonStyle";
 import styled from "styled-components";
 import { IdolVoteCardContainer } from "../ui/IdolVoteCard";
+import { forwardRef } from "react";
 
 const SkeletonImageContainer = styled.div`
 	width: 70px;
@@ -31,18 +32,18 @@ const SkeletonVoteBlock = styled.div`
 	${skeletonStyle};
 `;
 
-export default function IdolVoteCardSkeleton() {
+export default forwardRef(function IdolVoteCardSkeleton(props, ref) {
 	return (
-		<IdolVoteCardContainer $jc="space-between" $ai="center">
-			<FlexContainer $gap="12px" $ai="center">
+		<IdolVoteCardContainer $jc="space-between" $ai="center" ref={ref}>
+			<Row $gap="12px" $ai="center">
 				<SkeletonImageContainer />
 				<SkeletonIndex />
-				<FlexContainer $fd="column" $gap="4px">
+				<Column $fd="column" $gap="4px">
 					<SkeletonNameBlock />
 					<SkeletonNameBlock />
-				</FlexContainer>
-			</FlexContainer>
+				</Column>
+			</Row>
 			<SkeletonVoteBlock />
 		</IdolVoteCardContainer>
 	);
-}
+});

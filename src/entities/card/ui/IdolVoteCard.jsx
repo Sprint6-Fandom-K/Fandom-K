@@ -1,4 +1,9 @@
-import { FlexContainer, ImageContainer } from "@/shared/ui/Container";
+import {
+	Column,
+	FlexContainer,
+	ImageContainer,
+	Row,
+} from "@/shared/ui/Container";
 import {
 	chartItemDescription,
 	chartItemIndex,
@@ -6,7 +11,8 @@ import {
 } from "@/shared/styles/typo";
 
 import styled from "styled-components";
-import { formatNumber } from "@/shared/utils/format";
+import { formatNumber } from "@/shared/utilities/format";
+import { forwardRef } from "react";
 
 export const IdolVoteCardContainer = styled(FlexContainer)`
 	border-bottom: 1px solid #ffffff1a;
@@ -32,28 +38,26 @@ const Input = styled.input`
 	appearance: none;
 `;
 
-export default function IdolVoteCard({ item, index, onSelect }) {
+export default forwardRef(function IdolVoteCard({ item, index, onClick }, ref) {
 	const { group, name, profilePicture, totalVotes } = item;
 
-	const handleChange = (e) => {
-		onSelect(e.target.id);
-	};
 	return (
 		<IdolVoteCardContainer
 			as="label"
 			htmlFor={item.id}
 			$jc="space-between"
 			$ai="center"
+			ref={ref}
 		>
-			<FlexContainer $gap="12px" $ai="center">
+			<Row value={item.id} $gap="12px" $ai="center">
 				<ImageContainer src={profilePicture} />
 				<VoteIndex>{index + 1}</VoteIndex>
-				<FlexContainer $fd="column" $gap="4px">
+				<Column $fd="column" $gap="4px">
 					<VoteName>{`${group} ${name}`}</VoteName>
 					<VoteDescription>{`${formatNumber(totalVotes)}표`}</VoteDescription>
-				</FlexContainer>
-			</FlexContainer>
-			<Input type="radio" id={item.id} name="vote" onChange={handleChange} />
+				</Column>
+			</Row>
+			<Input type="radio" id={item.id} name="vote" onClick={onClick} />
 		</IdolVoteCardContainer>
 	);
-}
+});

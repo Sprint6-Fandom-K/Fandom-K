@@ -18,7 +18,7 @@ export default function Modal({ children, label = "" }) {
 		<>
 			{createPortal(
 				<Overlay>
-					<ModalContainer role="dialog" ariaLabelledby={label}>
+					<ModalContainer role="dialog" aria-labelledby={label}>
 						{children}
 					</ModalContainer>
 				</Overlay>,
