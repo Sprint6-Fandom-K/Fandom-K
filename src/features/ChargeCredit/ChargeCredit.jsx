@@ -2,10 +2,11 @@ import { Modal } from "@/app";
 import CreditIcon from "@/shared/assets/icons/CreditIcon";
 import useLocalStorage from "@/shared/hooks/useLocalStorage";
 import { buttonStyle } from "@/shared/ui/Button";
-import { FlexContainer } from "@/shared/ui/Container";
+import { Column, FlexContainer } from "@/shared/ui/Container";
 import { formatNumber } from "@/shared/utilities/format";
 import styled from "styled-components";
 import RadioModal from "../Modal/Modals";
+import { CHARGE_OPTIONS } from "@/shared/constant/constant";
 
 const CreditContainer = styled(FlexContainer)`
 	border-radius: 8px;
@@ -53,26 +54,24 @@ const MyCredit = styled(FlexContainer)`
 	text-align: left;
 `;
 
-const ChargeOptions = [100, 500, 1000]; // 초기값 설정
-
 export default function ChargeCredit() {
 	const [credit, setCredit] = useLocalStorage("credit", 0); // hook을 따로 설정
 
 	const handleOpenChargeModal = () => {
 		Modal.open(
-			<RadioModal options={ChargeOptions} openModal={handleOpenChargeModal} />,
+			<RadioModal options={CHARGE_OPTIONS} openModal={handleOpenChargeModal} />,
 		);
 	};
 
 	return (
 		<CreditContainer $jc="space-between" $ai="center">
-			<FlexContainer $fd="column" $gap="14px">
+			<Column $fd="column" $gap="14px">
 				<CreditDescription>내 크레딧</CreditDescription>
 				<MyCredit $ai="center">
 					<CreditIcon />
 					<span>{formatNumber(credit)}</span>
 				</MyCredit>
-			</FlexContainer>
+			</Column>
 			<CreditButton onClick={handleOpenChargeModal}>충전하기</CreditButton>
 		</CreditContainer>
 	);

@@ -1,9 +1,9 @@
 import { PinkButton } from "@/shared/ui/Button";
+import { FlexContainer } from "@/shared/ui/Container";
 import styled from "styled-components";
 import VoteIdols from "@/features/VoteIdols/modal";
 import ChartButton from "@/shared/assets/icons/ChartButton";
 import { Modal } from "@/app";
-import { forwardRef } from "react";
 
 const ButtonDescription = styled.span`
 	color: white;
@@ -17,21 +17,39 @@ const ButtonDescription = styled.span`
 	text-align: left;
 `;
 
+const SubTitle = styled.span`
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 26px;
+	text-align: left;
+	color: white;
+	@media (width<=1199px) {
+		font-size: 20px;
+	}
+	@media (width<=767px) {
+		font-size: 16px;
+	}
+`;
+
 const NewPinkButton = styled(PinkButton)`
 	display: flex;
 	align-items: center;
 	gap: 4px;
 `;
 
-export default function VoteModalButton({ gender }) {
+export default function CreateVoteModal({ gender }) {
 	const handleClick = () => {
+		console.log(Modal);
 		Modal.open(<VoteIdols gender={gender} />, Modal.shake);
 	};
 
 	return (
-		<NewPinkButton onClick={handleClick} height="32px" width="128px">
-			<ChartButton />
-			<ButtonDescription>차트 투표하기</ButtonDescription>
-		</NewPinkButton>
+		<FlexContainer $jc="space-between">
+			<SubTitle>이달의 차트</SubTitle>
+			<NewPinkButton onClick={handleClick} height="32px" width="128px">
+				<ChartButton />
+				<ButtonDescription>차트 투표하기</ButtonDescription>
+			</NewPinkButton>
+		</FlexContainer>
 	);
 }
