@@ -6,51 +6,101 @@ function TODO()
 /** @see https://fandom-k-api.vercel.app/docs/ */
 export default class API
 {
-	static #query(mandatory = {}, optional = {})
+	static #query(object)
 	{
 		const params = new URLSearchParams();
 
-		for (const [key, value] of Object.entries(mandatory))
+		for (const [key, value] of Object.entries(object))
 		{
-			params.set(key, value);
+			switch (value)
+			{
+				case null: case undefined:
+				{
+					// or continue
+					break;
+				}
+				default:
+				{
+					params.set(key, value);
+					break;
+				}
+			}
 		}
-		for (const [key, value] of Object.entries(optional))
-		{
-			if (value !== undefined) params.set(key, value);
-		}
-		return params;
+		return params.toString();
 	}
 
-	static get ["{team_name}/idols"]() {
+	static get ["{teamName}/idols"]() {
 		return new Request
 		({
-			// eslint-disable-next-line no-undef
-			GET(path = { team_name: "6-11" }, query = { page_size: 10, cursor, keyword })
+			/**
+			  * @param {{ teamName: string; } & { pageSize: number; } & { cursor?: number; keyword?: string; }}
+			  **/
+			// eslint-disable-next-line no-unused-vars
+			GET({ teamName = "6-11", ...query })
 			{
-				return `https://fandom-k-api.vercel.app/${path.team_name}/idols?${API.#query({ "pageSize": query.page_size }, { "cursor": query.cursor, "keyword": query.keyword }).toString()}`;
-			}
+				return `https://fandom-k-api.vercel.app/${teamName}/idols?${API.#query(query)}`;
+			},
 		});
 	}
 
-	static get ["{team_name}/donations"]()
+	static get ["{teamName}/donations"]()
 	{
 		return new Request
 		({
-			// eslint-disable-next-line no-undef
-			GET(path = { team_name: "6-11" }, query = { page_size: 10, cursor, priority_idol_ids })
-			{
-				return `https://fandom-k-api.vercel.app/${path.team_name}/donations?${API.#query({ "pageSize": query.page_size }, { "cursor": query.cursor, "priorityIdolIds": query.priority_idol_ids }).toString()}`;
-			},
+			/**
+			  * @param {{ teamName: string; } & { pageSize: number; } & { cursor?: number; priorityIdolIds?: number[]; }}
+			  **/
 			// eslint-disable-next-line no-unused-vars
-			PUT(path = { team_name: "6-11", id: 0 }, query = { })
+			GET({ teamName = "6-11", ...query })
 			{
-				return `https://fandom-k-api.vercel.app/${path.team_name}/donations/${path.id}`;
+				return `https://fandom-k-api.vercel.app/${teamName}/donations?${API.#query(query)}`;
 			},
+			/**
+			  * @param {{ teamName: string; } & { } & { }}
+			  **/
 			// eslint-disable-next-line no-unused-vars
-			POST(path = { team_name: "6-11" }, query = {})
+			POST({ teamName = "6-11", ...query })
 			{
-				return `https://fandom-k-api.vercel.app/${path.team_name}/donations`;
-			}
+				return `https://fandom-k-api.vercel.app/${teamName}/donations`;
+			},
+		});
+	}
+
+	static get ["{teamName}/donations/{id}"]()
+	{
+		return new Request
+		({
+			/**
+			  * @param {{ teamName: string; id: number; } & { } & { }}
+			  **/
+			// eslint-disable-next-line no-unused-vars
+			PUT({ teamName = "6-11", id = 0, ...query })
+			{
+				return `https://fandom-k-api.vercel.app/${teamName}/donations/${id}`;
+			},
+			/**
+			  * @param {{ teamName: string; id: number; } & { } & { }}
+			  **/
+			// eslint-disable-next-line no-unused-vars
+			DELETE({ teamName = "6-11", id = 0, ...query })
+			{
+				return `https://fandom-k-api.vercel.app/${teamName}/donations/${id}`;
+			},
+		});
+	}
+
+	static get ["{teamName}/donations/{id}/contribute"]()
+	{
+		return new Request
+		({
+			/**
+			  * @param {{ teamName: string; id: number; } & { } & { }}
+			  **/
+			// eslint-disable-next-line no-unused-vars
+			PUT({ teamName = "6-11", id = 0, ...query })
+			{
+				return `https://fandom-k-api.vercel.app/${teamName}/donations/${id}/contribute`;
+			},
 		});
 	}
 }
@@ -66,24 +116,26 @@ class Request
 		this.#POST = POST;
 		this.#DELETE = DELETE;
 	}
-
-	async GET(path, query)
+	/**
+	  * @type {typeof Parameters<this["#GET"]>} query
+	  **/
+	async GET(query)
 	{
-		return await (await fetch(this.#GET(path, query), { method: "GET" })).json();
+		return await (await fetch(this.#GET(query), { method: "GET" })).json();
 	}
 
-	async PUT(path, query, body)
+	async PUT(query, body)
 	{
-		return await (await fetch(this.#PUT(path, query), { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })).json();
+		return await (await fetch(this.#PUT(query), { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })).json();
 	}
 
-	async POST(path, query, body)
+	async POST(query, body)
 	{
-		return await (await fetch(this.#POST(path, query), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })).json();
+		return await (await fetch(this.#POST(query), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })).json();
 	}
 
-	async DELETE(path, query)
+	async DELETE(query)
 	{
-		return await (await fetch(this.#DELETE(path, query), { method: "DELETE" })).json();
+		return await (await fetch(this.#DELETE(query), { method: "DELETE" })).json();
 	}
 }

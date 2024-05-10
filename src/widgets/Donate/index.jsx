@@ -7,10 +7,11 @@ import { countdown } from "@/shared/utilities/date";
 
 import credit_png from "@/shared/assets/images/credit.png";
 import useLocalStorage from "@/shared/hooks/useLocalStorage";
+import API from "@/shared/api";
 
 const LOCALE = { year: "년", month: "달", day: "일", hour: "시간", minute: "분", second: "초" };
 
-export default function Donate(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ donation: {} })
+export default function Donate(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ donation: {}, onContribute: () => {} })
 {
 	const [time, set_time] = useState(new Date());
 
@@ -55,7 +56,7 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 	return (
 		<section ref={self} { ...widget("Donate", props) } data-is-loading={props.donation === null}>
 			<div className="portrait" style={{ backgroundImage: ["linear-gradient(180deg, rgba(0, 0, 0, 0) 58.9%, #000000 100%)", `url("${props.donation?.idol.profilePicture}")`].join(",") }}>
-				<div className="button skeleton" onClick={() => Modal.open(<Donate.Modal donation={props.donation}></Donate.Modal>, Modal.shake)}>
+				<div className="button skeleton" onClick={() => Modal.open(<Donate.Modal donation={props.donation} onContribute={props.onContribute}></Donate.Modal>, Modal.close)}>
 					후원하기
 				</div>
 			</div>
@@ -83,10 +84,10 @@ export default function Donate(props = { /* html */ id: null, class: [], style: 
 	);
 }
 
-Donate.Modal = function add(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ donation: {} })
+Donate.Modal = function add(props = { /* html */ id: null, class: [], style: {}, children: null, /* props */ donation: {}, onContribute: () => {} })
 {
 	const [credit, set_credit] = useLocalStorage("credit", 0);
-	const [donation, set_donation] = useState(0);
+	const [contribute, set_contribute] = useState(0);
 
 	return (
 		<section data-widget="Donate.Modal">
@@ -105,11 +106,25 @@ Donate.Modal = function add(props = { /* html */ id: null, class: [], style: {},
 			<div className="payment">
 				<input placeholder="크래딧 입력" type="number" onChange={(event) =>
 				{
-					set_donation(Number(event.target.value));
+					set_contribute(Number(event.target.value));
 				}}/>
 			<img className="icon" src={credit_png}></img>
 			</div>
-			<button className="confirm" disabled={!(0 < donation && donation <= credit)} onClick={() => { set_credit(credit - donation); Modal.close() }}>
+			<button className="confirm" disabled={!(0 < contribute && contribute <= credit)} data-contribute={contribute}
+				//
+				// events
+				//
+				onClick={() =>
+				{
+					set_credit((credit) => credit - contribute);
+
+					API["{teamName}/donations/{id}/contribute"].PUT({ id: props.donation.id }, { amount: contribute }).then(() =>
+					{
+						props.onContribute?.(contribute);
+					});
+					Modal.close();
+				}}
+			>
 				후원하기
 			</button>
 		</section>

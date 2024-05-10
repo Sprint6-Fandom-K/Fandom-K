@@ -20,8 +20,8 @@ export default function PendingDonations()
 		return isDesktop ? 4 : isTablet ? 3 : isMobile ? 3 : 0;
 	}
 
-	const [idols, set_idols] = useState([]);
 	const [cursor, set_cursor] = useState(null);
+	const [donations, set_donations] = useState([]);
 	const [columns, set_columns] = useState(get_columns());
 
 	const last_child = useRef();
@@ -36,13 +36,19 @@ export default function PendingDonations()
 	{
 		if (columns)
 		{
-			API["{team_name}/donations"].GET(undefined, { page_size: columns }).then((response) =>
+			API["{teamName}/donations"].GET({ pageSize: columns }).then((response) =>
 			{
-				set_idols(response.list); set_cursor(response.nextCursor);
+				set_donations(response.list); set_cursor(response.nextCursor);
 			});
 		}
 	},
 	[columns]);
+
+	useEffect(()=>
+	{
+		console.log(donations)
+	},
+	[donations]);
 
 	useEffect(() =>
 	{
@@ -54,9 +60,9 @@ export default function PendingDonations()
 				{
 					if (entry.isIntersecting)
 					{
-						API["{team_name}/donations"].GET(undefined, { page_size: columns, cursor: cursor }).then((response) =>
+						API["{teamName}/donations"].GET({ pageSize: columns, cursor: cursor }).then((response) =>
 						{
-							set_idols((idols) => [...idols, ...response.list]); set_cursor(response.list.length >= columns ? response.nextCursor : null);
+							set_donations((idols) => [...idols, ...response.list]); set_cursor(response.list.length >= columns ? response.nextCursor : null);
 						});
 						// big brother is gone...
 						observer.disconnect();
@@ -80,11 +86,22 @@ export default function PendingDonations()
 				</Carousel.Button>
 				<Carousel.Slider gap={25}>
 				{
-					[...idols, ...new Array(cursor ? columns : idols.length ? 0 : columns).fill(null)].map((idol, index, array) =>
+					[...donations, ...new Array(cursor ? columns : donations.length ? 0 : columns).fill(null)].map((donation, index, array) =>
 					{
 						return (
 							<Carousel.Item key={index} ref={index === array.length - 1 ? last_child : null}>
-								<Donate donation={idol}></Donate>
+								<Donate donation={donation} onContribute={() =>
+								{
+									API["{teamName}/donations"].GET({ pageSize: 1, priorityIdolIds: [donation.idolId] }).then((response) =>
+									{
+										set_donations((donations) =>
+										{
+											donations[index] = response.list[0];
+
+											return [...donations];
+										});
+									});
+								}}></Donate>
 							</Carousel.Item>
 						);
 					})
