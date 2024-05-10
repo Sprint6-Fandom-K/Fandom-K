@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { SelectContext } from "@/pages/MyPage";
 
-import checkIcon from "../../assets/icons/Checkmark.svg";
+import { SelectContext } from "@/pages/MyPage";
+import Check from "@/shared/ui/Check";
+
 import deleteIcon from "@/shared/assets/icons/DeleteIcon.svg";
 
 const IdolCard = (props) => {
@@ -32,13 +33,7 @@ const IdolCard = (props) => {
 				onClick={handleCardClick}
 			>
 				<Img src={profilePicture} />
-				{isSelected && isAddingMode && (
-					<Check padding={padding}>
-						<CheckIcon>
-							<img src={checkIcon} />
-						</CheckIcon>
-					</Check>
-				)}
+				{isSelected && isAddingMode && <Check padding={padding} />}
 			</ImgArea>
 			<TextArea>
 				<Name>{name}</Name>
@@ -72,38 +67,6 @@ const ImgArea = styled.div`
 
 	@media only screen and (max-width: 480px) {
 		padding: 5px;
-	}
-`;
-
-const Check = styled.div`
-	background: linear-gradient(
-		271.36deg,
-		rgba(249, 110, 104, 0.5) -9.84%,
-		rgba(254, 87, 143, 0.5) 107.18%
-	);
-	width: calc(100% - ${({ padding }) => padding ?? 5}px * 2);
-	height: calc(100% - ${({ padding }) => padding ?? 5}px * 2);
-	position: absolute;
-	top: ${({ padding }) => padding ?? 5}px;
-	left: ${({ padding }) => padding ?? 5}px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 50%;
-
-	@media only screen and (max-width: 480px) {
-		width: calc(100% - 5px * 2);
-		height: calc(100% - 5px * 2);
-		top: 5px;
-		left: 5px;
-	}
-`;
-
-const CheckIcon = styled.div`
-	@media only screen and (max-width: 480px) {
-		width: 40px;
-		height: 40px;
-		display: flex;
 	}
 `;
 

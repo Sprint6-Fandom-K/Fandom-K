@@ -13,8 +13,8 @@ import "swiper/css/navigation";
 
 import styled from "styled-components";
 
-import IdolCard from "@/shared/ui/IdolCard/IdolCard";
-import IdolListCardSkeleton from "@/entities/card/skeletons/IdolListCardSkeleton";
+import IdolCard from "./ui/IdolCard";
+import IdolListCardSkeleton from "./ui/IdolListCardSkeleton";
 
 // 이미지
 import leftArrow from "@/shared/assets/icons/left_arrow.svg";
