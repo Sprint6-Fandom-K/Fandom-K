@@ -59,7 +59,7 @@ export default function ChargeCredit() {
 	const [credit, setCredit] = useLocalStorage("credit", 0); // hook을 따로 설정
 
 
-	const handleOpenChargeModal = () => {
+	const handleOpenChargeModal = () => { // 충전하기 모달을 여는 함수
 		Modal.open(<RadioModal options={ChargeOptions} openModal={handleOpenChargeModal} />);
 	}
 
