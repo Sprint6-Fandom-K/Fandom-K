@@ -6,9 +6,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ListPage from "./pages/ListPage";
-import MyPage from "./pages/MyPage";
-import LandingPage from "./pages/LandingPage/ui/LandingPage";
+import ListPage from "@/app/pages/ListPage";
+import MyPage from "@/app/pages/MyPage";
+import LandingPage from "@/app/pages/LandingPage";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
