@@ -33,9 +33,9 @@ export default function ListPage() {
 				<Header />
 				<ChargeCredit />
 				<PendingDonationsSection>
-					<Heading>
+					<PendingDonationsHeading>
 						<HeadingTitle>후원을 기다리는 조공</HeadingTitle>
-					</Heading>
+					</PendingDonationsHeading>
 					<PendingDonations />
 				</PendingDonationsSection>
 				<ChartSection $fd="column" $gap="24px">
@@ -103,6 +103,16 @@ const PendingDonationsSection = styled.div`
 	}
 	@media screen and (width<=767px) {
 		margin-top: 40px;
+	}
+`;
+
+const PendingDonationsHeading = styled(Heading)`
+	margin-bottom: 32px;
+	@media (width<=1199px) {
+		margin-bottom: 24px;
+	}
+	@media (width<=767px) {
+		margin-bottom: 16px;
 	}
 `;
 

@@ -5,8 +5,12 @@ const HeadingContainer = styled.div`
 	justify-content: space-between;
 `;
 
-export function Heading({ children }) {
-	return <HeadingContainer>{children}</HeadingContainer>;
+export function Heading({ children, className }) {
+	return (
+		<div className={className}>
+			<HeadingContainer>{children}</HeadingContainer>
+		</div>
+	);
 }
 
 Heading.Title = styled.span`
