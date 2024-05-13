@@ -6,7 +6,7 @@ import React, {
 } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import "swiper/css/autoplay";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -14,14 +14,12 @@ import "swiper/css/navigation";
 import styled from "styled-components";
 
 import IdolCard from "./widgets/card/ui/IdolCard";
-import IdolListCardSkeleton from "./widgets/card/skeletons/IdolListCardSkeleton";
 
 // 이미지
-import leftArrow from "@/common/assets/icons/left_arrow.svg";
-import rightArrow from "@/common/assets/icons/right_arrow.svg";
 import plusIcon from "@/common/assets/icons/Ic_plus_24px.svg";
 import Header from "@/common/ui/Header";
 import { getIdols } from "@/common/api/api";
+import IdolSwiper from "./widgets/IdolSwiper/IdolSwiper";
 
 const LOCAL_STORAGE_KEY = "interest";
 
@@ -255,76 +253,19 @@ const MyPage = () => {
 						<section>
 							<Title>관심 있는 아이돌을 추가해보세요.</Title>
 
-							<SwiperContainer>
-								<Swiper
-									slidesPerView={1}
-									spaceBetween={22}
-									observer={true}
-									observeParents={true}
-									observeSlideChildren={true}
-									onSwiper={(swiper) => {
-										setSwiperRef(swiper);
-										setSwiperIndex(swiper.activeIndex);
-									}}
-									onSlideChange={(swiper) => {
-										setSwiperIndex(swiper.activeIndex);
-										handleSlideChange(swiper);
-									}}
-									navigation={{
-										prevEl: ".swiper-button-prev",
-										nextEl: ".swiper-button-next",
-									}}
-									modules={[Navigation]}
-								>
-									{idolPageData.length === 0 || isLoading ? (
-										<SwiperSlide>
-											<IdolListCardSkeleton count={dataCount} />
-										</SwiperSlide>
-									) : (
-										<>
-											{idolPageData?.map((slideData, slideIndex) => {
-												return (
-													<SwiperSlide key={slideIndex}>
-														<IdolList>
-															{slideData.list.map((idol) => {
-																return (
-																	<IdolCard
-																		key={idol.id}
-																		info={idol}
-																		padding="6.48"
-																		chooseIdol={() => handleClickIdolList(idol)}
-																	/>
-																);
-															})}
-														</IdolList>
-													</SwiperSlide>
-												);
-											})}
-											{isLoading ?? (
-												<SwiperSlide>
-													<IdolListCardSkeleton count={dataCount} />
-												</SwiperSlide>
-											)}
-										</>
-									)}
-								</Swiper>
-								{Boolean(swiperIndex) && (
-									<LeftArrow
-										className="swiper-button-prev"
-										onClick={prevPageData}
-									>
-										<img src={leftArrow} alt="이전" />
-									</LeftArrow>
-								)}
-								{nextCursor && (
-									<RightArrow
-										className="swiper-button-next"
-										onClick={() => swiperRef.slideNext()}
-									>
-										<img src={rightArrow} alt="다음" />
-									</RightArrow>
-								)}
-							</SwiperContainer>
+							<IdolSwiper
+								idolPageData={idolPageData}
+								isLoading={isLoading}
+								dataCount={dataCount}
+								nextCursor={nextCursor}
+								swiperRef={swiperRef}
+								setSwiperRef={setSwiperRef}
+								swiperIndex={swiperIndex}
+								setSwiperIndex={setSwiperIndex}
+								handleSlideChange={handleSlideChange}
+								handleClickIdolList={handleClickIdolList}
+								prevPageData={prevPageData}
+							/>
 						</section>
 
 						<Button onClick={() => setLocalStorage(interestIdols)}>
@@ -420,88 +361,11 @@ const Hr = styled.hr`
 	}
 `;
 
-//아이돌 목록 슬라이드 영역, 미디어쿼리 _carousel-container
-const SwiperContainer = styled.div`
-	position: relative;
-	width: 100%;
-
-	@media only screen and (max-width: 1370px) {
-		display: flex;
-	}
-`;
-
 const CustomSlide = styled(SwiperSlide)`
 	width: 98px;
 
 	@media only screen and (max-width: 480px) {
 		padding: 0 14px;
-	}
-`;
-
-//idol-list ,미디어쿼리 idol-list
-const IdolList = styled.div`
-	width: 100%;
-	display: grid;
-	grid-template-rows: repeat(2, 1fr);
-	grid-template-columns: repeat(8, 1fr);
-	gap: 31px 22px;
-
-	@media only screen and (max-width: 1370px) {
-		padding: 0 56px;
-	}
-
-	@media only screen and (max-width: 1280px) {
-		padding: 0 56px;
-		gap: 24px;
-		grid-template-columns: repeat(6, 1fr);
-	}
-
-	@media only screen and (max-width: 744px) {
-		grid-template-columns: repeat(4, 1fr);
-	}
-
-	@media only screen and (max-width: 480px) {
-		padding: 0;
-		gap: 24px 17px;
-		grid-template-columns: repeat(3, 1fr);
-	}
-`;
-
-//arrow
-const Arrow = styled.button`
-	position: absolute;
-	top: 50%;
-	z-index: 10;
-	min-width: 29px;
-	height: 135px;
-	border-radius: 4px;
-	opacity: 0.8;
-	border: 0;
-	background-color: var(--black3);
-	transform: translateY(-50%);
-
-	@media only screen and (max-width: 480px) {
-		display: none;
-	}
-`;
-
-const LeftArrow = styled(Arrow)`
-	left: -61px;
-	&::after {
-		content: "";
-	}
-	@media only screen and (max-width: 1370px) {
-		left: 0;
-	}
-`;
-
-const RightArrow = styled(Arrow)`
-	right: -61px;
-	&::after {
-		content: "";
-	}
-	@media only screen and (max-width: 1370px) {
-		right: 0;
 	}
 `;
 
