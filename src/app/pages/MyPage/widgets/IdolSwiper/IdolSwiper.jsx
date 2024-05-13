@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import "swiper/css/autoplay";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -19,15 +18,23 @@ const IdolSwiper = (props) => {
 		idolPageData,
 		isLoading,
 		dataCount,
-		nextCursor,
-		swiperRef,
-		setSwiperRef,
-		swiperIndex,
-		setSwiperIndex,
+		nextCursorProps,
 		handleSlideChange,
 		handleClickIdolList,
-		prevPageData,
 	} = props;
+
+	const { nextCursor, setNextCursor } = nextCursorProps;
+	const [swiperRef, setSwiperRef] = useState(null);
+	const [swiperIndex, setSwiperIndex] = useState(0);
+
+	// 스와이퍼 이전 페이지 불러오기
+	const prevPageData = () => {
+		setNextCursor(true);
+
+		if (swiperRef) {
+			swiperRef.slidePrev();
+		}
+	};
 
 	return (
 		<SwiperContainer>

@@ -9,17 +9,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css/autoplay";
 import "swiper/css";
-import "swiper/css/navigation";
 
 import styled from "styled-components";
 
+import { getIdols } from "@/common/api/api";
+import Header from "@/common/ui/Header";
+import IdolSwiper from "./widgets/IdolSwiper/IdolSwiper";
 import IdolCard from "./widgets/card/ui/IdolCard";
 
 // 이미지
 import plusIcon from "@/common/assets/icons/Ic_plus_24px.svg";
-import Header from "@/common/ui/Header";
-import { getIdols } from "@/common/api/api";
-import IdolSwiper from "./widgets/IdolSwiper/IdolSwiper";
 
 const LOCAL_STORAGE_KEY = "interest";
 
@@ -46,8 +45,6 @@ export const SelectContext = createContext();
 
 const MyPage = () => {
 	//state
-	const [swiperRef, setSwiperRef] = useState(null);
-	const [swiperIndex, setSwiperIndex] = useState(0);
 	const [nextCursor, setNextCursor] = useState(0);
 	const [idolPageData, setIdolPageData] = useState([]); // swiper 돌릴 데이터
 	const [interestIdols, setInterestIdols] = useState(getLocalStorage()); // 관심있는 아이돌 목록 state
@@ -133,15 +130,6 @@ const MyPage = () => {
 			setIsLoading(false);
 		} catch (error) {
 			console.error("Error fetching idols:", error);
-		}
-	};
-
-	// 스와이퍼 이전 페이지 불러오기
-	const prevPageData = () => {
-		setNextCursor(true);
-
-		if (swiperRef) {
-			swiperRef.slidePrev();
 		}
 	};
 
@@ -257,14 +245,12 @@ const MyPage = () => {
 								idolPageData={idolPageData}
 								isLoading={isLoading}
 								dataCount={dataCount}
-								nextCursor={nextCursor}
-								swiperRef={swiperRef}
-								setSwiperRef={setSwiperRef}
-								swiperIndex={swiperIndex}
-								setSwiperIndex={setSwiperIndex}
+								nextCursorProps={{
+									nextCursor: nextCursor,
+									setNextCursor: setNextCursor,
+								}}
 								handleSlideChange={handleSlideChange}
 								handleClickIdolList={handleClickIdolList}
-								prevPageData={prevPageData}
 							/>
 						</section>
 
