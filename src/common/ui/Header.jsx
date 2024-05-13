@@ -26,7 +26,6 @@ export default function Header() {
 //헤더
 const HeaderSection = styled.header`
 	position: relative;
-	z-index: 1;
 	padding: 23px 0;
 	display: flex;
 	align-items: center;

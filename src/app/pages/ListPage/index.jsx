@@ -30,7 +30,7 @@ export default function ListPage() {
 	return (
 		<PageBody>
 			<Content>
-				<Header />
+				<ListHeader />
 				<ChargeCredit />
 				<PendingDonationsSection>
 					<PendingDonationsHeading>
@@ -137,3 +137,7 @@ const NewPinkButton = styled(PinkButton)`
 	align-items: center;
 	gap: 4px;
 `;
+
+const ListHeader = styled(Header)`
+	z-index:0;
+`
