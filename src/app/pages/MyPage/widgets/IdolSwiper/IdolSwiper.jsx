@@ -58,38 +58,34 @@ const IdolSwiper = (props) => {
 				}}
 				modules={[Navigation]}
 			>
-				{idolPageData.length === 0 || isLoading ? (
-					<SwiperSlide>
-						<IdolListCardSkeleton count={dataCount} />
-					</SwiperSlide>
+				{idolPageData.length === 0 ? (
+					isLoading ? (
+						<SwiperSlide>
+							<IdolListCardSkeleton count={dataCount} />
+						</SwiperSlide>
+					) : null
 				) : (
-					<>
-						{idolPageData?.map((slideData, slideIndex) => {
-							return (
-								<SwiperSlide key={slideIndex}>
-									<IdolList>
-										{slideData.list.map((idol) => {
-											return (
-												<IdolCard
-													key={idol.id}
-													info={idol}
-													padding="6.48"
-													chooseIdol={() => handleClickIdolList(idol)}
-												/>
-											);
-										})}
-									</IdolList>
-								</SwiperSlide>
-							);
-						})}
-						{isLoading ?? (
-							<SwiperSlide>
+					idolPageData?.map((slideData, slideIndex) => (
+						<SwiperSlide key={slideIndex}>
+							{isLoading ? (
 								<IdolListCardSkeleton count={dataCount} />
-							</SwiperSlide>
-						)}
-					</>
+							) : (
+								<IdolList>
+									{slideData.list.map((idol) => (
+										<IdolCard
+											key={idol.id}
+											info={idol}
+											padding="6.48"
+											chooseIdol={() => handleClickIdolList(idol)}
+										/>
+									))}
+								</IdolList>
+							)}
+						</SwiperSlide>
+					))
 				)}
 			</Swiper>
+
 			{Boolean(swiperIndex) && (
 				<Arrow
 					className="swiper-button-prev"

@@ -124,10 +124,10 @@ const MyPage = () => {
 			const list = await getIdols(dataCount);
 			const nextCursor = list.nextCursor;
 			const secondList = await getIdols(dataCount, nextCursor);
+			setIsLoading(false);
 
 			setNextCursor(secondList.nextCursor);
 			setIdolPageData([list, secondList]);
-			setIsLoading(false);
 		} catch (error) {
 			console.error("Error fetching idols:", error);
 		}
@@ -145,10 +145,11 @@ const MyPage = () => {
 				if (!prevCursor) {
 					setNextCursor(null);
 				} else {
+					setIsLoading(true);
 					const lists = await getIdols(dataCount, prevCursor);
+					setIsLoading(false);
 
 					setNextCursor((prev) => prev);
-
 					setIdolPageData((prev) => {
 						return [...prev, lists];
 					});
