@@ -33,13 +33,13 @@
 	}
 }
 // desktop
-@media screen and (1200px <= width)
+@media screen and (1200px <= width <= 1440px)
 {
 	[data-widget="PendingDonations"]
 	{
 		> [data-widget="Carousel"]
 		{
-			width: 100%;
+			margin: 0px 80px;
 		}
 	}
 }

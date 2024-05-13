@@ -3,6 +3,7 @@ import styled from "styled-components";
 const HeadingContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
+	margin-bottom: 24px;
 `;
 
 export function Heading({ children }) {

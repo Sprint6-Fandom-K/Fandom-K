@@ -41,10 +41,6 @@ export default function PendingDonations() {
 	}, [columns]);
 
 	useEffect(() => {
-		console.log(donations);
-	}, [donations]);
-
-	useEffect(() => {
 		if (cursor) {
 			const observer = new IntersectionObserver(
 				(entries, observer) => {

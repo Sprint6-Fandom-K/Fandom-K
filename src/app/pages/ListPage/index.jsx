@@ -38,7 +38,7 @@ export default function ListPage() {
 					</Heading>
 					<PendingDonations />
 				</PendingDonationsSection>
-				<ChartSection $fd="column" $gap="24px">
+				<ChartSection $fd="column">
 					<Heading>
 						<HeadingTitle>이달의 차트</HeadingTitle>
 						<NewPinkButton onClick={handleClick} height="32px" width="128px">
@@ -76,14 +76,14 @@ const PageBody = styled.main`
 `;
 
 const Content = styled.div`
+	box-sizing: content-box;
 	display: flex;
 	flex-direction: column;
 	background-color: #02000e;
-	width: 1200px;
-	@media (width<=1199px) {
-		width: 100%;
-		overflow: hidden;
-	}
+	max-width: 1200px;
+	width: 100%;
+	padding-left: 24px;
+	padding-right: 24px;
 `;
 
 const ChartSection = styled(FlexContainer)`
