@@ -141,13 +141,13 @@ export default function RadioModal({ options, openModal }) {
 
 	const handleReCharge = (timeVar) => {
 		clearTimeout(timeVar);
-		Modal.close;
+		Modal.instance.close();
 		openModal();
 	};
 
 	const handleCharge = () => {
 		setCredit(credit + selectedOption);
-		let timeVar = setTimeout(Modal.close, 3000);
+		let timeVar = setTimeout(Modal.instance.close, 3000);
 
 		let intervalId = setInterval(() => {
 			// 1초마다 time을 1씩 감소
@@ -156,9 +156,9 @@ export default function RadioModal({ options, openModal }) {
 
 		if (time === 0) clearInterval(intervalId); // time이 0이면 중지
 
-		Modal.open(
+		new Modal(
 			<TestModal>
-				<CloseButton onClick={() => Modal.close()}>
+				<CloseButton onClick={() => Modal.instance.close()}>
 					<ModalCancelIcon />
 				</CloseButton>
 				<CreditIcon />
@@ -170,13 +170,13 @@ export default function RadioModal({ options, openModal }) {
 					MoreCharge?
 				</CommonButton>
 			</TestModal>,
-		);
+		).open();
 	};
 
 	return (
 		<ChargeModal>
 			<Text>크레딧 충전하기</Text>
-			<CloseButton onClick={() => Modal.close()}>
+			<CloseButton onClick={() => Modal.instance.close()}>
 				<ModalCancelIcon />
 			</CloseButton>
 			<RadioWrapper>

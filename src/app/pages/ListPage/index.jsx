@@ -19,10 +19,7 @@ export default function ListPage() {
 	const [gender, setGender] = useState("female");
 
 	const handleClick = () => {
-		Modal.open(
-			<VoteIdols gender={gender} onReVote={handleClick} />,
-			Modal.shake,
-		);
+		new Modal(<VoteIdols gender={gender} onReVote={handleClick} />, (modal) => modal.shake());
 	};
 
 	const isFemale = useMemo(() => gender === "female", [gender]);

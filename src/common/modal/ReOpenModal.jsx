@@ -10,7 +10,7 @@ export default function ReOpenModal({
 }) {
 	return (
 		<TestModal>
-			<CloseButton onClick={() => Modal.close()}>
+			<CloseButton onClick={() => Modal.instance.close()}>
 				<ModalCancelIcon />
 			</CloseButton>
 			<CreditIcon />

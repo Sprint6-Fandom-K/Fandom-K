@@ -80,13 +80,7 @@ export default function Donate(
 				<div
 					className="button skeleton"
 					onClick={() =>
-						Modal.open(
-							<Donate.Modal
-								donation={props.donation}
-								onContribute={props.onContribute}
-							></Donate.Modal>,
-							Modal.close,
-						)
+						new Modal(<Donate.Modal donation={props.donation} onContribute={props.onContribute}></Donate.Modal>, (modal) => modal.close()).open()
 					}
 				>
 					후원하기
@@ -173,7 +167,7 @@ Donate.Modal = function add(
 						.then(() => {
 							props.onContribute?.(contribute);
 						});
-					Modal.close();
+					Modal.instance.close();
 				}}
 			>
 				후원하기
