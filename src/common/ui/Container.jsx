@@ -35,9 +35,9 @@ export const Spacer = styled.div`
 `;
 
 export const Row = styled(FlexContainer)`
-	flex-direction: "row";
+	flex-direction: row;
 `;
 
 export const Column = styled(FlexContainer)`
-	flex-direction: "column";
+	flex-direction: column;
 `;
