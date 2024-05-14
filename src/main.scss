@@ -5,7 +5,7 @@
 }
 
 :root {
-	font-family: Pretendard;
+	font-family: Pretendard !important;
 	--orange: #f96d69;
 	--black1: #02000e;
 	--black2: #181d26;
@@ -21,7 +21,18 @@
 }
 
 ::-webkit-scrollbar {
-	width: 0px;
+	width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--gray3);
+	&:hover {
+		background: gray;
+	}
+}
+
+::-webkit-scrollbar-track {
+	background: #02000e;
 }
 
 html,

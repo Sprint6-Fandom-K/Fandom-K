@@ -1,22 +1,59 @@
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Modal } from "@/app";
 import CreditIcon from "@/common/assets/icons/CreditIcon";
 import ModalCancelIcon from "@/common/assets/icons/ModalCancelIcon";
+import RadioModal from "./ChargeModal";
 
-export default function ReOpenModal({
-	children,
-	buttonDescription,
-	handleReOpen,
+export default function ReChargeModal({
+	options,
+	openModal,
+	timeVar,
+	selectedOption,
 }) {
+	const [count, setCount] = useState(3);
+	const interval = useRef();
+
+	const handleReCharge = (timeVar) => {
+		clearTimeout(timeVar);
+		Modal.instance.close();
+		new Modal(<RadioModal options={options} openModal={openModal} />).open();
+	};
+
+	const handleClose = (timeVar) => {
+		clearTimeout(timeVar);
+		Modal.instance.close();
+	};
+
+	useEffect(() => {
+		interval.current = setInterval(() => {
+			setCount((prevCount) => prevCount - 1);
+		}, 1000);
+
+		if (count === 0) clearInterval(interval.current);
+		return () => clearInterval(interval.current);
+	}, [count]);
+
 	return (
 		<TestModal>
-			<CloseButton onClick={() => Modal.instance.close()}>
+			<CloseButton
+				onClick={() => {
+					handleClose(timeVar);
+				}}
+			>
 				<ModalCancelIcon />
 			</CloseButton>
 			<CreditIcon />
-			{children}
-			<CommonButton onClick={handleReOpen}>
-				{buttonDescription ? buttonDescription : "다시 하시겠습니까?"}
+			<Text>
+				<span>{selectedOption}</span>크레딧이 충전되었습니다!
+			</Text>
+			<Text>{count}초 뒤에 자동으로 닫힙니다</Text>
+			<CommonButton
+				onClick={() => {
+					handleReCharge(timeVar);
+				}}
+			>
+				MoreCharge?
 			</CommonButton>
 		</TestModal>
 	);

@@ -17,7 +17,7 @@ export default function SelectGender({ onChange, gender, isActive }) {
 		onChange(e.currentTarget.name);
 	};
 	return (
-		<Row>
+		<Row style={{ marginBottom: 24 }}>
 			<MenuButton name="female" onClick={handleMenuClick} $isActive={isActive}>
 				<MenuButtonDescription>이달의 여자 아이돌</MenuButtonDescription>
 			</MenuButton>

@@ -107,6 +107,10 @@ const Name = styled.h5`
 	font-weight: 700;
 	line-height: 1.6;
 	color: #f4efef;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
 `;
 
 const Group = styled.h6`
@@ -115,6 +119,10 @@ const Group = styled.h6`
 	line-height: 1.2;
 	color: #fff;
 	opacity: 0.6;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
 `;
 
 export default IdolCard;
