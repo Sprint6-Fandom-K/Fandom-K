@@ -6,8 +6,6 @@ import CreditIcon from "@/common/assets/icons/CreditIcon";
 import ModalCancelIcon from "@/common/assets/icons/ModalCancelIcon";
 import ReChargeModal from "./ReChargeModal";
 
-
-
 export default function RadioModal({ options, openModal }) {
 	const [credit, setCredit] = useLocalStorage("credit", 0);
 	const [selectedOption, setSelectedOption] = useState(null);
@@ -25,7 +23,7 @@ export default function RadioModal({ options, openModal }) {
 				openModal={openModal}
 				timeVar={timeVar}
 				selectedOption={selectedOption}
-			/>
+			/>,
 		);
 	};
 
@@ -75,7 +73,8 @@ const CommonButton = styled.button`
 	height: 42px;
 	border-radius: 3px;
 	border: none;
-	background: ${props => (props.disabled ? '#808080' : 'linear-gradient(to left, #f86f65, #fe5493)')};
+	background: ${(props) =>
+		props.disabled ? "#808080" : "linear-gradient(to left, #f86f65, #fe5493)"};
 	color: #fff;
 	font-size: 14px;
 	font-weight: 700;

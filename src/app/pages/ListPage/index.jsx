@@ -18,9 +18,8 @@ export default function ListPage() {
 	const [gender, setGender] = useState("female");
 
 	const handleClick = () => {
-		Modal.open(
-			<VoteIdols gender={gender} onReVote={handleClick} />,
-			Modal.shake,
+		new Modal(<VoteIdols gender={gender} onReVote={handleClick} />, (modal) =>
+			modal.shake(),
 		);
 	};
 
@@ -80,11 +79,10 @@ const Page = styled.div`
 	display: flex;
 	flex-direction: column;
 	background-color: #02000e;
-	width: 1200px;
-	@media (width<=1199px) {
-		width: 100%;
-		overflow: hidden;
-	}
+	max-width: 1200px;
+	width: 100%;
+	padding-left: 24px;
+	padding-right: 24px;
 `;
 
 const Segment = styled(Column)`

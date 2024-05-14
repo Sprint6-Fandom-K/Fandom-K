@@ -58,13 +58,10 @@ export default function ChargeCredit() {
 	const [credit, setCredit] = useLocalStorage("credit", 0);
 
 	const handleOpenChargeModal = () => {
-		Modal.open(
-			<RadioModal
-				options={CHARGE_OPTIONS}
-				openModal={handleOpenChargeModal}
-			/>,
-			Modal.shake,
-		);
+		new Modal(
+			<RadioModal options={CHARGE_OPTIONS} openModal={handleOpenChargeModal} />,
+			(modal) => modal.close(),
+		).open();
 	};
 
 	return (

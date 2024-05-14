@@ -86,27 +86,27 @@ export default function VoteModal({ gender, onReVote }) {
 	const handleClick = (e) => {
 		if (!idolId) return;
 		if (credit < 1000) {
-			Modal.open(
+			new Modal(
 				<ReOpenModal
 					buttonDescription="충전하러 가기"
 					handleReOpen={() => {
-						Modal.close();
+						Modal.instance.close();
 					}}
 				>
 					<Text>크레딧이 부족합니다.</Text>
 				</ReOpenModal>,
-			);
+			).open();
 		} else {
 			setCredit(credit - 1000);
 			wrappedFunction(idolId);
-			Modal.open(
+			new Modal(
 				<ReOpenModal
 					buttonDescription="투표 한번 더 하기"
 					handleReOpen={onReVote}
 				>
 					<Text>투표를 완료하였습니다!</Text>
 				</ReOpenModal>,
-			);
+			).open();
 		}
 	};
 
@@ -120,7 +120,7 @@ export default function VoteModal({ gender, onReVote }) {
 		<>
 			<VoteContainer>
 				<Column $fd="column" $gap="20px">
-					<ModalHeader gender={gender} onCancel={() => Modal.close()} />
+					<ModalHeader gender={gender} onCancel={() => Modal.instance.close()} />
 					<ModalContentContainer $fd="column" $gap="8px">
 						{items.map((v, index) => (
 							<IdolVoteCard

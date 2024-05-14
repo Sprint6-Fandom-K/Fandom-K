@@ -16,7 +16,6 @@ export default function App() {
 	return (
 		<ScrollToTop>
 			<Outlet></Outlet>
-
 			<section
 				id="modal"
 				//
@@ -24,58 +23,65 @@ export default function App() {
 				//
 				onClick={(event) => {
 					if (event.target === event.currentTarget) {
-						modal?.["onClickOutSide"]?.();
+						modal.onClickOutSide?.(modal);
 					}
 				}}
 			>
-				{modal?.["element"]}
+				{modal?.element}
 			</section>
 		</ScrollToTop>
 	);
 }
 
 export class Modal {
-	static #self = new EventTarget();
-	static #timeout = null;
+	/** @type {?Modal} */ static instance;
+	static core = new EventTarget();
 
-	static open(element, onClickOutSide) {
-		// prevent scroll
+	element;
+	timeout;
+	onClickOutSide;
+
+	constructor(element, onClickOutSide) {
+		this.element = element;
+		this.onClickOutSide = onClickOutSide;
+	}
+
+	open() {
+		Modal.instance = this;
+
 		document.body.style.setProperty("overflow", "hidden");
 
-		Modal.#self.dispatchEvent(
-			new CustomEvent(Modal.name, {
-				detail: { ["element"]: element, ["onClickOutSide"]: onClickOutSide },
-			}),
-		);
+		Modal.core.dispatchEvent(new CustomEvent(Modal.name, { detail: this }));
 	}
 
-	static close() {
-		// allow scroll
-		document.body.style.setProperty("overflow", "unset");
+	close() {
+		if (Modal.instance === this) {
+			Modal.instance = null;
 
-		Modal.#self.dispatchEvent(
-			new CustomEvent(Modal.name, {
-				detail: { ["element"]: null, ["onClickOutSide"]: null },
-			}),
-		);
+			document.body.style.setProperty("overflow", null);
+
+			Modal.core.dispatchEvent(new CustomEvent(Modal.name, { detail: null }));
+		}
 	}
 
-	static shake() {
-		Modal.#timeout = clearTimeout(Modal.#timeout);
+	shake() {
+		if (Modal.instance === this) {
+			this.timeout = clearTimeout(this.timeout);
 
-		document.getElementById("modal").classList.add("shake");
+			document.getElementById("modal").classList.add("shake");
 
-		Modal.#timeout = setTimeout(
-			() => document.getElementById("modal").classList.remove("shake"),
-			1000,
-		);
+			this.timeout = setTimeout(
+				() => document.getElementById("modal").classList.remove("shake"),
+				750,
+			);
+		}
 	}
 
 	static addEventListener(callback) {
-		Modal.#self.addEventListener(Modal.name, callback);
+		Modal.core.addEventListener(Modal.name, callback);
 	}
 
 	static removeEventListener(callback) {
-		Modal.#self.removeEventListener(Modal.name, callback);
+		Modal.core.removeEventListener(Modal.name, callback);
 	}
 }

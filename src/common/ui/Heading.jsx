@@ -1,30 +1,8 @@
 import styled from "styled-components";
 
-const HeadingContainer = styled.div`
+export const Heading = styled.div`
 	display: flex;
 	justify-content: space-between;
-	font-size: 24px;
-	font-weight: 700;
-	line-height: 26px;
-	text-align: left;
-	color: white;
-	@media (width<=1199px) {
-		font-size: 20px;
-	}
-	@media (width<=767px) {
-		font-size: 16px;
-	}
-`;
-
-export function Heading({ children, className }) {
-	return (
-		<div className={className}>
-			<HeadingContainer>{children}</HeadingContainer>
-		</div>
-	);
-}
-
-Heading.Title = styled.span`
 	font-size: 24px;
 	font-weight: 700;
 	line-height: 26px;
