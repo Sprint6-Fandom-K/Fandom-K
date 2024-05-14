@@ -4,18 +4,13 @@ import React, {
 	useLayoutEffect,
 	useState,
 } from "react";
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-import "swiper/css/autoplay";
-import "swiper/css";
 
 import styled from "styled-components";
 
 import { getIdols } from "@/common/api/api";
 import Header from "@/common/ui/Header";
 import IdolSwiper from "./widgets/IdolSwiper/IdolSwiper";
-import IdolCard from "./widgets/card/ui/IdolCard";
+import InterestIdolList from "./widgets/InterestIdolList/InterestIdolList";
 
 // 이미지
 import plusIcon from "@/common/assets/icons/Ic_plus_24px.svg";
@@ -204,35 +199,10 @@ const MyPage = () => {
 						<section>
 							<Title>내가 관심있는 아이돌</Title>
 							{localStorageData.length > 0 ? (
-								<WideSwiper
-									modules={[Autoplay]}
-									slidesPerView="auto"
-									slidesPerGroup={1}
-									spaceBetween={4}
-									observer={true}
-									observeParents={true}
-									observeSlideChildren={true}
-									loop={true}
-									autoplay={{ delay: 6000 }}
-									breakpoints={{
-										480: {
-											spaceBetween: 24,
-										},
-									}}
-								>
-									{localStorageData.map((idol) => {
-										return (
-											<CustomSlide key={idol.id}>
-												<IdolCard
-													info={idol}
-													padding="7.14"
-													remove={true}
-													deleteIdol={() => deleteIdol(idol)}
-												/>
-											</CustomSlide>
-										);
-									})}
-								</WideSwiper>
+								<InterestIdolList
+									localStorageData={localStorageData}
+									deleteIdol={deleteIdol}
+								/>
 							) : (
 								<Text>관심있는 아이돌 목록에 추가해 보세요!</Text>
 							)}
@@ -332,12 +302,6 @@ const Text = styled.p`
 	word-break: keep-all;
 `;
 
-const WideSwiper = styled(Swiper)`
-	@media only screen and (max-width: 480px) {
-		width: 100vw;
-	}
-`;
-
 //hr
 const Hr = styled.hr`
 	border: 1px solid rgba(255, 255, 255, 0.1);
@@ -345,14 +309,6 @@ const Hr = styled.hr`
 
 	@media only screen and (max-width: 744px) {
 		margin: 32px 0;
-	}
-`;
-
-const CustomSlide = styled(SwiperSlide)`
-	width: 98px;
-
-	@media only screen and (max-width: 480px) {
-		padding: 0 14px;
 	}
 `;
 
