@@ -5,9 +5,9 @@ import IdolChartCardSkeleton from "@/app/pagess/ListPage/skeletons/IdolChartCard
 import { useEffect, useMemo, useState, useRef } from "react";
 import styled from "styled-components";
 
-import { useInView } from "react-intersection-observer";
 import RefreshIcon from "@/common/assets/icons/RefreshIcon";
 import { rotate } from "@/common/styles/keyframes";
+import useCustomInView from "@/common/hooks/useCustomInView";
 
 const RotateIcon = styled(RefreshIcon)`
 	animation: ${rotate} 2s ease-in-out infinite;
@@ -40,7 +40,7 @@ export default function SortChart({ gender, isfemale }) {
 	const [cursor, setCursor] = useState(null);
 
 	const [status, wrappedFunction] = useGetData(getCharts);
-	const { ref, inView } = useInView({
+	const { ref, inView } = useCustomInView({
 		threshold: 1,
 		root: rootRef.current,
 	});
