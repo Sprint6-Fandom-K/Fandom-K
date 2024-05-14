@@ -16,21 +16,24 @@ export default function RadioModal({ options, openModal }) {
 
 	const handleCharge = () => {
 		setCredit(credit + selectedOption);
-		let timeVar = setTimeout(Modal.close, 3000);
-		Modal.open(
-			<ReChargeModal
-				options={options}
-				openModal={openModal}
-				timeVar={timeVar}
-				selectedOption={selectedOption}
-			/>,
+		let timeVar = setTimeout(Modal.instance.close, 3000);
+		const modal = new Modal(
+			(
+				<ReChargeModal
+					options={options}
+					openModal={openModal}
+					timeVar={timeVar}
+					selectedOption={selectedOption}
+				/>
+			),
 		);
+		modal.open();
 	};
 
 	return (
 		<ChargeModal>
 			<Text>크레딧 충전하기</Text>
-			<CloseButton onClick={() => Modal.close()}>
+			<CloseButton onClick={() => Modal.instance.close()}>
 				<ModalCancelIcon />
 			</CloseButton>
 			<RadioWrapper>

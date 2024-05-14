@@ -6,11 +6,9 @@ import backgroundBlueSomething from "@/common/assets/images/backgroundBlueSometh
 import { Column, FlexContainer } from "@/common/ui/Container";
 import { PinkButton } from "@/common/ui/Button";
 import { modalDescription } from "@/common/styles/typo";
-import {
-	CREDIT_FOR_ONE_VOTE,
-} from "@/common/constant/constant";
+import { CREDIT_FOR_ONE_VOTE } from "@/common/constant/constant";
 import { getCharts, postVotes } from "@/common/api/api";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "@/app";
 import useLocalStorage from "@/common/hooks/useLocalStorage";
 import useInfiniteScroll from "@/common/hooks/useInfiniteScroll";
@@ -87,25 +85,29 @@ export default function VoteModal({ gender, onReVote }) {
 		if (!idolId) return;
 		if (credit < 1000) {
 			new Modal(
-				<ReOpenModal
-					buttonDescription="충전하러 가기"
-					handleReOpen={() => {
-						Modal.instance.close();
-					}}
-				>
-					<Text>크레딧이 부족합니다.</Text>
-				</ReOpenModal>,
+				(
+					<ReOpenModal
+						buttonDescription="충전하러 가기"
+						handleReOpen={() => {
+							Modal.instance.close();
+						}}
+					>
+						<Text>크레딧이 부족합니다.</Text>
+					</ReOpenModal>
+				),
 			).open();
 		} else {
 			setCredit(credit - 1000);
 			wrappedFunction(idolId);
 			new Modal(
-				<ReOpenModal
-					buttonDescription="투표 한번 더 하기"
-					handleReOpen={onReVote}
-				>
-					<Text>투표를 완료하였습니다!</Text>
-				</ReOpenModal>,
+				(
+					<ReOpenModal
+						buttonDescription="투표 한번 더 하기"
+						handleReOpen={onReVote}
+					>
+						<Text>투표를 완료하였습니다!</Text>
+					</ReOpenModal>
+				),
 			).open();
 		}
 	};
@@ -120,7 +122,10 @@ export default function VoteModal({ gender, onReVote }) {
 		<>
 			<VoteContainer>
 				<Column $fd="column" $gap="20px">
-					<ModalHeader gender={gender} onCancel={() => Modal.instance.close()} />
+					<ModalHeader
+						gender={gender}
+						onCancel={() => Modal.instance.close()}
+					/>
 					<ModalContentContainer $fd="column" $gap="8px">
 						{items.map((v, index) => (
 							<IdolVoteCard

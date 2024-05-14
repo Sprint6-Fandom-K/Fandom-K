@@ -20,7 +20,7 @@ export default function ListPage() {
 	const handleClick = () => {
 		new Modal(<VoteIdols gender={gender} onReVote={handleClick} />, (modal) =>
 			modal.shake(),
-		);
+		).open();
 	};
 
 	const isFemale = useMemo(() => gender === "female", [gender]);
