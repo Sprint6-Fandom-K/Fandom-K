@@ -1,6 +1,13 @@
 # 💎 Fandom-K 🎤✨
 
 <br>
+###🎧 배포된 사이트
+- https://sprint11fandom-k.netlify.app/
+<br>
+###🎨 Notion 회의록
+- https://www.notion.so/9f3b2ade1a984d1db30bc9d27e860498?v=8df10edd245942cc8e1822e3cd3e10e4
+
+<br>
 
 ### 🗓 개발 기간
 2024.04.30 ~ 2024.05.17
@@ -9,6 +16,10 @@
 
 ## 👩🏻‍💻프로젝트 소개
 <img src="https://github.com/sprint6-part2/fandom-k/assets/50625710/294b4bd6-168a-4bef-b66f-96f7003346d6" width=400>
+<img src="https://ibb.co/MsLNnSC" width=400>
+<img src="https://ibb.co/GsGbrWT" width=400>
+<img src="https://ibb.co/rfr2kpd" width=400>
+<img src="https://ibb.co/LkPFxFD" width=400>
 
 - Fandom-K는 자신이 좋아하는 아이돌을 선택하고 후원하는 서비스 플랫폼입니다.
 - 팬들은 크레딧을 통해 후원 및 투표를 하며, 자신이 좋아하는 아이돌을 차트 상위권에 올릴 수 있습니다.
@@ -143,7 +154,7 @@
 ### MyPage
 - swiper : 협재 슬라이드의 nextCursor 값을 설정하여 API 호출을 통해 추가 데이터를 가져오고 상태 업데이트 하며 swiper를 구현했습니다.
 
-<img src="file:///Users/bella/Desktop/%E1%84%86%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%91%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8C%E1%85%B5%E1%84%89%E1%85%B5%E1%84%8B%E1%85%A7%E1%86%AB%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC/%E1%84%83%E1%85%A1%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%91%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8C%E1%85%B5%E1%84%85%E1%85%A9%20%E1%84%8C%E1%85%A1%E1%84%83%E1%85%A9%E1%86%BC%20%E1%84%82%E1%85%A5%E1%86%B7%E1%84%80%E1%85%B5%E1%86%B7.GIF" width=400>
+
 
 <br>
 
