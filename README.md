@@ -1,11 +1,11 @@
 # 💎 Fandom-K 🎤✨
 
 ### 🚀 배포된 사이트
-- https://sprint11fandom-k.netlify.app/
+https://sprint11fandom-k.netlify.app/
 <br>
 
 ### 🎨 Notion 회의록
-- https://www.notion.so/9f3b2ade1a984d1db30bc9d27e860498?v=8df10edd245942cc8e1822e3cd3e10e4
+https://www.notion.so/9f3b2ade1a984d1db30bc9d27e860498?v=8df10edd245942cc8e1822e3cd3e10e4
 
 <br>
 
@@ -14,12 +14,8 @@
 
 <br>
 
-## 👩🏻‍💻프로젝트 소개
+## 👩🏻‍💻프로젝트 소개g
 <img src="https://github.com/sprint6-part2/fandom-k/assets/50625710/294b4bd6-168a-4bef-b66f-96f7003346d6" width=400>
-<a href="https://ibb.co/MsLNnSC" width=400></a>
-<img src="https://ibb.co/GsGbrWT" width=400>
-<img src="https://ibb.co/rfr2kpd" width=400>
-<img src="https://ibb.co/LkPFxFD" width=400>
 
 - Fandom-K는 자신이 좋아하는 아이돌을 선택하고 후원하는 서비스 플랫폼입니다.
 - 팬들은 크레딧을 통해 후원 및 투표를 하며, 자신이 좋아하는 아이돌을 차트 상위권에 올릴 수 있습니다.
