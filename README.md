@@ -1,10 +1,10 @@
 # 💎 Fandom-K 🎤✨
 
-<br>
-###🎧 배포된 사이트
+### 🚀 배포된 사이트
 - https://sprint11fandom-k.netlify.app/
 <br>
-###🎨 Notion 회의록
+
+### 🎨 Notion 회의록
 - https://www.notion.so/9f3b2ade1a984d1db30bc9d27e860498?v=8df10edd245942cc8e1822e3cd3e10e4
 
 <br>
@@ -16,7 +16,7 @@
 
 ## 👩🏻‍💻프로젝트 소개
 <img src="https://github.com/sprint6-part2/fandom-k/assets/50625710/294b4bd6-168a-4bef-b66f-96f7003346d6" width=400>
-<img src="https://ibb.co/MsLNnSC" width=400>
+<a href="https://ibb.co/MsLNnSC" width=400></a>
 <img src="https://ibb.co/GsGbrWT" width=400>
 <img src="https://ibb.co/rfr2kpd" width=400>
 <img src="https://ibb.co/LkPFxFD" width=400>
