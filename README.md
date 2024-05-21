@@ -14,7 +14,7 @@ https://www.notion.so/9f3b2ade1a984d1db30bc9d27e860498?v=8df10edd245942cc8e1822e
 
 <br>
 
-## 👩🏻‍💻프로젝트 소개g
+## 👩🏻‍💻프로젝트 소개
 <img src="https://github.com/sprint6-part2/fandom-k/assets/50625710/294b4bd6-168a-4bef-b66f-96f7003346d6" width=400>
 
 - Fandom-K는 자신이 좋아하는 아이돌을 선택하고 후원하는 서비스 플랫폼입니다.
